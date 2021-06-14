@@ -34,10 +34,10 @@ export default class FindQueuesPage extends Component{
             <MapView
                 style={{ flex: 1 }}
                 initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05
+                    latitude: 1.3521,
+                    longitude: 103.8198,
+                    latitudeDelta: 0.2,
+                    longitudeDelta: 0.2
                 }}
             />
         )
