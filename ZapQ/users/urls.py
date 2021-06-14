@@ -4,7 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from .views import *
 
 urlpatterns = [
-    path('hello/', HelloView.as_view()),
+    path('usernamecheck/', usernameavail.as_view()),
 ]
 
 print('User Accounts Initiated.')
