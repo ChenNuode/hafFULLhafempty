@@ -1,22 +1,7 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-// My imports
-//import NuodeApp from './code/nuode';
 import React, {Component} from 'react';
 import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
+import { 
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
 
