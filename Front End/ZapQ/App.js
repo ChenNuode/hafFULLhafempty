@@ -6,7 +6,9 @@
  * @flow strict-local
  */
 
-import React from 'react';
+// My imports
+//import NuodeApp from './code/nuode';
+import React, {Component} from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -18,95 +20,158 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import AppRoot from './code/AppRoot';
+//import { AppRegistry } from 'react-native';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+//AppRegistry.registerComponent('your app name',  () => point);
+export default class App extends Component {
+  render(){
+    return(
+      <AppRoot />
+    )
+  }
 };
+/*
+import React, {Component} from 'react';
+import {Alert, View, Text} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import PixoAppRoot from './approot';
+import UserHandlePage from './loginpage';
+import AppLoad from './loading';
+import api from './Pixorift/api';
+import TimerMixin from 'react-native-timer-mixin';
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+export default class PixoRoot extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      loadstate: 'loading',
+      refreshprog: 'f'
+    };
+    var TimeMixin = require('react-native-timer-mixin');
   };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  tokenrefresh = async (username, password, TimeNow) => {
+    api.getLogin(username, password).catch(() => {
+      this.tokenfail();
+    }).then(
+      (res) => {
+        this.setState({
+          resstate: res.state,
+          usertoken: res.token,
+        });
+        if (this.state.resstate === 'Denied') {
+          this.tokenfail();
+        } else {
+          this.tokensuccess(TimeNow);
+        }
+      }
+    );
+  };
+
+  tokensuccess = (TimeNow) => {
+    const userdict = this.state.userinfo;
+    userdict['login'] = TimeNow;
+    userdict['token'] = this.state.usertoken;
+    this.userupdate(userdict);
+    this.setState({userinfo: userdict});
+  };
+
+  tokenfail = () => {
+    this.userdestroy();
+    Alert.alert('User Login Error!', 'There was an error fetching your previous login, please relogin to Pixorift.');
+    this.setState({refreshprog: 'f', loadstate: 'false'});
+  };
+
+  userupdate = async(userdict) => {
+    const r = await AsyncStorage.getItem('@userinfo');
+    if (r !== null){
+      await AsyncStorage.setItem('@userinfo', JSON.stringify(userdict)).then(() => {
+        this.setState({loadstate: 'true'});
+      });
+    };
+    this.setState({refreshprog: 'f'});
+  };
+
+  userdestroy = async() => {
+    await AsyncStorage.removeItem('@userinfo');
+  };
+
+  trefresh = async () => {
+    const TimeNow = Date.parse(new Date());
+    const DayInt = Number(86400000);
+    const TimeDiff = TimeNow - parseInt(this.state.userinfo.login);
+    if (TimeDiff > DayInt) {
+      if (this.state.refreshprog === 'f') {
+        this.setState({refreshprog: 't'});
+        this.tokenrefresh(this.state.userinfo.username, this.state.userinfo.password, TimeNow);
+        console.log(TimeDiff);
+      };
+    };
+  };
+
+  usercall = async (init) => {
+    if (init === undefined) {
+      init === 'f'
+    };
+    AsyncStorage.getItem('@userinfo').catch(
+      async () => {
+        if (this.state.loadstate !== 'false'){
+          await this.setState({loadstate: 'false'});
+        };
+      }
+    ).then(async (userinfo) => {
+      if (userinfo === null) {
+        await this.setState({loadstate: 'false'});
+      } else {
+        try {
+          const tui = JSON.parse(userinfo);
+          const userdict = {username: tui.username, password:tui.password, token: tui.token, login: tui.login};
+          if (this.state.userinfo !== userdict) {
+            await this.setState({userinfo: userdict});
+          };
+          if (init === 't') {
+            this.setState({refreshprog: 't'});
+            this.tokenrefresh(this.state.userinfo.username, this.state.userinfo.password, Date.parse(new Date()));
+            console.log('initializing application');
+          } else {
+            this.setState({loadstate: 'true'});
+          };
+        } catch {
+          this.userdestroy();
+          Alert.alert('User Login Error!', 'There was an error fetching your previous login, please relogin to Pixorift.');
+          await this.setState({loadstate: 'false'});
+        };
+      };
+    });
+  };
+
+  componentDidMount(){
+    this.usercall('t');
+    setInterval(() => {
+      if (this.state.loadstate === 'true'){
+        this.trefresh();
+      };
+    }, Number(15000));
+  };
+
+
+  conditionalrender = () => {
+    if (this.state.loadstate === 'true'){
+      return <PixoAppRoot screenProps={{usercheck: this.usercall}}/>;
+    } else if (this.state.loadstate === 'false') {
+      return <UserHandlePage usercheck={this.usercall}/>;
+    } else {
+      return <AppLoad />;
+    };
+  };
+
+  render(){
+    return(
+      <View style={{flex: 1}}>
+        {this.conditionalrender()}
+      </View>
+    )
+  }
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+*/
