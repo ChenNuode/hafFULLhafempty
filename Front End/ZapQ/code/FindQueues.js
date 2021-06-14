@@ -24,6 +24,7 @@ import {
     Button,
     ThemeProvider,
     Overlay,
+    SearchBar,
 } from 'react-native-elements';
 
 import MapView, {Marker} from "react-native-maps";
@@ -43,9 +44,9 @@ export default class FindQueuesPage extends Component{
     componentDidMount(){
         //API Logic
         var markers = [
-            {latitude: 1.35097, longitude: 103.87227, id:1, title: "NEX"},
-            {latitude: 1.35111, longitude: 103.84868, id:2, title: "Junction 8"},
-        ];
+            {latitude: 1.35097, longitude: 103.87227, id: 1, title: "NEX", description: "Serangoon"},
+            {latitude: 1.35111, longitude: 103.84868, id: 2, title: "Junction 8", description: "Bishan"},
+        ]
         this.setState({markerdata: markers});
     };
 
@@ -66,12 +67,6 @@ export default class FindQueuesPage extends Component{
 
 
     makeMarkers(){
-        /*
-        var markers = [
-            {latitude: 1.35097, longitude: 103.87227, title: "NEX", description: "Serangoon"},
-            {latitude: 1.35111, longitude: 103.84868, title: "Junction 8", description: "Bishan"},
-        ]*/
-
         return this.state.markerdata.map((item) => {
             return (
                 <Marker coordinate = {{latitude: item.latitude, longitude: item.longitude}}
@@ -86,6 +81,10 @@ export default class FindQueuesPage extends Component{
     render(){
         return(
             <View style={{ height: '100%', width: '100%' }}>
+                <SearchBar  
+                    placeholder="Type Here..."
+                    onChangeText={console.log("k")}
+                />
                 <MapView
                     style={{ flex: 1 }}
                     initialRegion={{
