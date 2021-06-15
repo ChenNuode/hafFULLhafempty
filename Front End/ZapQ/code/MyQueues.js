@@ -1,6 +1,5 @@
 //imports start
 import React,{Component} from 'react';
-<<<<<<< HEAD
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -11,12 +10,6 @@ import {
   useColorScheme,
   View,
   ViewBase,
-} from 'react-native';
-=======
->>>>>>> abd87383218c7b1ea4c477567782aaeadfd0ae3d
-
-import {
-  View,StyleSheet
 } from 'react-native';
 
 import {
