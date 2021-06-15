@@ -53,12 +53,13 @@ const list = [
     },
 ]*/
   
-export default class MyQueuesPage extends Component{
+export default class QueueDetailsPage extends Component{
     constructor(props){
         super(props);
         this.state = {
             queues: [],
         }
+        console.log(this.props.id);
     };
 
     componentDidMount(){
@@ -72,40 +73,12 @@ export default class MyQueuesPage extends Component{
         this.setState({queues: queues});
     };
 
-    displayQueues(){
-        return this.state.queues.map((item, i) => {
-            return (
-                <ListItem key={i} bottomDivider raised>
-                    <ListItem.Content>
-                        <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.title}</ListItem.Title>
-                        {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
-                    </ListItem.Content>
-                    
-                    <Text style={styles.bigtext}>{item.people}</Text>
-                    <Text style={styles.bigtext}>"l.Q_ETAmin"</Text>
-                </ListItem>
-                /*<Marker coordinate = {{latitude: item.latitude, longitude: item.longitude}}
-                        pinColor = {"red"}
-                        key={item.id}
-                        onPress={() => this.markerPress(item)}/>*/
-            );
-        });    
-    }
-
     render(){
         return(
             <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
                <Text style={{fontSize: 64}}>
-                   My Queues
+                   Details for {this.props.route.params.id}
                </Text>
-               <View style={{flex:1,width:'100%',marginTop:30}}>
-                    {/*<Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Current Queues</Text>*/}
-                    {this.displayQueues()}
-                </View>
-                {/*<View style={{flex:2,width:'100%',marginTop:50}}>
-                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Past Queues</Text>
-                    {this.displayQueues()}
-                </View>*/}
            </View>
         )
     }

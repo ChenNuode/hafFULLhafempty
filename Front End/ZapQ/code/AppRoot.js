@@ -17,6 +17,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { enableScreens } from 'react-native-screens';
 import MyQueuesPage from './MyQueues';
 import FindQueuesPage from './FindQueues';
+import ManageQueuesPage from './ManageQueues/ManageQueues'
 //enableScreens(false);
 
 const Tab = createBottomTabNavigator()
@@ -27,6 +28,7 @@ export default class AppRoot extends Component {
                 <Tab.Navigator>
                     <Tab.Screen name="Find Queues" component={FindQueuesPage} />
                     <Tab.Screen name="My Queues" component={MyQueuesPage} />
+                    <Tab.Screen name="Manage Queues" component={ManageQueuesPage} />
                 </Tab.Navigator>
             </NavigationContainer>
         )
