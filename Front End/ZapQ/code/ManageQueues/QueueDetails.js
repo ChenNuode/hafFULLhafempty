@@ -57,28 +57,38 @@ export default class QueueDetailsPage extends Component{
     constructor(props){
         super(props);
         this.state = {
-            queues: [],
+            queue: {},
         }
         console.log(this.props.id);
     };
 
     componentDidMount(){
         //API Logic
-        var queues = [
-            {id:1, title: "NEX", people: 200},
-            {id:2, title: "Junction 8", people: 150},
-            {id:3, title: "Junction 9", people: 50},
-            {id:4, title: "Junction 10", people: 100},
-        ]
-        this.setState({queues: queues});
+        var queue = {id:1, title: "NEX", people: 200}
+        this.setState({queue: queue});
     };
+
+    admitQueuer(){
+        //API Call to admit
+    }
+
+    closeQueue(){
+        //Api call to delete queue
+    }
 
     render(){
         return(
             <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
                <Text style={{fontSize: 64}}>
-                   Details for {this.props.route.params.id}
+                   Details for {this.state.queue.title} (ID {this.props.route.params.id})
                </Text>
+                <Text style={{fontSize: 64}}>{this.state.queue.people} people in queue</Text>
+                <Button title="Admit Queuer" 
+                        onPress={() => this.props.navigation.navigate('Created Queues', {})
+                }/>
+                <Button title="Close Queue" 
+                        onPress={() => this.props.navigation.navigate('Created Queues', {})
+                }/>
            </View>
         )
     }
