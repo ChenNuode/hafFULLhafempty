@@ -6,9 +6,10 @@ import {
 } from 'react-native';
 
 import AppRoot from './code/AppRoot';
-import SignupScreen from './code/SignupScreen';
-import LoginScreen from './code/LoginScreen';
+import UserAuth from './code/UserAuth';
 import AppLoad from './code/loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 //import { AppRegistry } from 'react-native';
 
 //AppRegistry.registerComponent('your app name',  () => point);
@@ -18,15 +19,50 @@ export default class App extends Component {
     this.state={
       loading: true,
       signedin: false,
+      userdict: {},
     }
   }
 
+
   componentDidMount(){
-    this.setState({loading: false});
-  }
+    this.usercall().then(() =>
+      {this.setState({loading: false});}
+    );
+  };
+
+  usercall = async () => {
+    AsyncStorage.getItem('@userinfo').then(async (userinfo) => {
+      if (userinfo === null) {
+        await this.setState({signedin: false});
+      } else {
+        try {
+          const tui = JSON.parse(userinfo);
+          const userdict = {username: tui.username, password:tui.password, token: tui.token};
+          if (this.state.userinfo !== userdict) {
+            await this.setState({userinfo: userdict});
+          };
+          await this.setState({signedin: true});
+        } catch(e) {
+          this.userdestroy();
+          Alert.alert('User Login Error!', 'There was an error fetching your previous login, please relogin.');
+          await this.setState({signedin: false});
+        };
+      };
+    });
+  };
+
+
+  userdestroy = async() => {
+    await AsyncStorage.removeItem('@userinfo');
+  };
 
   conditionalRender(){
-    return(<SignupScreen/>)
+    if (this.state.signedin){
+      return(<AppRoot />)
+    } else {
+      return(<UserAuth/>)
+    }
+
   };
 
   render(){
