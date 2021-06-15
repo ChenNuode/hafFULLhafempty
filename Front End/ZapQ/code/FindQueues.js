@@ -74,8 +74,10 @@ export default class FindQueuesPage extends Component{
 
         //api call to get results
         this.setState({currentSearch: (this.state.currentSearch+1%2)});
-        if(this.state.currentSearch%2 == 0) this.state.searchResults = searchList1;
-        else this.state.searchResults = searchList2;
+        if(this.state.currentSearch%2 == 0) this.setState({searchResults: searchList1});
+        else this.setState({searchResults: searchList2});
+
+        if(search == "") this.setState({searchResults: []});
     };
 
     showSearchResults(){
@@ -201,6 +203,7 @@ export default class FindQueuesPage extends Component{
 
     render(){
         return(
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={{ height: '100%', width: '100%' }}>
                 <View style={{backgroundColor:"snow",paddingTop:20,paddingHorizontal:14,'color':'#333234'}}>
                     <Text h2>Explore Queues</Text>    
@@ -253,6 +256,7 @@ export default class FindQueuesPage extends Component{
 
                 </Overlay>
             </View>
+            </TouchableWithoutFeedback>
         )
     }
 }
