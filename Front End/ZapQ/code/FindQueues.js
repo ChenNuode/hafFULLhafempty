@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 
 const mapRef = React.createRef();
 
-export default class MapPage extends Component{
+export default class FindQueuesPage extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -189,7 +189,7 @@ export default class MapPage extends Component{
                     
                     <Image
                         style={styles.tinyLogo}
-                        source={require('../images/queue317_456.png')}
+                        source={require('./images/queue317_456.png')}
                     />
                 </View>
                 </Marker>
@@ -199,13 +199,11 @@ export default class MapPage extends Component{
                 coordinate = {this.state.userLocation}
                 pinColor = {"red"}
                 key={0}
-                onPress={() => this.markerPress(item)}
-                
             >
             <View>
                 <Image
                     style={styles.tinyLogo}
-                    source={require('../images/queue317_456.png')}
+                    source={require('./images/queue317_456.png')}
                 />
             </View>
             </Marker>
@@ -258,7 +256,7 @@ export default class MapPage extends Component{
                     </View>
                 </View>
                 {this.mapRender()}
-                <FAB title="Center Map" onPress={() => this.setMapCenter(this.state.userLocation.latitude, this.state.userLocation.longitude)}/>
+                <FAB title="Center Map" style={{zIndex:2, elevation:2, position: "absolute", top: "90%", left: "60%"}} onPress={() => this.setMapCenter(this.state.userLocation.latitude, this.state.userLocation.longitude)}/>
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
                     
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>

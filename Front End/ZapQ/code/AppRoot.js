@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 //import Icon from 'react-native-vector-icons/AntDesign';
 import { enableScreens } from 'react-native-screens';
 import MyQueuesPage from './MyQueues';
-import FindQueuesPage from './FindQueues/FindQueues';
+import FindQueuesPage from './FindQueues';
 import ManageQueuesPage from './ManageQueues/ManageQueues';
 import AccountPage from './account';
 //enableScreens(false);
