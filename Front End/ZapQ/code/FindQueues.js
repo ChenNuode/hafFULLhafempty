@@ -21,6 +21,7 @@ import {
     Avatar,
     ListItem,
     FAB,
+    Icon,
 } from 'react-native-elements';
 
 import MapView, {Marker} from "react-native-maps";
@@ -45,6 +46,11 @@ const styles = StyleSheet.create({
       width: 35,
       height: 50, //aspect ratio of w-h is 317:456
     },
+    tinyuserlogo: {
+        width: 35,
+        height: 35,
+        //aspect ratio of w-h 
+      },
     Ocontainer : {
         width:"80%",
         height:"50%",
@@ -171,7 +177,6 @@ export default class FindQueuesPage extends Component{
     queueUp(){
         console.log("queueing for ");
         console.log(id);
-        
         //redirect to the my queues page
     }
 
@@ -181,12 +186,11 @@ export default class FindQueuesPage extends Component{
                 <Marker 
                     coordinate = {{latitude: item.latitude, longitude: item.longitude}}
                     pinColor = {"red"}
-                    key={item.id}
+                    key={item.id} //threw an warning just now, about unpromised
                     onPress={() => this.markerPress(item)}
                     
                 >
                 <View>
-                    
                     <Image
                         style={styles.tinyLogo}
                         source={require('./images/queue317_456.png')}
@@ -197,16 +201,17 @@ export default class FindQueuesPage extends Component{
         }).concat((
             <Marker 
                 coordinate = {this.state.userLocation}
-                pinColor = {"red"}
+                pinColor = {"blue"}
                 key={0}
             >
             <View>
                 <Image
-                    style={styles.tinyLogo}
-                    source={require('./images/queue317_456.png')}
+                    style={styles.tinyuserlogo}
+                    source={require('./images/user.png')}
                 />
             </View>
             </Marker>
+
             ));
     };
 
@@ -239,13 +244,13 @@ export default class FindQueuesPage extends Component{
         return(
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={{ height: '100%', width: '100%'}}>
-                <View style={{width: "100%", zIndex:2, elevation:2, position: "absolute", backgroundColor:"snow",paddingTop:20,paddingHorizontal:14,'color':'#333234'}}>
+                <View style={{width: "100%", zIndex:2, elevation:2, position: "absolute", backgroundColor:"white",paddingTop:20,paddingHorizontal:14,'color':'#333234'}}>
                     <Text h2>Explore Queues</Text>    
                     <SearchBar  
                         placeholder="What would you like to join?"
                         onChangeText={(res) => this.updateSearch(res)}
                         value={this.state.search}
-                        containerStyle={{backgroundColor:"snow",borderTopColor:'transparent',borderBottomColor:'transparent',paddingHorizontal:0}}
+                        containerStyle={{backgroundColor:"white",borderTopColor:'transparent',borderBottomColor:'transparent',paddingHorizontal:0}}
                         inputContainerStyle={{backgroundColor:"rgba(100,100,100,0.1)"}}
                         round
                         showCancel
@@ -256,7 +261,8 @@ export default class FindQueuesPage extends Component{
                     </View>
                 </View>
                 {this.mapRender()}
-                <FAB title="Center Map" style={{zIndex:2, elevation:2, position: "absolute", top: "90%", left: "60%"}} onPress={() => this.setMapCenter(this.state.userLocation.latitude, this.state.userLocation.longitude)}/>
+            
+                <FAB title={<Icon type='material-community' name='crosshairs-gps' size={30} style={{}}/>} color="tomato" style={{zIndex:2, elevation:2, position: "absolute", bottom: "5%", right: "10%"}} onPress={() => this.setMapCenter(this.state.userLocation.latitude, this.state.userLocation.longitude)}/>
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
                     
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>
@@ -276,12 +282,12 @@ export default class FindQueuesPage extends Component{
                         
                         <View style={{flexDirection:'row'}}>
                             <View style={{flex:1,alignItems:'center'}}>
-                                <Text h4>{this.state.overlaydata.peopleinQ}</Text>
-                                <Text h5>No. In Queue</Text>
+                                <Text style={{fontWeight:'bold',fontSize:30}}>{this.state.overlaydata.peopleinQ}</Text>
+                                <Text style={{fontSize:16}}>No. In Queue</Text>
                             </View>     
                             <View style={{flex:1,alignItems:'center'}}>
-                                <Text h4>{this.state.overlaydata.ETA}</Text>
-                                <Text h5>ETA</Text>
+                                <Text style={{fontWeight:'bold',fontSize:30}}>{this.state.overlaydata.ETA}</Text>
+                                <Text style={{fontSize:16}}>ETA</Text>
                             </View>
                         </View>
                     </View>
