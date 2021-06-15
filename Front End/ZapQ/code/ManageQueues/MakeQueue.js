@@ -19,6 +19,8 @@ import {
     Badge,
 } from 'react-native-elements';
 
+import MapPicker from "react-native-map-picker";
+
 //imports end
 
 // in main js
@@ -53,7 +55,7 @@ const list = [
     },
 ]*/
   
-export default class MakeQueuesPage extends Component{
+export default class MakeQueuePage extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -69,15 +71,22 @@ export default class MakeQueuesPage extends Component{
             {id:3, title: "Junction 9", people: 50},
             {id:4, title: "Junction 10", people: 100},
         ]
-        this.setState({queues: queues});
     };
+
+    chooseLocation(latitude, longitude){
+        console.log(latitude, longitude);
+        this.props.navigation.navigate('Confirm Queue', {lat: latitude, long: longitude});
+    }
 
     render(){
         return(
-            <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
-               <Text style={{fontSize: 64}}>
-                   Make
-               </Text>
+            <View style={{flex:1}}>
+                <MapPicker
+                    initialCoordinate={{
+                        latitude: 1.35111, longitude: 103.84868,
+                    }}
+                    onLocationSelect={({latitude, longitude})=>this.chooseLocation(latitude,longitude)}
+                />
            </View>
         )
     }
