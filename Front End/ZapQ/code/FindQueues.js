@@ -37,10 +37,6 @@ const searchList2 = [
     {title: "Junction 10", id: 3, latitude: 1.35111, longitude: 103.84868, },
 ]
 
-//search result then moves to marker
-//gps button to move to our location
-//show your location
-
 const styles = StyleSheet.create({
     tinyLogo: {
       width: 35,
@@ -92,14 +88,38 @@ export default class FindQueuesPage extends Component{
 
         if(search == "") this.setState({searchResults: []});
     };
+    
+    getUserCenter(){
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+        .then(location => {
+            console.log(location);
+            this.setState({userLocation: location, locationReady: true});
+        })
+    }
 
     setMapCenter(latitude, longitude){
+        Keyboard.dismiss();
         this.setState({location: {latitude:latitude, longitude: longitude}});
         mapRef.current.animateToRegion({
             latitude,
             longitude,
             latitudeDelta: 0.0065,
             longitudeDelta: 0.0065,
+        })
+    }
+
+    userCenterMap(){
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+        .then(location => {
+            console.log(location);
+            this.setState({userLocation: location, locationReady: true});
+            this.setMapCenter(this.state.userLocation.latitude, this.state.userLocation.longitude)
         })
     }
 
@@ -123,17 +143,6 @@ export default class FindQueuesPage extends Component{
         };
     }
 
-    getMapCenter(){
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 15000,
-        })
-        .then(location => {
-            console.log(location);
-            this.setState({userLocation: location, locationReady: true});
-        })
-    }
-
     componentDidMount(){
         this.keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
@@ -150,7 +159,7 @@ export default class FindQueuesPage extends Component{
         ]
         this.setState({markerdata: markers});
 
-        this.getMapCenter();
+        this.getUserCenter();
     };
 
     componentWillUnmount() {
@@ -260,9 +269,8 @@ export default class FindQueuesPage extends Component{
                         {this.showSearchResults()}
                     </View>
                 </View>
-                {this.mapRender()}
-            
-                <FAB title={<Icon type='material-community' name='crosshairs-gps' size={30} style={{}}/>} color="tomato" style={{zIndex:2, elevation:2, position: "absolute", bottom: "5%", right: "10%"}} onPress={() => this.setMapCenter(this.state.userLocation.latitude, this.state.userLocation.longitude)}/>
+                {this.mapRender()}            
+                <FAB title={<Icon type='material-community' name='crosshairs-gps' size={30} style={{}}/>} color="tomato" style={{zIndex:2, elevation:2, position: "absolute", bottom: "5%", right: "10%"}} onPress={() => this.userCenterMap()}/>
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
                     
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>
