@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     }
   });
 
-export default class FindQueuesPage extends Component{
+export default class MapPage extends Component{
     constructor(props){
         super(props);
         this.state = {
