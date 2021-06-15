@@ -122,7 +122,9 @@ export default class FindQueuesPage extends Component{
             )
         } else {
             return(
-                <Text>Loading Map</Text>
+                <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                    <Text h3>Loading Map</Text>
+                </View>
             )
         }
     }
