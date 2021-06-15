@@ -14,6 +14,7 @@ import {
 } from 'react-native-elements';
 
 import MapView, {Marker} from "react-native-maps";
+import GetLocation from 'react-native-get-location'
 
 export default class FindQueuesPage extends Component{
     constructor(props){
@@ -21,17 +22,15 @@ export default class FindQueuesPage extends Component{
         this.state = {
             markerdata: [],
             overlayon: false,
-            overlaydata: {}
+            overlaydata: {},
+            location: {latitude:0,longitude:0},
+            locationReady: false,
+            search: "",
         }
-    };
-
-    state = {
-        search: '',
-    };
-      
+    }; 
     updateSearch = (search) => {
         console.log("Someone is typing")
-        this.setState({ search });
+        this.setState({ search: "a" });
     };
 
     componentDidMount(){
@@ -41,6 +40,15 @@ export default class FindQueuesPage extends Component{
             {latitude: 1.35111, longitude: 103.84868, id: 2, title: "Junction 8", description: "Bishan"},
         ]
         this.setState({markerdata: markers});
+
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+        .then(location => {
+            console.log(location);
+            this.setState({location: location, locationReady: true});
+        })
     };
 
     markerPress(item){
@@ -70,30 +78,41 @@ export default class FindQueuesPage extends Component{
         });
     };
 
+    mapRender(){
+        if(this.state.locationReady){
+            return(
+                <MapView
+                    style={{ flex: 1 }}
+                    initialRegion={{
+                        latitude: this.state.location.latitude,
+                        longitude: this.state.location.longitude,
+                        latitudeDelta: 0.002,
+                        longitudeDelta: 0.002,
+                    }}>
+                    {this.makeMarkers()}
+                </MapView>
+            )
+        } else {
+            return(
+                <Text>Loading Map</Text>
+            )
+        }
+    }
+
     render(){
-        const { search } = this.state;
         return(
             <View style={{ height: '100%', width: '100%' }}>
                 <SearchBar  
                     placeholder="Type Here..."
                     onChangeText={this.updateSearch}
-                    value={search}
+                    value={this.state.search}
                     containerStyle={{backgroundColor:"snow",borderTopColor:'transparent',borderBottomColor:'transparent'}}
                     inputContainerStyle={{backgroundColor:"rgba(100,100,100,0.1)"}}
                     round
                     showCancel
                     cancelButtonTitle="Cancel"
                 />
-                <MapView
-                    style={{ flex: 1 }}
-                    initialRegion={{
-                        latitude: 1.3521,
-                        longitude: 103.8198,
-                        latitudeDelta: 0.2,
-                        longitudeDelta: 0.2
-                    }}>
-                    {this.makeMarkers()}
-                </MapView>
+                {this.mapRender()}
                 <Overlay isVisible={this.state.overlayon}
                          onBackdropPress={() => this.setState({overlayon: false})}>
                     <Text>{this.state.overlaydata.title}</Text>
