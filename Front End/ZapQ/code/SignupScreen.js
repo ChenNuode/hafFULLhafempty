@@ -17,12 +17,16 @@ import {
 // createBottomTabNavigator{
 //    screen: MyQueuesPage};
 
+function triggerlogin() {
+    alert("Hello binner login")
+}
+
 export default class SignupScreen extends Component{
     render(){
         return(
            <View style={{flex:1,justifyContent: 'center',alignItems: 'center',paddingHorizontal:40}}>
                <Text h1 h1Style={{fontSize: 40, textAlign: 'center','color':'#333234'}}>Register</Text>
-               <Text style={{fontSize:16,marginTop:10}}>Have an account? <Text style={{color:'#2CB76B',fontWeight: "bold"}}>Log in</Text> instead!</Text>
+               <Text style={{fontSize:16,marginTop:10}}>Have an account? <Text style={{color:'#2CB76B',fontWeight: "bold"}} onPress={() => triggerlogin()}>Log in</Text> instead!</Text>
                 <Input containerStyle={{ width:'100%',marginTop:20,marginBottom:0}}
                 placeholder='Username'
 
