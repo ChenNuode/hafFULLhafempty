@@ -37,19 +37,23 @@ export default class DetailsPage extends Component{
     };
 
     componentDidMount(){
-        //API Logic
-        /*var markers = [
-            {latitude: 1.35097, longitude: 103.87227, id:1},
-            {latitude: 1.35111, longitude: 103.84868, id:2},
-        ];
-        this.setState({markerdata: markers});*/
+
     };
+
+    queueUp(){
+        console.log("queueing for ");
+        console.log(this.props.route.params.id);
+        
+        //redirect to the my queues page
+    }
 
     
     render(){
         return(
             <View>
-                <Text>gay</Text>
+                <Text>{this.props.route.params.id}</Text>
+                <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black'}} round title="Join Queue" raised
+                                onPress={() => this.queueUp()} buttonStyle={{ width:200,backgroundColor:"#2CB76B"}}/>
             </View>
         )
     }

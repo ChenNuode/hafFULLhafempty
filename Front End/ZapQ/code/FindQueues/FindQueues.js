@@ -35,7 +35,7 @@ export default class FindQueuesPage extends Component{
     render(){
         return(
             <Stack.Navigator>
-                <Stack.Screen name="Map" component={MapPage} />
+                <Stack.Screen name="Map" component={MapPage} options={{headerShown:false}}/>
                 <Stack.Screen name="Details" component={DetailsPage} />
             </Stack.Navigator>
         )

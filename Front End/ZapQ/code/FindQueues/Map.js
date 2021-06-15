@@ -25,15 +25,13 @@ import MapView, {Marker} from "react-native-maps";
 import GetLocation from 'react-native-get-location'
 
 const searchList1 = [
-    'your mom',
-    'your dad',
-    'your family',
+    {title: "NEX", id: 0},
+    {title: "Junction 8", id: 1},
 ]
 
 const searchList2 = [
-    'momma',
-    'pappa',
-    'famma'
+    {title: "Junction 9", id: 2},
+    {title: "Junction 10", id: 3},
 ]
 
 const styles = StyleSheet.create({
@@ -84,9 +82,9 @@ export default class MapPage extends Component{
         if (this.state.keyboardstate){
             return this.state.searchResults.map((item, i) => {
                 return (
-                    <ListItem key={i} bottomDivider raised>
+                    <ListItem key={i} bottomDivider raised onPress={() => this.props.navigation.navigate('Details', {id: item.id})}>
                         <ListItem.Content>
-                            <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item}</ListItem.Title>
+                            <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.title}</ListItem.Title>
                             {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
                         </ListItem.Content>
                         {/*
@@ -170,7 +168,7 @@ export default class MapPage extends Component{
                     
                     <Image
                         style={styles.tinyLogo}
-                        source={require('./images/queue317_456.png')}
+                        source={require('../images/queue317_456.png')}
                     />
                 </View>
                 </Marker>
