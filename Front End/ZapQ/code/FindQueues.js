@@ -4,7 +4,11 @@ import React,{Component} from 'react';
 import {
   View,
   Image,
-  StyleSheet
+  StyleSheet,
+  FlatList,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import {
@@ -14,10 +18,23 @@ import {
     SearchBar,
     Text,
     Avatar,
+    ListItem,
 } from 'react-native-elements';
 
 import MapView, {Marker} from "react-native-maps";
 import GetLocation from 'react-native-get-location'
+
+const searchList1 = [
+    'your mom',
+    'your dad',
+    'your family',
+]
+
+const searchList2 = [
+    'momma',
+    'pappa',
+    'famma'
+]
 
 const styles = StyleSheet.create({
     tinyLogo: {
@@ -44,13 +61,40 @@ export default class FindQueuesPage extends Component{
             location: {latitude:0,longitude:0},
             locationReady: false,
             search: "",
+            searchResults: [],
+            keyboardstate: false,
+            currentSearch: 1,
         }
+        this._keyboardDidHide = this._keyboardDidHide.bind(this);
+        this._keyboardDidShow = this._keyboardDidShow.bind(this);
     };
 
     updateSearch = (search) => {
-        console.log("Someone is typing")
-        this.setState({ search: "a" });
+        this.setState({ search: search });
+
+        //api call to get results
+        this.setState({currentSearch: (this.state.currentSearch+1%2)});
+        if(this.state.currentSearch%2 == 0) this.state.searchResults = searchList1;
+        else this.state.searchResults = searchList2;
     };
+
+    showSearchResults(){
+        if (this.state.keyboardstate){
+            return this.state.searchResults.map((item, i) => {
+                return (
+                    <ListItem key={i} bottomDivider raised>
+                        <ListItem.Content>
+                            <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item}</ListItem.Title>
+                            {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
+                        </ListItem.Content>
+                        {/*
+                        <Text style={styles.bigtext}>{item.people}</Text>
+                        <Text style={styles.bigtext}>"l.Q_ETAmin"</Text>*/}
+                    </ListItem>
+                );
+            });   
+        };
+    }
 
     getMapCenter(){
         GetLocation.getCurrentPosition({
@@ -64,6 +108,14 @@ export default class FindQueuesPage extends Component{
     }
 
     componentDidMount(){
+        this.keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            this._keyboardDidShow,
+        );
+        this.keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            this._keyboardDidHide,
+        );
         //API Logic
         var markers = [
             {latitude: 1.35097, longitude: 103.87227, id: 1, title: "NEX", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "Serangoon", peopleinQ:5, ETA:25},
@@ -72,6 +124,19 @@ export default class FindQueuesPage extends Component{
         this.setState({markerdata: markers});
 
         this.getMapCenter();
+    };
+
+    componentWillUnmount() {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    };
+
+    _keyboardDidShow(){
+        this.setState({keyboardstate: true});
+    };
+    
+    _keyboardDidHide(){
+        this.setState({keyboardstate: false});
     };
 
     markerPress(item){
@@ -130,7 +195,9 @@ export default class FindQueuesPage extends Component{
                 <Text>Loading Map</Text>
             )
         }
-    }
+    };
+
+    
 
     render(){
         return(
@@ -139,7 +206,7 @@ export default class FindQueuesPage extends Component{
                     <Text h2>Explore Queues</Text>    
                     <SearchBar  
                         placeholder="What would you like to join?"
-                        onChangeText={this.updateSearch}
+                        onChangeText={(res) => this.updateSearch(res)}
                         value={this.state.search}
                         containerStyle={{backgroundColor:"snow",borderTopColor:'transparent',borderBottomColor:'transparent',paddingHorizontal:0}}
                         inputContainerStyle={{backgroundColor:"rgba(100,100,100,0.1)"}}
@@ -147,6 +214,7 @@ export default class FindQueuesPage extends Component{
                         showCancel
                         cancelButtonTitle="Cancel"
                     />
+                    {this.showSearchResults()}
                 </View>
                 {this.mapRender()}
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
