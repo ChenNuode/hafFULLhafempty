@@ -20,6 +20,7 @@ import {
 } from 'react-native-elements';
 
 import MapPicker from "react-native-map-picker";
+import GetLocation from 'react-native-get-location'
 
 //imports end
 
@@ -60,8 +61,21 @@ export default class MakeQueuePage extends Component{
         super(props);
         this.state = {
             queues: [],
+            location: {latitude:0,longitude:0},
+            locationReady: false,
         }
     };
+
+    getMapCenter(){
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+        .then(location => {
+            console.log(location);
+            this.setState({location: location, locationReady: true});
+        })
+    }
 
     componentDidMount(){
         //API Logic
@@ -71,6 +85,8 @@ export default class MakeQueuePage extends Component{
             {id:3, title: "Junction 9", people: 50},
             {id:4, title: "Junction 10", people: 100},
         ]
+
+        this.getMapCenter();
     };
 
     chooseLocation(latitude, longitude){
@@ -78,15 +94,29 @@ export default class MakeQueuePage extends Component{
         this.props.navigation.navigate('Confirm Queue', {lat: latitude, long: longitude});
     }
 
-    render(){
-        return(
-            <View style={{flex:1}}>
+    
+    mapRender(){
+        if(this.state.locationReady){
+            return(
                 <MapPicker
                     initialCoordinate={{
-                        latitude: 1.35111, longitude: 103.84868,
+                        latitude: this.state.location.latitude,
+                        longitude: this.state.location.longitude,
                     }}
                     onLocationSelect={({latitude, longitude})=>this.chooseLocation(latitude,longitude)}
                 />
+            )
+        } else {
+            return(
+                <Text>Loading Map</Text>
+            )
+        }
+    }
+
+    render(){
+        return(
+            <View style={{flex:1}}>
+                {this.mapRender()}
            </View>
         )
     }
