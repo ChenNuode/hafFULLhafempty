@@ -1,15 +1,5 @@
 import React, {Component} from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
+import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -24,9 +14,40 @@ export default class AppRoot extends Component {
     render(){
         return(        
             <NavigationContainer>
-                <Tab.Navigator>
+                <Tab.Navigator
+                
+                screenOptions={({ route }) => ({
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    //icon configuration, add more icons here for more pages
+                    if (route.name === 'Find Queues') {
+                      return <Icon type='material-community' name='radar' size={size} color={color} />;
+                    } else if (route.name === 'My Queues') {
+                      return <Icon type='font-awesome-5' name='list' size={size} color={color} />;
+                    }
+                    
+                    else if (route.name === 'Create Queues') {
+                      return <Icon type='antdesign' name='plussquareo' size={size} color={color} />;
+                    }
+                    else if (route.name === 'Account') {
+                      return <Icon type='font-awesome-5' name='user' size={size} color={color} />;
+                    }
+                  
+                    
+                  },
+                })}
+
+                tabBarOptions={{
+                  activeTintColor: 'tomato',
+                  inactiveTintColor: 'gray',
+                }}
+                
+                >
                     <Tab.Screen name="Find Queues" component={FindQueuesPage} />
                     <Tab.Screen name="My Queues" component={MyQueuesPage} />
+                    <Tab.Screen name="Create Queues" component={MyQueuesPage} />
+                    <Tab.Screen name="Account" component={MyQueuesPage} />
+                    
                 </Tab.Navigator>
             </NavigationContainer>
         )
