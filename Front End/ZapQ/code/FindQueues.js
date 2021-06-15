@@ -45,11 +45,23 @@ export default class FindQueuesPage extends Component{
             locationReady: false,
             search: "",
         }
-    }; 
+    };
+
     updateSearch = (search) => {
         console.log("Someone is typing")
         this.setState({ search: "a" });
     };
+
+    getMapCenter(){
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+        .then(location => {
+            console.log(location);
+            this.setState({location: location, locationReady: true});
+        })
+    }
 
     componentDidMount(){
         //API Logic
@@ -59,14 +71,7 @@ export default class FindQueuesPage extends Component{
         ]
         this.setState({markerdata: markers});
 
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 15000,
-        })
-        .then(location => {
-            console.log(location);
-            this.setState({location: location, locationReady: true});
-        })
+        this.getMapCenter();
     };
 
     markerPress(item){
@@ -83,8 +88,7 @@ export default class FindQueuesPage extends Component{
         
         //redirect to the my queues page
     }
-
-
+    
     makeMarkers(){
         return this.state.markerdata.map((item) => {
             return (
@@ -115,8 +119,8 @@ export default class FindQueuesPage extends Component{
                     initialRegion={{
                         latitude: this.state.location.latitude,
                         longitude: this.state.location.longitude,
-                        latitudeDelta: 0.002,
-                        longitudeDelta: 0.002,
+                        latitudeDelta: 0.0065,
+                        longitudeDelta: 0.0065,
                     }}>
                     {this.makeMarkers()}
                 </MapView>
