@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { enableScreens } from 'react-native-screens';
 import MyQueuesPage from './MyQueues';
 import FindQueuesPage from './FindQueues';
+import ManageQueuesPage from './ManageQueues/ManageQueues'
 //enableScreens(false);
 
 const Tab = createBottomTabNavigator()
@@ -15,40 +16,33 @@ export default class AppRoot extends Component {
         return(        
             <NavigationContainer>
                 <Tab.Navigator
-                
-                screenOptions={({ route }) => ({
-                  tabBarIcon: ({ focused, color, size }) => {
-                    let iconName;
-                    //icon configuration, add more icons here for more pages
-                    if (route.name === 'Find Queues') {
-                      return <Icon type='material-community' name='radar' size={size} color={color} />;
-                    } else if (route.name === 'My Queues') {
-                      return <Icon type='font-awesome-5' name='list' size={size} color={color} />;
-                    }
+                  screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                      let iconName;
+                      //icon configuration, add more icons here for more pages
+                      if (route.name === 'Find Queues') {
+                        return <Icon type='material-community' name='radar' size={size} color={color} />;
+                      } else if (route.name === 'My Queues') {
+                        return <Icon type='font-awesome-5' name='list' size={size} color={color} />;
+                      } else if (route.name === 'Manage Queues') {
+                        return <Icon type='antdesign' name='plussquareo' size={size} color={color} />;
+                      } else if (route.name === 'Account') {
+                        return <Icon type='font-awesome-5' name='user' size={size} color={color} />;
+                      }
                     
-                    else if (route.name === 'Create Queues') {
-                      return <Icon type='antdesign' name='plussquareo' size={size} color={color} />;
-                    }
-                    else if (route.name === 'Account') {
-                      return <Icon type='font-awesome-5' name='user' size={size} color={color} />;
-                    }
-                  
-                    
-                  },
-                })}
-
-                tabBarOptions={{
-                  activeTintColor: 'tomato',
-                  inactiveTintColor: 'gray',
-                  //keyboardHidesTabBar:true,
-                }}
-                
+                      
+                    },
+                  })}
+                  tabBarOptions={{
+                    activeTintColor: 'tomato',
+                    inactiveTintColor: 'gray',
+                    //keyboardHidesTabBar:true,
+                  }}
                 >
-                    <Tab.Screen name="Find Queues" component={FindQueuesPage} />
-                    <Tab.Screen name="My Queues" component={MyQueuesPage} />
-                    <Tab.Screen name="Create Queues" component={MyQueuesPage} />
-                    <Tab.Screen name="Account" component={MyQueuesPage} />
-                    
+                  <Tab.Screen name="Find Queues" component={FindQueuesPage} />
+                  <Tab.Screen name="My Queues" component={MyQueuesPage} />
+                  <Tab.Screen name="Manage Queues" component={ManageQueuesPage} />
+                  <Tab.Screen name="Account" component={MyQueuesPage} />
                 </Tab.Navigator>
             </NavigationContainer>
         )

@@ -53,7 +53,7 @@ const list = [
     },
 ]*/
   
-export default class MyQueuesPage extends Component{
+export default class CreatedQueuesPage extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -75,7 +75,9 @@ export default class MyQueuesPage extends Component{
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
-                <ListItem key={i} bottomDivider raised>
+                <ListItem key={i} 
+                          onPress={() => this.props.navigation.navigate('Queue Details', {id: item.id})}
+                          bottomDivider raised>
                     <ListItem.Content>
                         <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.title}</ListItem.Title>
                         {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
@@ -96,8 +98,11 @@ export default class MyQueuesPage extends Component{
         return(
             <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
                <Text style={{fontSize: 64}}>
-                   My Queues
+                   Created Queues
                </Text>
+               <Button title="+" 
+                onPress={() => this.props.navigation.navigate('Make Queues', {})
+                }/>
                <View style={{flex:1,width:'100%',marginTop:30}}>
                     {/*<Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Current Queues</Text>*/}
                     {this.displayQueues()}
