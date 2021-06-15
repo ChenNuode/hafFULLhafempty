@@ -1,6 +1,5 @@
-//imports start
 import React,{Component} from 'react';
-import type {Node} from 'react';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -31,6 +30,7 @@ const styles = StyleSheet.create({
     bigtext: {
         fontSize: 20,
     },
+
 });
 
 /*
@@ -92,6 +92,7 @@ export default class MyQueuesPage extends Component{
         });    
     }
 
+export default class MyQueuesPage extends Component{
     render(){
         return(
             <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>

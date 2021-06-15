@@ -1,4 +1,3 @@
-//imports start
 import React,{Component} from 'react';
 import {
   View,
@@ -26,7 +25,7 @@ export default class SignupScreen extends Component{
                <Text style={{fontSize:16,marginTop:10}}>Have an account? <Text style={{color:'#2CB76B',fontWeight: "bold"}}>Log in</Text> instead!</Text>
                 <Input containerStyle={{ width:'100%',marginTop:20,marginBottom:0}}
                 placeholder='Username'
-                
+
                 />
 
                 <Input containerStyle={{ width:'100%'}} placeholder="Password" secureTextEntry={true}/>
@@ -41,7 +40,7 @@ export default class SignupScreen extends Component{
                     title="Sign Up"
                     titleStyle={{color:'black',fontSize:17}}
                 />
-                                
+
            </View>
         )
     }
