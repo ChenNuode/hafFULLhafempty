@@ -59,7 +59,6 @@ export default class QueueDetailsPage extends Component{
         this.state = {
             queue: {},
         }
-        console.log(this.props.id);
     };
 
     componentDidMount(){

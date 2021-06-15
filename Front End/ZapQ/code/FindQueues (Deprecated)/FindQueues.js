@@ -25,32 +25,19 @@ import {
 } from 'react-native-elements';
 
 import { ListItem } from 'react-native-elements/dist/list/ListItem';
-//imports end
+import { createStackNavigator } from '@react-navigation/stack';
+import MapPage from "./Map";
+import DetailsPage from "./Details"
 
+const Stack = createStackNavigator();
 
-export default class DetailsPage extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            //markerdata: [],
-        }
-    };
-
-    componentDidMount(){
-        //API Logic
-        /*var markers = [
-            {latitude: 1.35097, longitude: 103.87227, id:1},
-            {latitude: 1.35111, longitude: 103.84868, id:2},
-        ];
-        this.setState({markerdata: markers});*/
-    };
-
-    
+export default class FindQueuesPage extends Component{
     render(){
         return(
-            <View>
-                <Text>gay</Text>
-            </View>
+            <Stack.Navigator>
+                <Stack.Screen name="Map" component={MapPage} options={{headerShown:false}}/>
+                <Stack.Screen name="Details" component={DetailsPage} />
+            </Stack.Navigator>
         )
     }
 }
