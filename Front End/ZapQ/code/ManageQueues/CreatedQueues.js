@@ -101,8 +101,7 @@ export default class CreatedQueuesPage extends Component{
                    Created Queues
                </Text>
                <Button title="+" 
-                onPress={() => this.props.navigation.navigate('Make Queues', {})
-                }/>
+                onPress={() => this.props.navigation.navigate('Make Queue', {})}/>
                <View style={{flex:1,width:'100%',marginTop:30}}>
                     {/*<Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Current Queues</Text>*/}
                     {this.displayQueues()}

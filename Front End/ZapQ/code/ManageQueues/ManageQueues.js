@@ -29,7 +29,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import CreatedQueuesPage from './CreatedQueues'
 import QueueDetailsPage from './QueueDetails'
-import MakeQueuesPage from './MakeQueues'
+import MakeQueuePage from './MakeQueue'
+import ConfirmQueuePage from './ConfirmQueue'
 
 const Stack = createStackNavigator();
 
@@ -39,7 +40,8 @@ export default class ManageQueuesPage extends Component{
             <Stack.Navigator>
                 <Stack.Screen name="Created Queues" component={CreatedQueuesPage} />
                 <Stack.Screen name="Queue Details" component={QueueDetailsPage} />
-                <Stack.Screen name="Make Queues" component={MakeQueuesPage} />
+                <Stack.Screen name="Make Queue" component={MakeQueuePage} />
+                <Stack.Screen name="Confirm Queue" component={ConfirmQueuePage} />
             </Stack.Navigator>
         )
     }
