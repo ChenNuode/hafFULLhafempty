@@ -1,18 +1,88 @@
 import React, {Component} from 'react';
 import type {Node} from 'react';
-import { 
+import {
   Text,
   View,
 } from 'react-native';
 
 import AppRoot from './code/AppRoot';
+import UserAuth from './code/UserAuth';
+import AppLoad from './code/loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 //import { AppRegistry } from 'react-native';
 
 //AppRegistry.registerComponent('your app name',  () => point);
 export default class App extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      loading: true,
+      signedin: false,
+      userdict: {},
+    }
+  }
+
+
+  componentDidMount(){
+    this.usercall().then(() =>
+      {this.setState({loading: false});}
+    );
+  };
+
+  logout(){
+    this.setState({signedin: false});
+  };
+
+  login(){
+    this.setState({signedin: true});
+  }
+
+  usercall = async () => {
+    AsyncStorage.getItem('@userinfo').then(async (userinfo) => {
+      if (userinfo === null) {
+        await this.setState({signedin: false});
+      } else {
+        try {
+          const tui = JSON.parse(userinfo);
+          const userdict = {username: tui.username, password:tui.password, token: tui.token};
+          if (this.state.userinfo !== userdict) {
+            await this.setState({userinfo: userdict});
+          };
+          await this.setState({signedin: true});
+        } catch(e) {
+          this.userdestroy();
+          Alert.alert('User Login Error!', 'There was an error fetching your previous login, please relogin.');
+          await this.setState({signedin: false});
+        };
+      };
+    });
+  };
+
+
+  userdestroy = async() => {
+    await AsyncStorage.removeItem('@userinfo');
+  };
+
+  conditionalRender(){
+    if (this.state.signedin){
+      return(<AppRoot />)
+    } else {
+      return(<UserAuth/>)
+    }
+
+  };
+
   render(){
+    if (this.state.loading){
+      return(
+        <AppLoad />
+      )
+    }
     return(
-      <AppRoot />
+      <View style={{flex: 1}}>
+        {this.conditionalRender()}
+      </View>
     )
   }
 };

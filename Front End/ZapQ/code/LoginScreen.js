@@ -1,4 +1,3 @@
-//imports start
 import React,{Component} from 'react';
 import {
   View,
@@ -39,9 +38,9 @@ export default class LoginScreen extends Component{
                     title="Log In"
                     titleStyle={{color:'black',fontSize:17}}
                     />
-                
-                
-           </View> 
+
+
+           </View>
         )
     }
 }
