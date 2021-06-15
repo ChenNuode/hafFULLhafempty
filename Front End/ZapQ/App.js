@@ -30,13 +30,6 @@ export default class App extends Component {
     );
   };
 
-  logout(){
-    this.setState({signedin: false});
-  };
-
-  login(){
-    this.setState({signedin: true});
-  }
 
   usercall = async () => {
     AsyncStorage.getItem('@userinfo').then(async (userinfo) => {
@@ -68,7 +61,7 @@ export default class App extends Component {
     if (this.state.signedin){
       return(<AppRoot />)
     } else {
-      return(<UserAuth/>)
+      return(<UserAuth loggedin={this.usercall}/>)
     }
 
   };
