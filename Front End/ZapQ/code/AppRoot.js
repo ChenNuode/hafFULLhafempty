@@ -37,7 +37,7 @@ export default class AppRoot extends Component {
                   tabBarOptions={{
                     activeTintColor: 'tomato',
                     inactiveTintColor: 'gray',
-                    labelStyle: {fontSize:14},
+                    labelStyle: {fontSize:13},
                     //keyboardHidesTabBar:true,
                   }}
                 >

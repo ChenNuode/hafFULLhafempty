@@ -33,24 +33,12 @@ const styles = StyleSheet.create({
 
 });
 
-/*
-const list = [
-    {
-      Q_name: 'Qname 1',
-      Q_initial: 'Q1',
-      Q_description: 'Queue to fk your mom',
-      Q_ppl_left: '7',
-      Q_ETA: '25',
-    },
-    {
-      Q_name: 'Qname 2',
-      Q_initial: 'Q2',
-      Q_description: 'Queue to fk your mom again',
-      Q_ppl_left: '3',
-      Q_ETA: '10',
-    },
-]*/
-  
+
+var Qlist = [
+    {id: 1, title: "NEX", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "Serangoon", peopleinQ:5, ETA:25},
+    {id: 2, title: "Junction 8", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "This is the Queue to Junction 8 shopping centre at Bishan. Built in 1993. This school is popularly visited by the Bgay", peopleinQ:5, ETA:25},
+]
+
 export default class MyQueuesPage extends Component{
     constructor(props){
         super(props);
@@ -62,10 +50,10 @@ export default class MyQueuesPage extends Component{
     componentDidMount(){
         //API Logic
         var queues = [
-            {id:1, title: "NEX", people: 200},
-            {id:2, title: "Junction 8", people: 150},
-            {id:3, title: "Junction 9", people: 50},
-            {id:4, title: "Junction 10", people: 100},
+            {id:1, title: "NEX", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg",people: 200,ETA:25},
+            {id:2, title: "Junction 8", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", people: 150,ETA:25},
+            {id:3, title: "Junction 9",picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", people: 50,ETA:25},
+            {id:4, title: "Junction 10",picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", people: 100,ETA:25},
         ]
         this.setState({queues: queues});
     };
@@ -82,10 +70,7 @@ export default class MyQueuesPage extends Component{
                     <Text style={styles.bigtext}>{item.people}</Text>
                     <Text style={styles.bigtext}>"l.Q_ETAmin"</Text>
                 </ListItem>
-                /*<Marker coordinate = {{latitude: item.latitude, longitude: item.longitude}}
-                        pinColor = {"red"}
-                        key={item.id}
-                        onPress={() => this.markerPress(item)}/>*/
+                
             );
         });    
     }
@@ -97,7 +82,7 @@ export default class MyQueuesPage extends Component{
                    My Queues
                </Text>
                <View style={{flex:1,width:'100%',marginTop:20}}>
-                    {/*<Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Current Queues</Text>*/}
+                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Current Queues</Text>
                     {this.displayQueues()}
                 </View>
                 {/*<View style={{flex:2,width:'100%',marginTop:50}}>
