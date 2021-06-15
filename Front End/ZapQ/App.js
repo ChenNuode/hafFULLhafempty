@@ -25,9 +25,7 @@ export default class App extends Component {
 
 
   componentDidMount(){
-    this.usercall().then(() =>
-      {this.setState({loading: false});}
-    );
+    this.usercall();
   };
 
 
@@ -49,7 +47,9 @@ export default class App extends Component {
           await this.setState({signedin: false});
         };
       };
-    });
+    }).then(() =>
+      {this.setState({loading: false});}
+    );;
   };
 
 
