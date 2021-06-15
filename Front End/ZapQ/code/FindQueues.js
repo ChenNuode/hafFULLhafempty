@@ -164,7 +164,6 @@ export default class FindQueuesPage extends Component{
                     pinColor = {"red"}
                     key={item.id}
                     onPress={() => this.markerPress(item)}
-                    
                 >
                 <View>
                     
@@ -230,21 +229,21 @@ export default class FindQueuesPage extends Component{
                         <Text h3 style={{marginLeft:5}}>{this.state.overlaydata.title}</Text>
                     </View>
                     
-                    <View style={{flex:3,}}>
-                        <Text style={{marginTop:10,color:'gray',fontSize:12}}>Description</Text>
+                    <View style={{flex:2}}>
+                        <Text style={{marginTop:10,color:'gray',fontSize:14}}>Description</Text>
                         <Text style={{fontSize:16}}>{this.state.overlaydata.description}</Text>
                     </View>
                     
-                    <View style={{flex:2,justifyContent:'center',}}>
+                    <View style={{flex:1,justifyContent:'center'}}>
                         
                         <View style={{flexDirection:'row'}}>
                             <View style={{flex:1,alignItems:'center'}}>
-                                <Text h4>{this.state.overlaydata.peopleinQ}</Text>
-                                <Text h5>No. In Queue</Text>
+                                <Text h3>{this.state.overlaydata.peopleinQ}</Text>
+                                <Text style={{fontSize:15}}>People In Queue</Text>
                             </View>     
                             <View style={{flex:1,alignItems:'center'}}>
-                                <Text h4>{this.state.overlaydata.ETA}</Text>
-                                <Text h5>ETA</Text>
+                                <Text h3>{this.state.overlaydata.ETA}</Text>
+                                <Text style={{fontSize:18,marginBottom:10}}>min</Text>
                             </View>
                         </View>
                     </View>
