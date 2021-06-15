@@ -38,7 +38,6 @@ const list = [
     {
       Q_name: 'Qname 1',
       Q_initial: 'Q1',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
       Q_description: 'Queue to fk your mom',
       Q_ppl_left: '7',
       Q_ETA: '25',
@@ -46,7 +45,6 @@ const list = [
     {
       Q_name: 'Qname 2',
       Q_initial: 'Q2',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
       Q_description: 'Queue to fk your mom again',
       Q_ppl_left: '3',
       Q_ETA: '10',
@@ -95,10 +93,10 @@ export default class MyQueuesPage extends Component{
     render(){
         return(
             <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
-               <Text style={{fontSize: 64}}>
+               <Text h2>
                    My Queues
                </Text>
-               <View style={{flex:1,width:'100%',marginTop:30}}>
+               <View style={{flex:1,width:'100%',marginTop:20}}>
                     {/*<Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Current Queues</Text>*/}
                     {this.displayQueues()}
                 </View>

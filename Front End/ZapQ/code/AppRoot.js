@@ -7,6 +7,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { enableScreens } from 'react-native-screens';
 import MyQueuesPage from './MyQueues';
 import FindQueuesPage from './FindQueues';
+import MakeQueuesPage from './MakeQueues';
+import AccountPage from './AccountPage';
 //enableScreens(false);
 
 const Tab = createBottomTabNavigator()
@@ -15,7 +17,6 @@ export default class AppRoot extends Component {
         return(        
             <NavigationContainer>
                 <Tab.Navigator
-                
                 screenOptions={({ route }) => ({
                   tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
@@ -32,7 +33,6 @@ export default class AppRoot extends Component {
                     else if (route.name === 'Account') {
                       return <Icon type='font-awesome-5' name='user' size={size} color={color} />;
                     }
-                  
                     
                   },
                 })}
@@ -40,14 +40,14 @@ export default class AppRoot extends Component {
                 tabBarOptions={{
                   activeTintColor: 'tomato',
                   inactiveTintColor: 'gray',
-                  //keyboardHidesTabBar:true,
-                }}
+                  labelStyle: {fontSize:14},
+                }}  
                 
                 >
                     <Tab.Screen name="Find Queues" component={FindQueuesPage} />
                     <Tab.Screen name="My Queues" component={MyQueuesPage} />
-                    <Tab.Screen name="Create Queues" component={MyQueuesPage} />
-                    <Tab.Screen name="Account" component={MyQueuesPage} />
+                    <Tab.Screen name="Create Queues" component={MakeQueuesPage} />
+                    <Tab.Screen name="Account" component={AccountPage} />
                     
                 </Tab.Navigator>
             </NavigationContainer>
