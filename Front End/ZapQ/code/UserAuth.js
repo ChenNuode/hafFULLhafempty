@@ -13,11 +13,19 @@ export default class UserAuth extends Component{
     }
   };
 
+  loginPage = () => {
+    this.setState({login: true});
+  };
+
+  signupPage = () => {
+    this.setState({login: false});
+  };
+
   conditionalRender(){
     if (this.state.login){
-      return(<LoginScreen />)
+      return(<LoginScreen loggedin={this.props.loggedin} signupPage={this.signupPage} />)
     } else {
-      return(<SignupScreen />)
+      return(<SignupScreen loggedin={this.props.loggedin} loginPage={this.loginPage} />)
     }
   };
 
