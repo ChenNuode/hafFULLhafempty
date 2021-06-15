@@ -7,6 +7,7 @@ import {
   StyleSheet,
   FlatList,
   KeyboardAvoidingView,
+  ActivityIndicator,
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
@@ -229,7 +230,8 @@ export default class MapPage extends Component{
         } else {
             return(
                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                    <Text h3>Loading Map</Text>
+                    <ActivityIndicator color="#EE214E" size="large" />
+                    <Text h4 style={{marginTop:10}}>Getting your location :)</Text>
                 </View>
             )
         }
@@ -268,7 +270,7 @@ export default class MapPage extends Component{
                     </View>
                     
                     <View style={{flex:3,}}>
-                        <Text style={{marginTop:10,color:'gray',fontSize:12}}>Description</Text>
+                        <Text style={{marginTop:10,color:'gray',fontSize:14,marginBottom:5}}>Queue Description</Text>
                         <Text style={{fontSize:16}}>{this.state.overlaydata.description}</Text>
                     </View>
                     
@@ -287,8 +289,8 @@ export default class MapPage extends Component{
                     </View>
                     
                     <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
-                        <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black'}} round title="Join Queue" raised
-                                onPress={() => this.queueUp()} buttonStyle={{ width:200,backgroundColor:"#2CB76B"}}/>
+                        <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} round title="Join Queue"
+                                onPress={() => this.queueUp()} buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
                      </View>
 
                 </Overlay>
