@@ -17,6 +17,7 @@ import {
 } from 'react-native-elements';
 
 import MapView, {Marker} from "react-native-maps";
+import GetLocation from 'react-native-get-location'
 
 const styles = StyleSheet.create({
     tinyLogo: {
@@ -39,17 +40,15 @@ export default class FindQueuesPage extends Component{
         this.state = {
             markerdata: [],
             overlayon: false,
-            overlaydata: {}
+            overlaydata: {},
+            location: {latitude:0,longitude:0},
+            locationReady: false,
+            search: "",
         }
-    };
-
-    state = {
-        search: '',
-    };
-      
+    }; 
     updateSearch = (search) => {
         console.log("Someone is typing")
-        this.setState({ search });
+        this.setState({ search: "a" });
     };
 
     componentDidMount(){
@@ -59,6 +58,15 @@ export default class FindQueuesPage extends Component{
             {latitude: 1.35111, longitude: 103.84868, id: 2, title: "Junction 8", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "This is the Queue to Junction 8 shopping centre at Bishan. Built in 1993. This school is popularly visited by the Bgay", peopleinQ:5, ETA:25},
         ]
         this.setState({markerdata: markers});
+
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+        .then(location => {
+            console.log(location);
+            this.setState({location: location, locationReady: true});
+        })
     };
 
     markerPress(item){
@@ -98,17 +106,36 @@ export default class FindQueuesPage extends Component{
         });
     };
 
+    mapRender(){
+        if(this.state.locationReady){
+            return(
+                <MapView
+                    style={{ flex: 1 }}
+                    initialRegion={{
+                        latitude: this.state.location.latitude,
+                        longitude: this.state.location.longitude,
+                        latitudeDelta: 0.002,
+                        longitudeDelta: 0.002,
+                    }}>
+                    {this.makeMarkers()}
+                </MapView>
+            )
+        } else {
+            return(
+                <Text>Loading Map</Text>
+            )
+        }
+    }
+
     render(){
-        const { search } = this.state;
         return(
             <View style={{ height: '100%', width: '100%' }}>
-                
                 <View style={{backgroundColor:"snow",paddingTop:20,paddingHorizontal:14,'color':'#333234'}}>
                     <Text h2>Explore Queues</Text>    
                     <SearchBar  
                         placeholder="What would you like to join?"
                         onChangeText={this.updateSearch}
-                        value={search}
+                        value={this.state.search}
                         containerStyle={{backgroundColor:"snow",borderTopColor:'transparent',borderBottomColor:'transparent',paddingHorizontal:0}}
                         inputContainerStyle={{backgroundColor:"rgba(100,100,100,0.1)"}}
                         round
@@ -116,17 +143,7 @@ export default class FindQueuesPage extends Component{
                         cancelButtonTitle="Cancel"
                     />
                 </View>
-                <MapView
-                    style={{ flex: 1 }}
-                    initialRegion={{
-                        latitude: 1.3521,
-                        longitude: 103.8198,
-                        latitudeDelta: 0.2,
-                        longitudeDelta: 0.2
-                    }}>
-                    {this.makeMarkers()}
-                </MapView>
-                
+                {this.mapRender()}
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
                     
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>
