@@ -19,20 +19,25 @@ import {
     Text,
     Avatar,
     ListItem,
+    FAB,
 } from 'react-native-elements';
 
 import MapView, {Marker} from "react-native-maps";
 import GetLocation from 'react-native-get-location'
 
 const searchList1 = [
-    {title: "NEX", id: 0},
-    {title: "Junction 8", id: 1},
+    {title: "NEX", id: 0, latitude: 1.35097, longitude: 103.87227,},
+    {title: "Junction 8", id: 1, latitude: 1.35111, longitude: 103.84868, },
 ]
 
 const searchList2 = [
-    {title: "Junction 9", id: 2},
-    {title: "Junction 10", id: 3},
+    {title: "Junction 9", id: 2, latitude: 1.35097, longitude: 103.87227,},
+    {title: "Junction 10", id: 3, latitude: 1.35111, longitude: 103.84868, },
 ]
+
+//search result then moves to marker
+//gps button to move to our location
+//show your location
 
 const styles = StyleSheet.create({
     tinyLogo: {
@@ -49,6 +54,8 @@ const styles = StyleSheet.create({
     }
   });
 
+const mapRef = React.createRef();
+
 export default class MapPage extends Component{
     constructor(props){
         super(props);
@@ -57,6 +64,7 @@ export default class MapPage extends Component{
             overlayon: false,
             overlaydata: {},
             location: {latitude:0,longitude:0},
+            userLocation: {latitude:0,longitude:0},
             locationReady: false,
             search: "",
             searchResults: [],
@@ -78,11 +86,23 @@ export default class MapPage extends Component{
         if(search == "") this.setState({searchResults: []});
     };
 
+    setMapCenter(latitude, longitude){
+        this.setState({location: {latitude:latitude, longitude: longitude}});
+        mapRef.current.animateToRegion({
+            latitude,
+            longitude,
+            latitudeDelta: 0.0065,
+            longitudeDelta: 0.0065,
+        })
+    }
+
     showSearchResults(){
         if (this.state.keyboardstate){
             return this.state.searchResults.map((item, i) => {
                 return (
-                    <ListItem key={i} bottomDivider raised onPress={() => this.props.navigation.navigate('Details', {id: item.id})}>
+                    <ListItem key={i} bottomDivider raised
+                              onPress={()=>this.setMapCenter(item.latitude, item.longitude)}>
+                              {/*onPress={() => this.props.navigation.navigate('Details', {id: item.id})}>*/}
                         <ListItem.Content>
                             <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.title}</ListItem.Title>
                             {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
@@ -103,7 +123,7 @@ export default class MapPage extends Component{
         })
         .then(location => {
             console.log(location);
-            this.setState({location: location, locationReady: true});
+            this.setState({userLocation: location, locationReady: true});
         })
     }
 
@@ -153,7 +173,7 @@ export default class MapPage extends Component{
         
         //redirect to the my queues page
     }
-    
+
     makeMarkers(){
         return this.state.markerdata.map((item) => {
             return (
@@ -173,17 +193,33 @@ export default class MapPage extends Component{
                 </View>
                 </Marker>
             );
-        });
+        }).concat((
+            <Marker 
+                coordinate = {this.state.userLocation}
+                pinColor = {"red"}
+                key={0}
+                onPress={() => this.markerPress(item)}
+                
+            >
+            <View>
+                <Image
+                    style={styles.tinyLogo}
+                    source={require('../images/queue317_456.png')}
+                />
+            </View>
+            </Marker>
+            ));
     };
 
     mapRender(){
         if(this.state.locationReady){
             return(
                 <MapView
+                    ref={mapRef}
                     style={{ flex: 1, zIndex:1, elevation:1}}
                     initialRegion={{
-                        latitude: this.state.location.latitude,
-                        longitude: this.state.location.longitude,
+                        latitude: this.state.userLocation.latitude,
+                        longitude: this.state.userLocation.longitude,
                         latitudeDelta: 0.0065,
                         longitudeDelta: 0.0065,
                     }}>
@@ -215,11 +251,12 @@ export default class MapPage extends Component{
                         showCancel
                         cancelButtonTitle="Cancel"
                     />
-                    <View style={{}}>
+                    <View style={{paddingBottom: 10}}>
                         {this.showSearchResults()}
                     </View>
                 </View>
                 {this.mapRender()}
+                <FAB title="Center Map" onPress={() => this.setMapCenter(this.state.userLocation.latitude, this.state.userLocation.longitude)}/>
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
                     
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>
