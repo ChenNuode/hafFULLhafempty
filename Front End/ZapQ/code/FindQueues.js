@@ -1,24 +1,10 @@
 //imports start
 import React,{Component} from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  ViewBase,
-} from 'react-native';
 
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  Text,
+  View,
+} from 'react-native';
 
 import {
     Button,
@@ -28,8 +14,6 @@ import {
 } from 'react-native-elements';
 
 import MapView, {Marker} from "react-native-maps";
-import { ListItem } from 'react-native-elements/dist/list/ListItem';
-
 
 export default class FindQueuesPage extends Component{
     constructor(props){
@@ -39,6 +23,15 @@ export default class FindQueuesPage extends Component{
             overlayon: false,
             overlaydata: {}
         }
+    };
+
+    state = {
+        search: '',
+    };
+      
+    updateSearch = (search) => {
+        console.log("Someone is typing")
+        this.setState({ search });
     };
 
     componentDidMount(){
@@ -77,13 +70,19 @@ export default class FindQueuesPage extends Component{
         });
     };
 
-    
     render(){
+        const { search } = this.state;
         return(
             <View style={{ height: '100%', width: '100%' }}>
                 <SearchBar  
                     placeholder="Type Here..."
-                    onChangeText={console.log("k")}
+                    onChangeText={this.updateSearch}
+                    value={search}
+                    containerStyle={{backgroundColor:"snow",borderTopColor:'transparent',borderBottomColor:'transparent'}}
+                    inputContainerStyle={{backgroundColor:"rgba(100,100,100,0.1)"}}
+                    round
+                    showCancel
+                    cancelButtonTitle="Cancel"
                 />
                 <MapView
                     style={{ flex: 1 }}
