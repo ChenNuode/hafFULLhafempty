@@ -8,6 +8,7 @@ import {
   useColorScheme,
   View,
   ViewBase,
+  ImageBackground,
 } from 'react-native';
 
 import {
@@ -30,9 +31,19 @@ const styles = StyleSheet.create({
     bigtext: {
         fontSize: 20,
     },
+    listitemstyles: {
+        width:'95%',
+        alignSelf:'center',
+        borderRadius:10,
+        marginBottom:10,
+        shadowColor: '#470000',
+        shadowOffset: {width: 0, height: 3},
+        shadowOpacity: 0.7,
+        elevation: 3,
+        flexDirection:'column',
+    }
 
 });
-
 
 var Qlist = [
     {id: 1, title: "NEX", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "Serangoon", peopleinQ:5, ETA:25},
@@ -61,29 +72,38 @@ export default class MyQueuesPage extends Component{
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
-                <ListItem key={i} style={{marginBottom:10,borderWidth:0.5,borderRadius:5}}>
-                    <ListItem.Content>
-                        <ListItem.Title style={{fontWeight: "bold",color:"#EE214E",fontSize:25}}>{item.title}</ListItem.Title>
-                        {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
-                    </ListItem.Content>
-                    
-                    <Text style={styles.bigtext}>{item.people}</Text>
-                    <Text style={styles.bigtext}>"l.Q_ETAmin"</Text>
-                </ListItem>
-                
+                    <ListItem key={i} containerStyle={styles.listitemstyles}>
+                        
+                            <ListItem.Content style={{flexDirection:'row'}}>
+                                <Avatar rounded size="large" containerStyle={{alignSelf:'center',marginRight:10}}
+                                source={require("./images/line.png")}
+                                />
+                                <View style={{flex:1}}> 
+                                    <ListItem.Title style={{flex:1,fontWeight: "bold",color:"#EE214E",fontSize:25,marginLeft:5}}>{item.title}</ListItem.Title>
+                                    {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
+                                    <Text style={[styles.bigtext,{flex:1}]}>{item.people}</Text>
+                                    <Text style={[styles.bigtext,{flex:1}]}>"l.Q_ETAmin"</Text>
+                                </View>
+                                
+                            </ListItem.Content>
+                        
+                        <Text color="green">status online</Text>
+                    </ListItem>
             );
         });    
     }
 
     render(){
         return(
-            <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,backgroundColor:'white'}}>
+            <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,backgroundColor:'snow'}}>
                <Text h2>
                    My Queues
                </Text>
                <View style={{flex:1,width:'100%',marginTop:20}}>
                     <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Current Queues</Text>
-                    {this.displayQueues()}
+                   <ScrollView>
+                        {this.displayQueues()}
+                    </ScrollView>
                 </View>
                 {/*<View style={{flex:2,width:'100%',marginTop:50}}>
                     <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Past Queues</Text>
