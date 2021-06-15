@@ -71,6 +71,23 @@ var api = {
 			body: formsubmit
 		}).then((res) => res.json());
 	},
+	makeQueue(username, name, desc, lati, longi){
+		var makeQ = beurl.concat('/queues/business/create_queue/')
+		var formsubmit = new FormData();
+		formsubmit.append('username', username);
+		formsubmit.append('name', name);
+		formsubmit.append('desc', desc);
+		formsubmit.append('lati', lati);
+		formsubmit.append('longi', longi);
+		return fetch(makeQ,	{
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: formsubmit
+		}).then((res) => res.json());
+	},
 };
 
 module.exports = api;

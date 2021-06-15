@@ -253,14 +253,14 @@ export default class FindQueuesPage extends Component{
         return(
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={{ height: '100%', width: '100%'}}>
-                <View style={{width: "100%", zIndex:2, elevation:2, position: "absolute", backgroundColor:"white",paddingTop:20,paddingHorizontal:14,'color':'#333234'}}>
+                <View style={{width: "100%", zIndex:2, elevation:2, position: "absolute", backgroundColor:"snow",paddingTop:20,paddingHorizontal:14,'color':'#333234'}}>
                     <Text h2>Explore Queues</Text>    
                     <SearchBar  
                         placeholder="What would you like to join?"
                         onChangeText={(res) => this.updateSearch(res)}
                         value={this.state.search}
-                        containerStyle={{backgroundColor:"white",borderTopColor:'transparent',borderBottomColor:'transparent',paddingHorizontal:0}}
-                        inputContainerStyle={{backgroundColor:"rgba(100,100,100,0.1)"}}
+                        containerStyle={{backgroundColor:"transparent",borderTopColor:'transparent',borderBottomColor:'transparent',paddingHorizontal:0}}
+                        inputContainerStyle={{backgroundColor:"rgba(177,201,210,0.2)"}}
                         round
                         showCancel
                         cancelButtonTitle="Cancel"
