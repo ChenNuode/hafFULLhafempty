@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import api from './api';
+import {
+    Button,
+    Input,
+    Badge,
+} from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default class AccountPage extends Component{
@@ -13,11 +19,13 @@ export default class AccountPage extends Component{
 
   usercall = async () => {
     await AsyncStorage.getItem('@userinfo').then((res) => {this.setState({apireq: JSON.parse(res)})});
-    api.getUserInfo(this.state.apireq.username).then((res) => {this.setState({userdetails: res})});
+    api.getUserInfo(this.state.apireq.username).then((res) => {
+      this.setState({userdetails: res[0]});
+    });
   };
 
   logout = async () => {
-    await AsyncStorage.removeItem('@userinfo').catch((res) => {console.log(res)});
+    await AsyncStorage.removeItem('@userinfo').catch((res) => {console.log(res)}).then(this.props.usercall());
   };
 
   componentDidMount(){

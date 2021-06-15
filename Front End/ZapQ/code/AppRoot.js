@@ -7,13 +7,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { enableScreens } from 'react-native-screens';
 import MyQueuesPage from './MyQueues';
 import FindQueuesPage from './FindQueues';
-import ManageQueuesPage from './ManageQueues/ManageQueues'
+import ManageQueuesPage from './ManageQueues/ManageQueues';
+import AccountPage from './account';
 //enableScreens(false);
 
 const Tab = createBottomTabNavigator()
 export default class AppRoot extends Component {
     render(){
-        return(        
+        return(
             <NavigationContainer>
                 <Tab.Navigator
                   screenOptions={({ route }) => ({
@@ -29,8 +30,8 @@ export default class AppRoot extends Component {
                       } else if (route.name === 'Account') {
                         return <Icon type='font-awesome-5' name='user' size={size} color={color} />;
                       }
-                    
-                      
+
+
                     },
                   })}
                   tabBarOptions={{
@@ -42,7 +43,7 @@ export default class AppRoot extends Component {
                   <Tab.Screen name="Find Queues" component={FindQueuesPage} />
                   <Tab.Screen name="My Queues" component={MyQueuesPage} />
                   <Tab.Screen name="Manage Queues" component={ManageQueuesPage} />
-                  <Tab.Screen name="Account" component={MyQueuesPage} />
+                  <Tab.Screen name="Account" children={()=><AccountPage usercall={this.props.usercall}/>} />
                 </Tab.Navigator>
             </NavigationContainer>
         )

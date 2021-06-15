@@ -17,7 +17,7 @@ var api = {
 	},
 	getUserInfo(username){
 		var userinfopg = beurl.concat(
-			'/user/userinfo/',
+			'/users/userinfo/',
 			'?username=',
 			username,
 		);
@@ -27,7 +27,7 @@ var api = {
 	},
 	logoutUser(token){
 		var userlogout = beurl.concat(
-			'/user/logout/',
+			'/users/logout/',
 			'?Token=',
 			token
 		);
@@ -37,7 +37,7 @@ var api = {
 	},
 	useravail(username){
 		var useravail = beurl.concat(
-			'/user/usernamecheck/',
+			'/users/usernamecheck/',
 			'?username=',
 			username
 		);
@@ -46,7 +46,7 @@ var api = {
 		}).then((res) => res.json());
 	},
 	createUser(infolist){
-		var userform = beurl.concat('/user/signup/');
+		var userform = beurl.concat('/users/signup/');
 		return fetch(userform, {
 			method: 'POST',
 			headers: {
@@ -57,7 +57,7 @@ var api = {
 		}).then((res) => res.json());
 	},
 	deleteUser(username, token, password){
-		var deleteacc = beurl.concat('/user/delete_account/')
+		var deleteacc = beurl.concat('/users/delete_account/')
 		var formsubmit = new FormData();
 		formsubmit.append('username', username);
 		formsubmit.append('password', password);

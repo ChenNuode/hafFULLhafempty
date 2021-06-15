@@ -59,7 +59,7 @@ export default class App extends Component {
 
   conditionalRender(){
     if (this.state.signedin){
-      return(<AppRoot />)
+      return(<AppRoot usercall={this.usercall}/>)
     } else {
       return(<UserAuth loggedin={this.usercall}/>)
     }
@@ -74,7 +74,7 @@ export default class App extends Component {
     }
     return(
       <View style={{flex: 1}}>
-        <AppRoot />
+        {this.conditionalRender()}
       </View>
     )
   }
