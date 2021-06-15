@@ -1,18 +1,44 @@
 import React, {Component} from 'react';
 import type {Node} from 'react';
-import { 
+import {
   Text,
   View,
 } from 'react-native';
 
 import AppRoot from './code/AppRoot';
+import SignupScreen from './code/SignupScreen';
+import LoginScreen from './code/LoginScreen';
+import AppLoad from './code/loading';
 //import { AppRegistry } from 'react-native';
 
 //AppRegistry.registerComponent('your app name',  () => point);
 export default class App extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      loading: true,
+      signedin: false,
+    }
+  }
+
+  componentDidMount(){
+    this.setState({loading: false});
+  }
+
+  conditionalRender(){
+    return(<SignupScreen/>)
+  };
+
   render(){
+    if (this.state.loading){
+      return(
+        <AppLoad />
+      )
+    }
     return(
-      <AppRoot />
+      <View style={{flex: 1}}>
+        {this.conditionalRender()}
+      </View>
     )
   }
 };
