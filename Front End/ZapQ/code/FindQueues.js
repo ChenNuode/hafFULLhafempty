@@ -182,7 +182,7 @@ export default class FindQueuesPage extends Component{
         if(this.state.locationReady){
             return(
                 <MapView
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, zIndex:1, elevation:1}}
                     initialRegion={{
                         latitude: this.state.location.latitude,
                         longitude: this.state.location.longitude,
@@ -204,8 +204,8 @@ export default class FindQueuesPage extends Component{
     render(){
         return(
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={{ height: '100%', width: '100%' }}>
-                <View style={{backgroundColor:"snow",paddingTop:20,paddingHorizontal:14,'color':'#333234'}}>
+            <View style={{ height: '100%', width: '100%'}}>
+                <View style={{width: "100%", zIndex:2, elevation:2, position: "absolute", backgroundColor:"snow",paddingTop:20,paddingHorizontal:14,'color':'#333234'}}>
                     <Text h2>Explore Queues</Text>    
                     <SearchBar  
                         placeholder="What would you like to join?"
@@ -217,7 +217,9 @@ export default class FindQueuesPage extends Component{
                         showCancel
                         cancelButtonTitle="Cancel"
                     />
-                    {this.showSearchResults()}
+                    <View style={{}}>
+                        {this.showSearchResults()}
+                    </View>
                 </View>
                 {this.mapRender()}
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
