@@ -61,9 +61,9 @@ export default class MyQueuesPage extends Component{
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
-                <ListItem key={i} bottomDivider raised>
+                <ListItem key={i} style={{marginBottom:10,borderWidth:0.5,borderRadius:5}}>
                     <ListItem.Content>
-                        <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.title}</ListItem.Title>
+                        <ListItem.Title style={{fontWeight: "bold",color:"#EE214E",fontSize:25}}>{item.title}</ListItem.Title>
                         {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
                     </ListItem.Content>
                     
@@ -77,7 +77,7 @@ export default class MyQueuesPage extends Component{
 
     render(){
         return(
-            <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
+            <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,backgroundColor:'white'}}>
                <Text h2>
                    My Queues
                </Text>

@@ -3,7 +3,6 @@ import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-//import Icon from 'react-native-vector-icons/AntDesign';
 import { enableScreens } from 'react-native-screens';
 import MyQueuesPage from './MyQueues';
 import FindQueuesPage from './FindQueues';
