@@ -25,18 +25,9 @@ export default class App extends Component {
 
 
   componentDidMount(){
-    this.usercall().then(() =>
-      {this.setState({loading: false});}
-    );
+    this.usercall();
   };
 
-  logout(){
-    this.setState({signedin: false});
-  };
-
-  login(){
-    this.setState({signedin: true});
-  }
 
   usercall = async () => {
     AsyncStorage.getItem('@userinfo').then(async (userinfo) => {
@@ -56,7 +47,9 @@ export default class App extends Component {
           await this.setState({signedin: false});
         };
       };
-    });
+    }).then(() =>
+      {this.setState({loading: false});}
+    );;
   };
 
 
@@ -66,9 +59,9 @@ export default class App extends Component {
 
   conditionalRender(){
     if (this.state.signedin){
-      return(<AppRoot />)
+      return(<AppRoot usercall={this.usercall}/>)
     } else {
-      return(<UserAuth/>)
+      return(<UserAuth loggedin={this.usercall}/>)
     }
 
   };

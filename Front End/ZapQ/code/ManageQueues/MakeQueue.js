@@ -51,7 +51,7 @@ const list = [
     },
 ]*/
   
-export default class MyQueuesPage extends Component{
+export default class MakeQueuesPage extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -76,10 +76,10 @@ export default class MyQueuesPage extends Component{
                 <ListItem key={i} bottomDivider raised>
                     <ListItem.Content>
                         <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.title}</ListItem.Title>
-                        {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
+                        <ListItem.Subtitle>{item.people}</ListItem.Subtitle>
                     </ListItem.Content>
                     
-                    <Text style={styles.bigtext}>{item.people}</Text>
+                    <Text style={styles.bigtext}>"l.Q_ppl_left"</Text>
                     <Text style={styles.bigtext}>"l.Q_ETAmin"</Text>
                 </ListItem>
                 /*<Marker coordinate = {{latitude: item.latitude, longitude: item.longitude}}
@@ -89,14 +89,14 @@ export default class MyQueuesPage extends Component{
             );
         });    
     }
-
+    
     render(){
         return(
             <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
                <Text h2>
                    My Queues
                </Text>
-               <View style={{flex:1,width:'100%',marginTop:20}}>
+               <View style={{flex:1,width:'100%',marginTop:30}}>
                     {/*<Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Current Queues</Text>*/}
                     {this.displayQueues()}
                 </View>
