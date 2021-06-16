@@ -131,6 +131,18 @@ export default class CreatedQueuesPage extends Component{
     //   useCallback(() => { this.pullList() }, []);
     //);
 
+    renderAvatar(uri){
+        if(uri == null){
+            return (
+                <Avatar rounded size="medium" source={require('../images/defaultQimage2.png')}/>
+            )
+        } else {
+            return (
+                <Avatar rounded size="medium" source={{uri: api.beurl()+uri}}/>
+            )
+        }
+    }
+
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
@@ -140,9 +152,7 @@ export default class CreatedQueuesPage extends Component{
                         
                             <ListItem.Content style={{flexDirection:'row'}}>
                                 <View style={{alignSelf:'center',marginRight:10}}>
-                                    <Avatar rounded size="medium"
-                                    source={require("../images/defaultQimage2.png")}
-                                    />
+                                {this.renderAvatar(item.image)}
                                     
                                     <Badge
                                         status="error"
