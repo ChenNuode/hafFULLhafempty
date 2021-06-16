@@ -5,10 +5,15 @@ from .models import *
 class createQueueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Queue
-        fields = ('name', 'desc', 'longi', 'lati', 'creator', 'eta')
+        fields = ('name', 'desc', 'longi', 'lati', 'creator', 'eta', 'image')
 
 class QueueInfo(serializers.ModelSerializer):
     creator = serializers.CharField(source='creator.username')
     class Meta:
         model = Queue
-        fields = ('name', 'desc', 'longi', 'lati', 'creator', 'eta')
+        fields = ('name', 'desc', 'longi', 'lati', 'creator', 'eta', 'image')
+
+class QueueImage(serializers.ModelSerializer):
+    class Meta:
+        model = Queue
+        fields = ('image', 'name')
