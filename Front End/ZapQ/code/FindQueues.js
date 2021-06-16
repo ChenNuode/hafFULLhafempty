@@ -89,15 +89,18 @@ export default class FindQueuesPage extends Component{
         this._keyboardDidShow = this._keyboardDidShow.bind(this);
     };
 
-    updateSearch = (search) => {
+    updateSearch = async (search) => {
         this.setState({ search: search });
-
-        //api call to get results
-        this.setState({currentSearch: (this.state.currentSearch+1%2)});
-        if(this.state.currentSearch%2 == 0) this.setState({searchResults: searchList1});
-        else this.setState({searchResults: searchList2});
-
-        if(search == "") this.setState({searchResults: []});
+        
+        if(search == ""){ this.setState({searchResults: []}); return; }
+        //API Logic
+        await api.searchQueue(search).then((res) => {
+            /*this.setState({
+                error: res.error,
+                resstate: res.state,
+            });*/
+            this.setState({searchResults: res});
+        }).catch(() => {/*Alert.alert('Network error!', 'We are unable to retrieve searches!')*/});
     };
 
     getUserCenter = async() => {
@@ -106,8 +109,8 @@ export default class FindQueuesPage extends Component{
             timeout: 15000,
         })
         .then(location => {
-            console.log(location);
             this.setState({userLocation: location, locationReady: true});
+            this.setState({location: location})
         })
     }
 
@@ -122,14 +125,14 @@ export default class FindQueuesPage extends Component{
         })
     }
 
-    userCenterMap(){
+    userCenterMap = () => {
         GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
         })
         .then(location => {
-            console.log(location);
             this.setState({userLocation: location, locationReady: true});
+            this.setState({location: location})
             this.setMapCenter(this.state.userLocation.latitude, this.state.userLocation.longitude)
         })
     }
@@ -139,15 +142,12 @@ export default class FindQueuesPage extends Component{
             return this.state.searchResults.map((item, i) => {
                 return (
                     <ListItem key={i} bottomDivider raised
-                              onPress={()=>this.setMapCenter(item.latitude, item.longitude)}>
-                              {/*onPress={() => this.props.navigation.navigate('Details', {id: item.id})}>*/}
+                              onPress={()=>{
+                                  this.setMapCenter(parseFloat(item.lati), parseFloat(item.longi));
+                              }}>
                         <ListItem.Content>
-                            <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.title}</ListItem.Title>
-                            {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
+                            <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.name}</ListItem.Title>
                         </ListItem.Content>
-                        {/*
-                        <Text style={styles.bigtext}>{item.people}</Text>
-                        <Text style={styles.bigtext}>"l.Q_ETAmin"</Text>*/}
                     </ListItem>
                 );
             });
@@ -164,20 +164,19 @@ export default class FindQueuesPage extends Component{
             this._keyboardDidHide,
         );
 
-        this.focusListener = this.props.navigation.addListener('focus', this.findQueues)
+        this.focusListener = this.props.navigation.addListener('focus', this.userCenterMap)
         
         this.getUserCenter().then(() => {this.findQueues()});
     };
 
     findQueues = async () => {
-        //API Logic
-        console.log(this.state.userLocation.latitude, this.state.userLocation.longitude);
-        await api.nearbyQueues(this.state.userLocation.latitude, this.state.userLocation.longitude).then((res) => {
+        //API Logic]
+        console.log("FIND");
+        await api.nearbyQueues(this.state.location.latitude, this.state.location.longitude).then((res) => {
             /*this.setState({
                 error: res.error,
                 resstate: res.state,
             });*/
-            console.log(res);
             this.setState({markerdata: res});
         }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
     }
@@ -195,26 +194,27 @@ export default class FindQueuesPage extends Component{
         this.setState({keyboardstate: false});
     };
 
-    markerPress(id){
-        //API LOGIC
-        api.getQueueInfo(id).then((res) => {
-            /*this.setState({
-                error: res.error,
-                resstate: res.state,
-            });*/
-            console.log(res);
-            var temp = res;
-            temp.id = id;
-            this.setState({
-                overlayon: true,
-                overlaydata: temp,
-            });
-        }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
+    markerPress = async (id) => {
+
+        await AsyncStorage.getItem('@userinfo').then((res) => {
+
+            res = JSON.parse(res);
+            api.userQueueInfo(res.username, id).then((res) => {
+                /*this.setState({
+                    error: res.error,
+                    resstate: res.state,
+                });*/
+                var temp = res;
+                temp.id = id;
+                this.setState({
+                    overlayon: true,
+                    overlaydata: temp,
+                });
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
+        });
     };
 
     queueUp = async(id)=>{
-        console.log("queueing for ");
-        console.log(id);
         await AsyncStorage.getItem('@userinfo').then((res) => {
 
             res = JSON.parse(res);
@@ -234,7 +234,6 @@ export default class FindQueuesPage extends Component{
 
     makeMarkers(){
         return this.state.markerdata.map((item) => {
-            console.log(parseFloat(item.lati));
             return (
                 <Marker
                     coordinate = {{latitude: parseFloat(item.lati), longitude: parseFloat(item.longi)}}
@@ -267,6 +266,24 @@ export default class FindQueuesPage extends Component{
             ));
     };
 
+    joinButton(){
+        if(!this.state.overlaydata.in_queue){
+            return (
+                <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
+                    <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} raised round title="Join Queue"
+                            onPress={() => this.queueUp(this.state.overlaydata.id)} buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
+                </View>
+            )
+        } else {
+            return (
+                <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
+                    <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} raised round title="In Queue"
+                            buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
+                </View>
+            )
+        }
+    }
+
     mapRender(){
         if(this.state.locationReady){
             return(
@@ -278,7 +295,12 @@ export default class FindQueuesPage extends Component{
                         longitude: this.state.userLocation.longitude,
                         latitudeDelta: 0.0065,
                         longitudeDelta: 0.0065,
-                    }}>
+                    }}
+                    onRegionChangeComplete={(region)=>{
+                        this.setState({location: {latitude: region.latitude, longitude: region.longitude}});
+                        this.findQueues();
+                    }}
+                    >
                     {this.makeMarkers()}
                 </MapView>
             )
@@ -342,11 +364,7 @@ export default class FindQueuesPage extends Component{
                             </View>
                         </View>
                     </View>
-
-                    <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
-                        <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} raised round title="Join Queue"
-                                onPress={() => this.queueUp(this.state.overlaydata.id)} buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
-                    </View>
+                    {this.joinButton()}
                 </Overlay>
             </View>
             </TouchableWithoutFeedback>
