@@ -157,6 +157,26 @@ export default class MyQueuesPage extends Component{
         }
     }
 
+    renderBadge(ppl){
+        if(ppl <= 5){
+            return (
+                <Badge
+                    status="error"
+                    value=""
+                    containerStyle={{ position: 'absolute', top: -2, left: -2 }}
+                />
+            )
+        } else {
+            return (
+                <Badge
+                    status="success"
+                    value=""
+                    containerStyle={{ position: 'absolute', top: -2, left: -2 }}
+                />
+            )
+        }
+    }
+
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
@@ -165,12 +185,7 @@ export default class MyQueuesPage extends Component{
                             <ListItem.Content style={{flexDirection:'row'}}>
                                 <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
                                     {this.renderAvatar(item.image)}
-
-                                    <Badge
-                                        status="error"
-                                        value=""
-                                        containerStyle={{ position: 'absolute', top: -2, left: -2 }}
-                                    />
+                                    {this.renderBadge(item.position)}
                                 </View>
                                 <View style={{flex:1}} >
                                     <ListItem.Title style={{flex:1,fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
@@ -188,7 +203,7 @@ export default class MyQueuesPage extends Component{
                                         <Chip titleStyle={styles.mychip}
                                         buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
 
-                                        title={item.position + ' left'}
+                                        title={item.position + ' in front'}
                                             icon={{
                                             name: "people",
                                             type: "ionicon",

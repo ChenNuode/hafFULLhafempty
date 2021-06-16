@@ -143,6 +143,26 @@ export default class CreatedQueuesPage extends Component{
         }
     }
 
+    renderBadge(ppl){
+        if(ppl <= 5){
+            return (
+                <Badge
+                    status="error"
+                    value=""
+                    containerStyle={{ position: 'absolute', top: -2, left: -2 }}
+                />
+            )
+        } else {
+            return (
+                <Badge
+                    status="success"
+                    value=""
+                    containerStyle={{ position: 'absolute', top: -2, left: -2 }}
+                />
+            )
+        }
+    }
+
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
@@ -153,12 +173,7 @@ export default class CreatedQueuesPage extends Component{
                             <ListItem.Content style={{flexDirection:'row'}}>
                                 <View style={{alignSelf:'center',marginRight:10}}>
                                 {this.renderAvatar(item.image)}
-                                    
-                                    <Badge
-                                        status="error"
-                                        value=""
-                                        containerStyle={{ position: 'absolute', top: -2, left: -2 }}
-                                    />
+                                {this.renderBadge(item.queue_length)}
                                 </View>
                                 <View style={{flex:1}} > 
                                     <ListItem.Title style={{fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
@@ -169,7 +184,7 @@ export default class CreatedQueuesPage extends Component{
                                         <Chip titleStyle={styles.mychip} 
                                         buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
                                         
-                                        title={item.queue_length + ' people in queue'}
+                                        title={item.queue_length + ' pax in queue'}
                                             icon={{
                                             name: "people",
                                             type: "ionicon",
