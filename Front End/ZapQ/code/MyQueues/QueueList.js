@@ -209,12 +209,12 @@ export default class MyQueuesPage extends Component{
         return(
             <SafeAreaView style={{width:"100%",height:"100%"}}>
 
-            <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:'snow'}}>
+            <View style={{height:"100%",paddingVertical:20,paddingHorizontal:10,backgroundColor:'snow'}}>
 
                <Text h2>
                    My Queues
                </Text>
-               <ScrollView containerStyle={{alignItems: 'flex-start'}}
+               <ScrollView containerStyle={{alignItems: 'flex-start',backgroundColor:'snow'}}
                 refreshControl={this._refreshControl()}
                >
                <View style={{flex:1,width:'100%',marginVertical:20,marginBottom:10}}>
@@ -223,10 +223,9 @@ export default class MyQueuesPage extends Component{
                         {this.displayQueues()}
                 </View>
                 <Divider orientation="horizontal" />
-                <View style={{flex:1,width:'100%',marginVertical:20}}>
-                <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Queue History</Text>
+                <View style={{flex:1,width:'100%',marginVertical:20,marginBottom:30,paddingBottom:20}}>
+                <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10,}}>Queue History</Text>
 
-                <View style={{marginBottom:50+10}}>
                 {
                     Historylist.map((l, i) => (
                     <ListItem key={i} bottomDivider>
@@ -238,8 +237,7 @@ export default class MyQueuesPage extends Component{
                     </ListItem>
                     ))
                 }
-                </View>
-
+                
                 </View>
                 </ScrollView>
            </View>

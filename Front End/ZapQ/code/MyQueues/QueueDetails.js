@@ -9,6 +9,7 @@ import {
   View,
   ViewBase,
   Linking,
+  Image,
 } from 'react-native';
 
 import {
@@ -18,6 +19,8 @@ import {
     ListItem,
     Avatar,
     Badge,
+    Card,
+    Icon,
 } from 'react-native-elements';
 
 //imports end
@@ -31,6 +34,9 @@ const styles = StyleSheet.create({
     bigtext: {
         fontSize: 20,
     },
+    mycardbutton : {
+        width:60,
+    }
 
 });
   
@@ -66,24 +72,60 @@ export default class QueueDetailsPage extends Component{
 
     render(){
         return(
-            <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
-               <Text>
-                   Hello {this.state.queue.title} (ID {this.props.route.params.id})
-               </Text>
+            <View style={{flex:1,'color':'#333234',backgroundColor:'snow',justifyContent:'center',alignItems:'center',height:'100%',width:'100%'}}>
                 
-                <Text>{this.state.queue.people} people in queue</Text>
-                <Button title="Get directions" 
-                        onPress={() => this.getDirections()
-                }/>
-
-                <Button title="Push me back 5 places" 
-                        onPress={() => this.props.navigation.navigate('Queue List', {})
-                }/>
-
-                <Button title="Leave Queue" 
-                        onPress={() => this.props.navigation.navigate('Queue List', {})
-                }/>
+                <Card containerStyle={{alignItems:'center',backgroundColor:'yellow',justifyContent:'center',width:'85%',
+                marginBottom:30,padding:20}}>
+                    <Card.Title h3>My Queue Ticket</Card.Title>
+                    <Card.Divider/>
+                    
+                        <Image source={require('../images/defaultQimage2.png')} 
+                        style={{width:100,height:100,backgroundColor:'black',alignSelf:'center'}} />
+                        
+                        <View style={{backgroundColor:'purple',marginVertical:10}}>
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{flex:1,fontSize:16}}>Queue name: </Text>
+                                <Text h4 style={{flex:1}}>{this.state.queue.title}{/*(ID {this.props.route.params.id})*/}</Text>
+                            </View>
+                            
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{flex:1,fontSize:16}}>People in Queue: </Text>
+                                <Text h4 style={{flex:1}}>{this.state.queue.people}</Text>
+                            </View>
+                        </View>
+                </Card>
                 
+                <View style={{flexDirection:'row',justifyContent:'space-around',backgroundColor:'green',width:'85%'}}>
+                    <View style={{flexDirection:'column',alignItems:'center',padding:10}}>
+                        <Button round raised
+                            containerStyle={styles.mycardbutton}
+                            icon={<Icon name='code' color='#333234' />}
+                            onPress={() => this.getDirections()}
+                            buttonStyle={{backgroundColor:'transparent'}}
+                        />
+                        <Text>Get directions</Text>
+                    </View>
+                    <Divider orientation="vertical"></Divider>
+                    <View style={{flexDirection:'column',alignItems:'center',padding:10}}>
+                        <Button round raised
+                            containerStyle={styles.mycardbutton}
+                            icon={<Icon name='code' color='#333234' />}
+                            onPress={() => this.props.navigation.navigate('Queue List', {})}
+                            buttonStyle={{backgroundColor:'transparent'}}
+                        />
+                        <Text>Push me back 5 places</Text>
+                    </View>
+                    <Divider orientation="vertical"></Divider>
+                    <View style={{flexDirection:'column',alignItems:'center',padding:10}}>
+                        <Button round raised
+                            containerStyle={styles.mycardbutton}
+                            icon={<Icon name='code' color='#333234' />}
+                            onPress={() => this.props.navigation.navigate('Queue List', {})}
+                            buttonStyle={{backgroundColor:'tranparent'}}
+                        />
+                        <Text>Leave Queue</Text>
+                    </View>
+                </View>
            </View>
         )
     }

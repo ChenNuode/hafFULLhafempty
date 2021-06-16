@@ -14,6 +14,7 @@ import {
     ListItem,
     Image,
     Icon,
+    Divider,
 } from 'react-native-elements';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -61,10 +62,9 @@ export default class AccountPage extends Component{
     return(
       <SafeAreaView style={{width:"100%",height:"100%"}}> 
       
-      <LinearGradient style={{paddingTop:20,paddingHorizontal:15,paddingBottom:10,justifyContent:'flex-end',height:100}} start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#6A5FAB', '#38315E']}>
-          <Text h2 style={{color:"white"}}>Account Settings</Text>
-      </LinearGradient>
-
+      <View style={{paddingTop:20,paddingHorizontal:15,paddingBottom:10,justifyContent:'flex-end',height:100,backgroundColor:'snow'}}>
+          <Text h2 style={{color:"black"}}>Account Settings</Text>
+      </View>
       <View style={{backgroundColor:'snow',flex:1,justifyContent:'flex-start','color':'#333234',paddingTop:10,paddingHorizontal:15}}>
         <ScrollView style={{height:'100%'}}>
           <Image

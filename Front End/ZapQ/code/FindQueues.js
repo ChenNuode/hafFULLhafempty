@@ -277,7 +277,7 @@ export default class FindQueuesPage extends Component{
         } else {
             return (
                 <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
-                    <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} raised round title="In Queue"
+                    <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} raised round disabled={true} title="In Queue"
                             buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
                 </View>
             )
