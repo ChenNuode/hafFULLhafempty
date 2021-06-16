@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React,{Component, useCallback} from 'react';
 
 import {
   SafeAreaView,
@@ -8,6 +8,7 @@ import {
   useColorScheme,
   View,
   ViewBase,
+  Alert,
 } from 'react-native';
 
 import {
@@ -20,7 +21,7 @@ import {
 } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
-
+import { useFocusEffect } from '@react-navigation/native';
 //imports end
 
 // in main js
@@ -61,19 +62,19 @@ export default class CreatedQueuesPage extends Component{
         this.state = {
             queues: [],
             userdata: {username: ""},
-            update: false,
         }
+        this.pullList = this.pullList.bind(this);
     };
 
-    usercall = async () => {
-        await AsyncStorage.getItem('@userinfo').then((res) => {this.setState({userdata: JSON.parse(res)})});
-    };
-
-    pullList(){
+    pullList = async () => {
         console.log("pull");
-        this.usercall().then(()=>{
-            //working
-            api.listMadeQueues(this.state.userdata.username).then((res) => {
+
+        await AsyncStorage.getItem('@userinfo').then((res) => {
+
+            res = JSON.parse(res);
+            console.log(res);
+            api.listMadeQueues(res.username).then((res) => {
+                
                 /*this.setState({
                     error: res.error,
                     resstate: res.state,
@@ -84,14 +85,17 @@ export default class CreatedQueuesPage extends Component{
         });
     }
 
-
     componentDidMount(){
-        this.props.navigation.addListener('focus', () => {this.pullList()})
-    };
+        this.focusListener = this.props.navigation.addListener('focus', this.pullList)
+    }
 
     componentWillUnmount(){
-        
-    };
+        this.focusListener.remove();
+    }
+
+    //useFocusEffect(
+    //   useCallback(() => { this.pullList() }, []);
+    //);
 
     displayQueues(){
         return this.state.queues.map((item, i) => {

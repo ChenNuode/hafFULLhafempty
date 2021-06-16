@@ -106,7 +106,7 @@ var api = {
 	getQueueInfo(queue_id){
 		var furl = beurl.concat('/queues/business/my_queue/')
 		var fs = new FormData();
-		fs.append({'queue_id': queue_id});
+		fs.append('queue_id', queue_id);
 		return fetch(furl, {
 			method: 'POST',
 			headers: {
@@ -117,8 +117,33 @@ var api = {
 		}).then((res) => res.json());
 	},
 	//getQueueInfo will require you to submit a queue id, responds with the queue info in a dictionary
-
-
+	advanceQueue(queue_id){
+		var furl = beurl.concat('/queues/business/advance_queue/')
+		var fs = new FormData();
+		fs.append('queue_id', queue_id);
+		return fetch(furl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: fs
+		}).then((res) => res.json());
+	},
+	//advanceQueue will require you to submit a queue id, responds with next user
+	endQueue(queue_id){
+		var furl = beurl.concat('/queues/business/end_queue/')
+		var fs = new FormData();
+		fs.append('queue_id', queue_id);
+		return fetch(furl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: fs
+		}).then((res) => res.json());
+	}
 };
 
 module.exports = api;
