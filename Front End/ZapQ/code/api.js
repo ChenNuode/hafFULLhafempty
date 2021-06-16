@@ -92,7 +92,7 @@ var api = {
 		var listMadeQ = beurl.concat('/queues/business/list_queue/')
 		var fs = new FormData();
 		fs.append('username', username);
-	}
+	},
 };
 
 module.exports = api;
