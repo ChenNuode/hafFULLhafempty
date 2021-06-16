@@ -161,45 +161,51 @@ export default class CreatedQueuesPage extends Component{
     }
 
     displayQueues(){
-        return this.state.queues.map((item, i) => {
+        if(this.state.queues.length == 0){
             return (
-                                   
-                
-                <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.queue_id})}>
-                        
-                            <ListItem.Content style={{flexDirection:'row'}}>
-                                <View style={{alignSelf:'center',marginRight:10}}>
-                                {this.renderAvatar(item.image)}
-                                {this.renderBadge(item.queue_length)}
-                                </View>
-                                <View style={{flex:1}} > 
-                                    <ListItem.Title style={{fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
-                                    {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
+                <Text style={{marginTop: 25, textAlign: 'center', fontSize: 18, color: "gray"}}>No queues found</Text>
+            );
+        } else {
+            return this.state.queues.map((item, i) => {
+                return (
                                     
-                                    <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
+                    
+                    <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.queue_id})}>
+                            
+                                <ListItem.Content style={{flexDirection:'row'}}>
+                                    <View style={{alignSelf:'center',marginRight:10}}>
+                                    {this.renderAvatar(item.image)}
+                                    {this.renderBadge(item.queue_length)}
+                                    </View>
+                                    <View style={{flex:1}} > 
+                                        <ListItem.Title style={{fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
+                                        {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
                                         
-                                        <Chip titleStyle={styles.mychip} 
-                                        buttonStyle={[styles.chipbutton,{marginVertical:5}]}
+                                        <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
+                                            
+                                            <Chip titleStyle={styles.mychip} 
+                                            buttonStyle={[styles.chipbutton,{marginVertical:5}]}
+                                            
+                                            title={item.queue_length + ' in queue'}
+                                                icon={{
+                                                name: "people",
+                                                type: "ionicon",
+                                                size: 20,
+                                                color: mychipcolor,
+                                            }}
+                                            />
+                                            
+                                        </View>
                                         
-                                        title={item.queue_length + ' in queue'}
-                                            icon={{
-                                            name: "people",
-                                            type: "ionicon",
-                                            size: 20,
-                                            color: mychipcolor,
-                                        }}
-                                        />
                                         
                                     </View>
-                                    
-                                    
-                                </View>
-                                <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center'}}></Icon>
-                            </ListItem.Content>
-                            
-                    </ListItem>
-            );
-        });    
+                                    <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center'}}></Icon>
+                                </ListItem.Content>
+                                
+                        </ListItem>
+                );
+            });
+        }
     }
 
     _refreshControl() {
@@ -248,12 +254,12 @@ export default class CreatedQueuesPage extends Component{
                         />
                     </View>
                     
-                    <View style={{flex:1,width:'100%',marginTop:10,marginBottom:10}}>
+                    <View style={{flex:1,width:'100%',marginTop:10,marginBottom:10}}>            
+                        <Divider orientation="horizontal" />
                         {this.displayQueues()}
                     </View>
             
             </View>
-            <Divider orientation="horizontal" />
             {/*<View style={{flex:1,width:'100%',marginVertical:10,marginTop:30}}>
                 <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:20}}>Past Created Queues</Text>
                     

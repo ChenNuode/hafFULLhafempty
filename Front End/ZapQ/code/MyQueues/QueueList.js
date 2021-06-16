@@ -177,50 +177,56 @@ export default class MyQueuesPage extends Component{
     }
 
     displayQueues(){
-        return this.state.queues.map((item, i) => {
+        if(this.state.queues.length == 0){
             return (
-                    <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.queue_id})}>
+                <Text style={{marginTop: 25, textAlign: 'center', fontSize: 18, color: "gray"}}>No queues found</Text>
+            );
+        } else {
+            return this.state.queues.map((item, i) => {
+                return (
+                        <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.queue_id})}>
 
-                            <ListItem.Content style={{flexDirection:'row'}}>
-                                <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
-                                    {this.renderAvatar(item.image)}
-                                    {this.renderBadge(item.position)}
-                                </View>
-                                <View style={{flex:1}} >
-                                    <ListItem.Title style={{flex:1,fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
-                                    <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
-                                        <Chip titleStyle={styles.mychip}
-                                        buttonStyle={styles.chipbutton}
-                                        title={item.eta + ' min'}
-                                            icon={{
-                                            name: "timer-sharp",
-                                            type: "ionicon",
-                                            size: 20,
-                                            color: mychipcolor,
-                                        }}
-                                        />
-                                        <Chip titleStyle={styles.mychip}
-                                        buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
+                                <ListItem.Content style={{flexDirection:'row'}}>
+                                    <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
+                                        {this.renderAvatar(item.image)}
+                                        {this.renderBadge(item.position)}
+                                    </View>
+                                    <View style={{flex:1}} >
+                                        <ListItem.Title style={{flex:1,fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
+                                        <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
+                                            <Chip titleStyle={styles.mychip}
+                                            buttonStyle={styles.chipbutton}
+                                            title={item.eta + ' min'}
+                                                icon={{
+                                                name: "timer-sharp",
+                                                type: "ionicon",
+                                                size: 20,
+                                                color: mychipcolor,
+                                            }}
+                                            />
+                                            <Chip titleStyle={styles.mychip}
+                                            buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
 
-                                        title={item.position + ' in front'}
-                                            icon={{
-                                            name: "people",
-                                            type: "ionicon",
-                                            size: 20,
-                                            color: mychipcolor,
-                                        }}
-                                        />
+                                            title={item.position + ' in front'}
+                                                icon={{
+                                                name: "people",
+                                                type: "ionicon",
+                                                size: 20,
+                                                color: mychipcolor,
+                                            }}
+                                            />
+
+                                        </View>
+
 
                                     </View>
-
-
-                                </View>
-                                <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center',marginTop:14}}></Icon>
-                            </ListItem.Content>
-                            {this.lastPerson(item.position)}
-                    </ListItem>
-            );
-        });
+                                    <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center',marginTop:14}}></Icon>
+                                </ListItem.Content>
+                                {this.lastPerson(item.position)}
+                        </ListItem>
+                );
+            });
+        }
     };
 
     render(){
@@ -236,11 +242,10 @@ export default class MyQueuesPage extends Component{
                 refreshControl={this._refreshControl()}
                >
                <View style={{flex:1,width:'100%',marginVertical:20,marginBottom:10}}>
-
-                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:15}}>Current Queues</Text>
+                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:15}}>Current Queues</Text>            
+                    <Divider orientation="horizontal" />
                         {this.displayQueues()}
                 </View>
-                <Divider orientation="horizontal" />
                 {/*<View style={{flex:1,width:'100%',marginVertical:20,marginBottom:30,paddingBottom:20}}>
                     <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10,}}>Queue History</Text>
 
