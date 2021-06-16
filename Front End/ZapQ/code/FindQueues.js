@@ -39,8 +39,10 @@ const searchList2 = [
 
 const styles = StyleSheet.create({
     tinyLogo: {
-      width: 35,
-      height: 50, //aspect ratio of w-h is 317:456
+      width: 40,
+      height: 40, //aspect ratio of w-h is 317:456
+      borderRadius:50/2,
+
     },
     tinyuserlogo: {
         width: 35,
@@ -54,6 +56,12 @@ const styles = StyleSheet.create({
         padding:20,
         justifyContent:'space-around',
         flexDirection:'column',
+    },
+    myFAB : {
+        width:62,
+        borderRadius:50,
+        height:62,
+        paddingLeft:17,
     }
   });
 
@@ -154,7 +162,7 @@ export default class FindQueuesPage extends Component{
         );
         //API Logic
         var markers = [
-            {latitude: 1.35097, longitude: 103.87227, id: 1, title: "NEX", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "Serangoon", peopleinQ:5, ETA:25},
+            {latitude: 1.35097, longitude: 103.87227, id: 1, title: "NEX", picurl:"https://upload.wikimedia.org/wikipedia/commons/7/73/Nex_4.jpg", description: "Serangoon", peopleinQ:5, ETA:25},
             {latitude: 1.35111, longitude: 103.84868, id: 2, title: "Junction 8", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "This is the Queue to Junction 8 shopping centre at Bishan. Built in 1993. This school is popularly visited by the Bgay", peopleinQ:5, ETA:25},
         ]
         this.setState({markerdata: markers});
@@ -202,8 +210,10 @@ export default class FindQueuesPage extends Component{
                 <View>
                     <Image
                         style={styles.tinyLogo}
-                        source={require('./images/queue317_456.png')}
+                        source={{uri: item.picurl }}
+                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/queue317_456.png')}></Image>}
                     />
+                    {/*source={require('./images/queue317_456.png')} old standardised marker  */}
                 </View>
                 </Marker>
             );
@@ -269,8 +279,8 @@ export default class FindQueuesPage extends Component{
                         {this.showSearchResults()}
                     </View>
                 </View>
-                {this.mapRender()}
-                <FAB title={<Icon type='material-community' name='crosshairs-gps' size={30} style={{}}/>} color="tomato" style={{zIndex:2, elevation:2, position: "absolute", bottom: "5%", right: "10%"}} onPress={() => this.userCenterMap()}/>
+                {this.mapRender()}            
+                <FAB title={<Icon type='material-community' name='crosshairs-gps' size={30} />} color="tomato" style={{zIndex:2, elevation:2, position: "absolute", bottom: "5%", right: "10%"}} onPress={() => this.userCenterMap()} buttonStyle={styles.myFAB} containerStyle={{justifyContent:'center',alignItems:'center'}}/>
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
 
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>
