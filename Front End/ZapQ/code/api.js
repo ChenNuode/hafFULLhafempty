@@ -79,7 +79,7 @@ var api = {
 		formsubmit.append('desc', desc);
 		formsubmit.append('lati', lati);
 		formsubmit.append('longi', longi);
-		formsubmit.append('image', image)
+		formsubmit.append('file', image);
 		return fetch(makeQ,	{
 			method: 'POST',
 			headers: {
