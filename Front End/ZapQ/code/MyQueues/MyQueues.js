@@ -26,8 +26,8 @@ import {
 
 import { ListItem } from 'react-native-elements/dist/list/ListItem';
 import { createStackNavigator } from '@react-navigation/stack';
-import QueueDetailsPage from  "./QueueDetails"
-import QueueListPage from "./QueueList"
+import QueueDetailsPage from  "./QueueDetails";
+import QueueListPage from "./QueueList";
 
 const Stack = createStackNavigator();
 

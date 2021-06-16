@@ -21,6 +21,8 @@ import {
     Chip,
     Icon,
 } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../api';
 
 //imports end
 
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
         color:mychipcolor,
     },
     chipbutton: {
-        //backgroundColor:'#7B68EE','salmon' #6CB4EE 
+        //backgroundColor:'#7B68EE','salmon' #6CB4EE
         backgroundColor:'#F0F8FF',
         marginHorizontal:0,
         padding:5,
@@ -97,7 +99,7 @@ export default class MyQueuesPage extends Component{
         ]
         this.setState({queues: queues});
     };
-    
+
     _refreshControl() {
         return (
             <RefreshControl
@@ -112,28 +114,28 @@ export default class MyQueuesPage extends Component{
         //do REFRESH WORK
         this.setState({refreshing:false}) //Stop Rendering Spinner
       }
-    
+
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
                     <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.id})}>
-                        
+
                             <ListItem.Content style={{flexDirection:'row'}}>
                                 <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
                                     <Avatar rounded size="medium"
                                     source={require("../images/defaultQimage2.png")}
                                     />
-                                    
+
                                     <Badge
                                         status="error"
                                         value=""
                                         containerStyle={{ position: 'absolute', top: -2, left: -2 }}
                                     />
                                 </View>
-                                <View style={{flex:1}} > 
+                                <View style={{flex:1}} >
                                     <ListItem.Title style={{flex:1,fontWeight: "bold",color:"black",fontSize:25}}>{item.title}</ListItem.Title>
                                     {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
-                                    
+
                                     <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
                                         <Chip titleStyle={styles.mychip}
                                         buttonStyle={styles.chipbutton}
@@ -145,9 +147,9 @@ export default class MyQueuesPage extends Component{
                                             color: mychipcolor,
                                         }}
                                         />
-                                        <Chip titleStyle={styles.mychip} 
+                                        <Chip titleStyle={styles.mychip}
                                         buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
-                                        
+
                                         title={item.people + ' left'}
                                             icon={{
                                             name: "people",
@@ -156,40 +158,40 @@ export default class MyQueuesPage extends Component{
                                             color: mychipcolor,
                                         }}
                                         />
-                                        
+
                                     </View>
-                                    
-                                    
+
+
                                 </View>
                                 <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center',marginTop:14}}></Icon>
                             </ListItem.Content>
                             <Text style={{alignSelf:'flex-end',fontSize:14}}>Status: <Text style={{color:'green'}}>Waiting</Text></Text>
                     </ListItem>
             );
-        });    
+        });
     };
-    
+
     render(){
         return(
             <SafeAreaView style={{width:"100%",height:"100%"}}>
-            
+
             <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:'snow'}}>
-               
+
                <Text h2>
                    My Queues
                </Text>
-               <ScrollView containerStyle={{alignItems: 'flex-start'}} 
+               <ScrollView containerStyle={{alignItems: 'flex-start'}}
                 refreshControl={this._refreshControl()}
                >
                <View style={{flex:1,width:'100%',marginVertical:20,marginBottom:10}}>
-                
+
                     <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:15}}>Current Queues</Text>
                         {this.displayQueues()}
                 </View>
                 <Divider orientation="horizontal" />
                 <View style={{flex:1,width:'100%',marginVertical:20}}>
                 <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Queue History</Text>
-                    
+
                 <View style={{marginBottom:50+10}}>
                 {
                     Historylist.map((l, i) => (
@@ -209,6 +211,6 @@ export default class MyQueuesPage extends Component{
            </View>
            </SafeAreaView>
         );
-        
+
     };
 }
