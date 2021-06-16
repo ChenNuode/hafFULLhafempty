@@ -143,6 +143,65 @@ var api = {
 			},
 			body: fs
 		}).then((res) => res.json());
+	},
+	//endQueue will require queue id, ends the queue, no important response
+	userJoinQueue(username, queue_id){
+		var furl = beurl.concat('/queues/user/join_queue/')
+		var fs = new FormData();
+		fs.append('username', username);
+		fs.append('queue_id', queue_id);
+		return fetch(furl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: fs
+		}).then((res) => res.json());
+	},
+	//no critical response info
+	userLeaveQueue(username, queue_id){
+		var furl = beurl.concat('/queues/user/leave_queue/')
+		var fs = new FormData();
+		fs.append('username', username);
+		fs.append('queue_id', queue_id);
+		return fetch(furl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: fs
+		}).then((res) => res.json());
+	},
+	//no critical response info
+	nearbyQueues(lati, longi){
+		var furl = beurl.concat('/queues/user/get_nearby_queues/')
+		var fs = new FormData();
+		fs.append('lati', lati);
+		fs.append('longi', longi);
+		return fetch(furl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: fs
+		}).then((res) => res.json());
+	},
+	//submit coords of where u are and receive list of queue info(name, lati, longi, queue_id)
+	userQueueInfo(username){
+		var furl = beurl.concat('/queues/user/get_queue/')
+		var fs = new FormData();
+		fs.append('username', username);
+		return fetch(furl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: fs
+		}).then((res) => res.json());
 	}
 };
 
