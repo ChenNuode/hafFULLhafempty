@@ -186,6 +186,8 @@ class UserQueueInfo(APIView):
     def post(self, request):
         data = self.request.data
         queue_id = data.get('queue_id')
+        username = data.get('username')
+        user = User.objects.get(username=username)
         queue = Queue.objects.get(id=queue_id)
         data = {
                 'queue_id': queue.id,
@@ -195,6 +197,8 @@ class UserQueueInfo(APIView):
                 'lati': queue.lati,
                 'longi': queue.longi,
                 'creator': queue.creator.username,
+                'queue_length': queue.users.count(),
+                'in_queue': user in queue.users.all()
             }
         return JsonResponse(data, status=201, safe=False)
 
@@ -224,4 +228,18 @@ class UserNearQueues(APIView):
             'name': queue.name
             } for queue in Queue.objects.filter(
             lati__range=[lati-0.1, lati+0.1], longi__range=[longi-0.1, longi+0.1], ended=False, paused=False)]
+        return JsonResponse(data, status=201, safe=False)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class QueueSearch(APIView):
+    def post(self, request):
+        data = self.request.data
+        search_terms = data.get('search_terms')
+        queues = Queue.objects.filter(name__contains=search_terms, ended=False)
+        data = [{
+            'queue_id': queue.id,
+            'lati': queue.lati,
+            'longi': queue.longi,
+            'name': queue.name
+        } for queue in queues[0:3]]
         return JsonResponse(data, status=201, safe=False)
