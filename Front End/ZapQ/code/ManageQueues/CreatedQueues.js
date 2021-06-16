@@ -61,51 +61,50 @@ export default class CreatedQueuesPage extends Component{
         this.state = {
             queues: [],
             userdata: {username: ""},
+            update: false,
         }
     };
+
     usercall = async () => {
-      await AsyncStorage.getItem('@userinfo').then((res) => {this.setState({userdata: JSON.parse(res)})});
+        await AsyncStorage.getItem('@userinfo').then((res) => {this.setState({userdata: JSON.parse(res)})});
     };
 
-    componentDidMount(){
-        //API Logic untested
-        var queues = [
-            {id:1, title: "NEX", people: 200},
-            {id:2, title: "Junction 8", people: 150},
-            {id:3, title: "Junction 9", people: 50},
-            {id:4, title: "Junction 10", people: 100},
-        ]
-        
-        this.setState({queues: queues});
+    pullList(){
+        console.log("pull");
+        this.usercall().then(()=>{
+            //working
+            api.listMadeQueues(this.state.userdata.username).then((res) => {
+                /*this.setState({
+                    error: res.error,
+                    resstate: res.state,
+                });*/
+                console.log(res);
+                this.setState({queues: res});
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
+        });
+    }
 
-        this.usercall().then(()=>{console.log(this.state.userdata.username)});
-        api.listMadeQueues(this.state.userdata.username).then((res) => {
-            /*this.setState({
-                error: res.error,
-                resstate: res.state,
-            });*/
-            /*
-            'queue_id': queue.id,
-            'lati': queue.lati,
-            'longi': queue.longi,
-            'name': queue.name*/
-            this.setState({queues: queues});
-        }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
+
+    componentDidMount(){
+        this.props.navigation.addListener('focus', () => {this.pullList()})
+    };
+
+    componentWillUnmount(){
+        
     };
 
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
                 <ListItem key={i} 
-                          onPress={() => this.props.navigation.navigate('Queue Details', {id: item.id})}
+                          onPress={() => this.props.navigation.navigate('Queue Details', {id: item.queue_id})}
                           bottomDivider raised>
                     <ListItem.Content>
-                        <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.title}</ListItem.Title>
+                        <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.name}</ListItem.Title>
                         {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
                     </ListItem.Content>
                     
-                    <Text style={styles.bigtext}>{item.people}</Text>
-                    <Text style={styles.bigtext}>"l.Q_ETAmin"</Text>
+                    <Text style={styles.bigtext}>{item.queue_length}</Text>
                 </ListItem>
                 /*<Marker coordinate = {{latitude: item.latitude, longitude: item.longitude}}
                         pinColor = {"red"}

@@ -118,6 +118,7 @@ var api = {
 	},
 	//getQueueInfo will require you to submit a queue id, responds with the queue info in a dictionary
 
+
 };
 
 module.exports = api;
