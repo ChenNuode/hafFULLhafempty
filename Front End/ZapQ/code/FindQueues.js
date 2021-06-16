@@ -23,6 +23,7 @@ import {
     ListItem,
     FAB,
     Icon,
+    Divider,
 } from 'react-native-elements';
 
 import MapView, {Marker} from "react-native-maps";
@@ -345,7 +346,7 @@ export default class FindQueuesPage extends Component{
                         />*/}
                         <Text h3 style={{marginLeft:5}}>{this.state.overlaydata.name}</Text>
                     </View>
-                    
+                    <Divider></Divider>
                     <View style={{flex:3,}}>
                         <Text style={{marginTop:10,color:'gray',fontSize:14,marginBottom:5}}>Queue Description</Text>
                         <Text style={{fontSize:16}}>{this.state.overlaydata.desc}</Text>
