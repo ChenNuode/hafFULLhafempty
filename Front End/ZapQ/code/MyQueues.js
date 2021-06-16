@@ -8,6 +8,7 @@ import {
   useColorScheme,
   View,
   ViewBase,
+  RefreshControl,
 } from 'react-native';
 
 import {
@@ -28,7 +29,7 @@ import {
 // createBottomTabNavigator{
 //    screen: MyQueuesPage};
 
-var mychipcolor = "rgb(250,250,250)";
+var mychipcolor = "black";
 
 const styles = StyleSheet.create({
     mylabeltext: {
@@ -53,8 +54,8 @@ const styles = StyleSheet.create({
         color:mychipcolor,
     },
     chipbutton: {
-        //backgroundColor:'#7B68EE','salmon'
-        backgroundColor:'rgb(50,50,205)',
+        //backgroundColor:'#7B68EE','salmon' #6CB4EE 
+        backgroundColor:'#F0F8FF',
         marginHorizontal:0,
         padding:5,
         paddingRight:7
@@ -75,12 +76,15 @@ var Historylist = [
     },
 ]
 
+
+
 export default class MyQueuesPage extends Component{
     constructor(props){
         super(props);
         this.state = {
             queues: [],
-        }
+            refreshing: false,
+        };
     };
 
     componentDidMount(){
@@ -93,7 +97,22 @@ export default class MyQueuesPage extends Component{
         ]
         this.setState({queues: queues});
     };
+    
+    _refreshControl() {
+        return (
+            <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={()=>this._refreshListView()} />
+        )
+    };
 
+    _refreshListView() {
+        //Start Rendering Spinner
+        this.setState({refreshing:true})
+        //do work
+        this.setState({refreshing:false}) //Stop Rendering Spinner
+      }
+    
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
@@ -102,13 +121,13 @@ export default class MyQueuesPage extends Component{
                             <ListItem.Content style={{flexDirection:'row'}}>
                                 <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
                                     <Avatar rounded size="medium"
-                                    source={require("./images/defaultQimage.png")}
+                                    source={require("./images/defaultQimage2.png")}
                                     />
                                     
                                     <Badge
                                         status="error"
-                                        value=" "
-                                        containerStyle={{ position: 'absolute', top: -4, left: -4 }}
+                                        value=""
+                                        containerStyle={{ position: 'absolute', top: -2, left: -2 }}
                                     />
                                 </View>
                                 <View style={{flex:1}} > 
@@ -148,7 +167,7 @@ export default class MyQueuesPage extends Component{
                     </ListItem>
             );
         });    
-    }
+    };
     
     render(){
         return(
@@ -159,11 +178,12 @@ export default class MyQueuesPage extends Component{
                <Text h2>
                    My Queues
                </Text>
-               <ScrollView containerStyle={{alignItems: 'flex-start'}}>
+               <ScrollView containerStyle={{alignItems: 'flex-start'}} 
+                refreshControl={this._refreshControl()}
+               >
                <View style={{flex:1,width:'100%',marginVertical:20,marginBottom:10}}>
                 
                     <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:15}}>Current Queues</Text>
-                   
                         {this.displayQueues()}
                 </View>
                 <Divider orientation="horizontal" />
@@ -188,6 +208,7 @@ export default class MyQueuesPage extends Component{
                 </ScrollView>
            </View>
            </SafeAreaView>
-        )
-    }
+        );
+        
+    };
 }
