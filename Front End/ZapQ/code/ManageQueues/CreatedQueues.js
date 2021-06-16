@@ -11,7 +11,6 @@ import {
   ViewBase,
   Alert,
   RefreshControl,
-  Avatar,
 } from 'react-native';
 
 import {
@@ -20,6 +19,9 @@ import {
     Divider,
     ListItem,
     Icon,
+    Avatar,
+    Badge,
+    Chip,
 } from 'react-native-elements';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -130,9 +132,8 @@ export default class CreatedQueuesPage extends Component{
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
-                    
-                   
-                    
+                                   
+                
                 <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.queue_id})}>
                         
                             <ListItem.Content style={{flexDirection:'row'}}>
@@ -156,7 +157,7 @@ export default class CreatedQueuesPage extends Component{
                                         <Chip titleStyle={styles.mychip} 
                                         buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
                                         
-                                        title={item.queue_length + 'people in queue'}
+                                        title={item.queue_length + ' people in queue'}
                                             icon={{
                                             name: "people",
                                             type: "ionicon",
@@ -171,7 +172,7 @@ export default class CreatedQueuesPage extends Component{
                                 </View>
                                 <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center',marginTop:14}}></Icon>
                             </ListItem.Content>
-                            <Text style={{alignSelf:'flex-end',fontSize:14}}>Status: <Text style={{color:'green'}}>Waiting</Text></Text>
+                            
                     </ListItem>
             );
         });    
@@ -188,7 +189,7 @@ export default class CreatedQueuesPage extends Component{
     _refreshListView() {
         //Start Rendering Spinner
         this.setState({refreshing:true})
-        //do work
+        //do REFRESH WORK
         this.setState({refreshing:false}) //Stop Rendering Spinner
       }
 
