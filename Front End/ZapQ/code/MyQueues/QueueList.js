@@ -8,10 +8,7 @@ import {
   useColorScheme,
   View,
   ViewBase,
-<<<<<<< HEAD
   RefreshControl,
-=======
->>>>>>> 7c984431c5a1f390fea9133179351caf3414defd
 } from 'react-native';
 
 import {
@@ -32,11 +29,7 @@ import {
 // createBottomTabNavigator{
 //    screen: MyQueuesPage};
 
-<<<<<<< HEAD
 var mychipcolor = "black";
-=======
-var mychipcolor = "rgb(250,250,250)";
->>>>>>> 7c984431c5a1f390fea9133179351caf3414defd
 
 const styles = StyleSheet.create({
     mylabeltext: {
@@ -61,13 +54,8 @@ const styles = StyleSheet.create({
         color:mychipcolor,
     },
     chipbutton: {
-<<<<<<< HEAD
         //backgroundColor:'#7B68EE','salmon' #6CB4EE 
         backgroundColor:'#F0F8FF',
-=======
-        //backgroundColor:'#7B68EE','salmon'
-        backgroundColor:'rgb(50,50,205)',
->>>>>>> 7c984431c5a1f390fea9133179351caf3414defd
         marginHorizontal:0,
         padding:5,
         paddingRight:7
@@ -88,11 +76,8 @@ var Historylist = [
     },
 ]
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 7c984431c5a1f390fea9133179351caf3414defd
 export default class MyQueuesPage extends Component{
     constructor(props){
         super(props);
