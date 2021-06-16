@@ -125,13 +125,14 @@ export default class FindQueuesPage extends Component{
         })
     }
 
-    userCenterMap(){
+    userCenterMap = () => {
         GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
         })
         .then(location => {
             this.setState({userLocation: location, locationReady: true});
+            this.setState({location: location})
             this.setMapCenter(this.state.userLocation.latitude, this.state.userLocation.longitude)
         })
     }
@@ -143,7 +144,6 @@ export default class FindQueuesPage extends Component{
                     <ListItem key={i} bottomDivider raised
                               onPress={()=>{
                                   this.setMapCenter(parseFloat(item.lati), parseFloat(item.longi));
-                                  this.findQueues();
                               }}>
                         <ListItem.Content>
                             <ListItem.Title style={{fontWeight: "bold",color:"#EE214E"}}>{item.name}</ListItem.Title>
@@ -164,13 +164,14 @@ export default class FindQueuesPage extends Component{
             this._keyboardDidHide,
         );
 
-        this.focusListener = this.props.navigation.addListener('focus', this.findQueues)
+        this.focusListener = this.props.navigation.addListener('focus', this.userCenterMap)
         
         this.getUserCenter().then(() => {this.findQueues()});
     };
 
     findQueues = async () => {
         //API Logic]
+        console.log("FIND");
         await api.nearbyQueues(this.state.location.latitude, this.state.location.longitude).then((res) => {
             /*this.setState({
                 error: res.error,
@@ -296,7 +297,12 @@ export default class FindQueuesPage extends Component{
                         longitude: this.state.userLocation.longitude,
                         latitudeDelta: 0.0065,
                         longitudeDelta: 0.0065,
-                    }}>
+                    }}
+                    onRegionChangeComplete={(region)=>{
+                        this.setState({location: {latitude: region.latitude, longitude: region.longitude}});
+                        this.findQueues();
+                    }}
+                    >
                     {this.makeMarkers()}
                 </MapView>
             )
