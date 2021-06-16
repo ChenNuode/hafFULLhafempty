@@ -24,9 +24,11 @@ import {
     Chip,
 } from 'react-native-elements';
 
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
 import { useFocusEffect } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 //imports end
 
 var mychipcolor = "black";
@@ -42,6 +44,7 @@ const styles = StyleSheet.create({
         //borderColor: '#2CB76B',
         alignItems:'center',
         justifyContent:'center',
+        padding:0,
     },
     mylabeltext: {
         fontSize: 16,
@@ -70,8 +73,7 @@ const styles = StyleSheet.create({
         marginHorizontal:0,
         padding:5,
         paddingRight:7
-    }
-
+    },
 });
 
 var Historylist = [
@@ -137,7 +139,7 @@ export default class CreatedQueuesPage extends Component{
                 <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.queue_id})}>
                         
                             <ListItem.Content style={{flexDirection:'row'}}>
-                                <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
+                                <View style={{alignSelf:'center',marginRight:10}}>
                                     <Avatar rounded size="medium"
                                     source={require("../images/defaultQimage2.png")}
                                     />
@@ -170,7 +172,7 @@ export default class CreatedQueuesPage extends Component{
                                     
                                     
                                 </View>
-                                <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center',marginTop:14}}></Icon>
+                                <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center'}}></Icon>
                             </ListItem.Content>
                             
                     </ListItem>
@@ -196,11 +198,13 @@ export default class CreatedQueuesPage extends Component{
     render(){
         return(
             <SafeAreaView style={{width:"100%",height:"100%"}}>
-            <View style={{flex:1,paddingVertical:20,paddingHorizontal:10,backgroundColor:'snow'}}>
-        
-            <Text h2 style={{marginBottom:10}}>Creator Dashboard</Text>
-            <Divider orientation="horizontal" />
-
+            
+                <LinearGradient style={{paddingTop:20,paddingHorizontal:10,paddingBottom:10,height:100,justifyContent:'flex-end'}} start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#EE214E', '#EC732D']}>
+                    <Text h2 style={{color:"white"}}>Creator Dashboard</Text>
+                </LinearGradient>
+            
+            <View style={{flex:1,paddingHorizontal:10,backgroundColor:'snow'}}>
+                    
             <ScrollView containerStyle={{alignItems: 'flex-start'}} refreshControl={this._refreshControl()} >
             
             <View style={{flex:1,width:'100%',marginTop:20,marginBottom:0}}>
@@ -218,16 +222,17 @@ export default class CreatedQueuesPage extends Component{
                     }
                     title="New Queue"
                     buttonStyle={{backgroundColor:'transparent'}}
+                    
                     />
-
-                    <View style={{flex:1,width:'100%',marginTop:10,marginBottom:30}}>
+                    
+                    <View style={{flex:1,width:'100%',marginTop:10,marginBottom:10}}>
                         {this.displayQueues()}
                     </View>
             
             </View>
-        
-            <View style={{flex:1,width:'100%',marginVertical:0}}>
-                <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Past Created Queues</Text>
+            <Divider orientation="horizontal" />
+            <View style={{flex:1,width:'100%',marginVertical:10,marginTop:30}}>
+                <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:20}}>Past Created Queues</Text>
                     
                 <View style={{marginBottom:50+10}}>
                 {

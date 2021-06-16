@@ -238,7 +238,6 @@ export default class FindQueuesPage extends Component{
             return (
                 <Marker
                     coordinate = {{latitude: parseFloat(item.lati), longitude: parseFloat(item.longi)}}
-                    pinColor = {"red"}
                     key={item.queue_id} //threw an warning just now, about unpromised
                     onPress={() => this.markerPress(item.queue_id)}
                 >
@@ -255,7 +254,6 @@ export default class FindQueuesPage extends Component{
         }).concat((
             <Marker
                 coordinate = {this.state.userLocation}
-                pinColor = {"blue"}
                 key={0}
             >
             <View>

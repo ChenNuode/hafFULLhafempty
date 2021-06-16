@@ -33,26 +33,6 @@ const styles = StyleSheet.create({
     },
 
 });
-
-/*
-const list = [
-    {
-      Q_name: 'Qname 1',
-      Q_initial: 'Q1',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-      Q_description: 'Queue to fk your mom',
-      Q_ppl_left: '7',
-      Q_ETA: '25',
-    },
-    {
-      Q_name: 'Qname 2',
-      Q_initial: 'Q2',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      Q_description: 'Queue to fk your mom again',
-      Q_ppl_left: '3',
-      Q_ETA: '10',
-    },
-]*/
   
 export default class QueueDetailsPage extends Component{
     constructor(props){
@@ -87,19 +67,23 @@ export default class QueueDetailsPage extends Component{
     render(){
         return(
             <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
-               <Text style={{fontSize: 64}}>
-                   Details for {this.state.queue.title} (ID {this.props.route.params.id})
+               <Text>
+                   Hello {this.state.queue.title} (ID {this.props.route.params.id})
                </Text>
-                <Text style={{fontSize: 64}}>{this.state.queue.people} people in queue</Text>
+                
+                <Text>{this.state.queue.people} people in queue</Text>
                 <Button title="Get directions" 
                         onPress={() => this.getDirections()
                 }/>
+
                 <Button title="Push me back 5 places" 
                         onPress={() => this.props.navigation.navigate('Queue List', {})
                 }/>
+
                 <Button title="Leave Queue" 
                         onPress={() => this.props.navigation.navigate('Queue List', {})
                 }/>
+                
            </View>
         )
     }
