@@ -195,21 +195,25 @@ export default class FindQueuesPage extends Component{
         this.setState({keyboardstate: false});
     };
 
-    markerPress(id){
-        //API LOGIC
-        api.getQueueInfo(id).then((res) => {
-            /*this.setState({
-                error: res.error,
-                resstate: res.state,
-            });*/
-            console.log(res);
-            var temp = res;
-            temp.id = id;
-            this.setState({
-                overlayon: true,
-                overlaydata: temp,
-            });
-        }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
+    markerPress = async (id) => {
+
+        await AsyncStorage.getItem('@userinfo').then((res) => {
+
+            res = JSON.parse(res);
+            api.userQueueInfo(res.username, id).then((res) => {
+                /*this.setState({
+                    error: res.error,
+                    resstate: res.state,
+                });*/
+                console.log(res);
+                var temp = res;
+                temp.id = id;
+                this.setState({
+                    overlayon: true,
+                    overlaydata: temp,
+                });
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
+        });
     };
 
     queueUp = async(id)=>{
@@ -269,6 +273,17 @@ export default class FindQueuesPage extends Component{
 
             ));
     };
+
+    joinButton(){
+        if(!this.state.overlaydata.in_queue){
+            return (
+                <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
+                    <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} raised round title="Join Queue"
+                            onPress={() => this.queueUp(this.state.overlaydata.id)} buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
+                </View>
+            )
+        }
+    }
 
     mapRender(){
         if(this.state.locationReady){
@@ -345,11 +360,7 @@ export default class FindQueuesPage extends Component{
                             </View>
                         </View>
                     </View>
-
-                    <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
-                        <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} raised round title="Join Queue"
-                                onPress={() => this.queueUp(this.state.overlaydata.id)} buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
-                    </View>
+                    {this.joinButton()}
                 </Overlay>
             </View>
             </TouchableWithoutFeedback>
