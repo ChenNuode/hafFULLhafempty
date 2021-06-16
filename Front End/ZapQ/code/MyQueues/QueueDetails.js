@@ -68,6 +68,10 @@ export default class QueueDetailsPage extends Component{
     componentDidMount(){
         //API Logic
         this.getDetails();
+
+        this.updateTimer = setInterval(() => this.getDetails(), 7000);
+        
+        this.focusListener = this.props.navigation.addListener('blur', ()=>{clearInterval(this.updateTimer)})
     };
     
     getUserCenter = async() => {
@@ -84,7 +88,7 @@ export default class QueueDetailsPage extends Component{
         await AsyncStorage.getItem('@userinfo').then((res) => {
 
             res = JSON.parse(res);
-            api.userQueueInfo(res.username, this.props.route.params.id).then((res) => {
+            api.userQueueDetails(res.username, this.props.route.params.id).then((res) => {
                 /*this.setState({
                     error: res.error,
                     resstate: res.state,
@@ -105,8 +109,18 @@ export default class QueueDetailsPage extends Component{
 
     //https://www.google.com/maps/dir/?api=1&origin=34.1030032,-118.41046840000001&destination=34.059808,-118.368152
 
-    pushQueue(){
-        //API Call to admit
+    pushQueue = async () => {
+        await AsyncStorage.getItem('@userinfo').then((res) => {
+
+            res = JSON.parse(res);
+            api.pushbackQueue(res.username, this.props.route.params.id).then((res) => {
+                /*this.setState({
+                    error: res.error,
+                    resstate: res.state,
+                });*/
+                this.getDetails()
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
+        });
     }
 
     leaveQueue = async () => {
@@ -140,7 +154,7 @@ export default class QueueDetailsPage extends Component{
     _refreshListView() {
         //Start Rendering Spinner
         this.setState({refreshing:true})
-        //do REFRESH WORK
+        this.getDetails();
         this.setState({refreshing:false}) //Stop Rendering Spinner
       }
 
@@ -162,7 +176,7 @@ export default class QueueDetailsPage extends Component{
                             
                             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',padding:5}}>
                                 
-                                <Text style={{fontSize:16,padding:2}}>Waiting Time: </Text>
+                                {/*<Text style={{fontSize:16,padding:2}}>Waiting Time: </Text>*/}
                                 <View>
                                     <Chip titleStyle={styles.mychip}
                                         buttonStyle={styles.chipbutton}
@@ -176,26 +190,27 @@ export default class QueueDetailsPage extends Component{
                                     />
                                 </View>
 
+                                {/*<Text style={{fontSize:16,padding:2}}>People before me: </Text>*/}
+
+                                <View>
+                                    <Chip titleStyle={styles.mychip} 
+                                        buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
+                                        
+                                        title={this.state.queue.position+ " in front"}
+                                            icon={{
+                                            name: "people",
+                                            type: "ionicon",
+                                            size: 20,
+                                            color: mychipcolor,
+                                        }}
+                                        />
+                                </View> 
+
                                 {/*<Text h3 style={{flex:1,marginLeft:5,textAlign:'left'}}>{this.state.queue.title}</Text>*/}
                             </View>
                             
                             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',padding:5}}>
-                                
-                            <Text style={{fontSize:16,padding:2}}>People before me: </Text>
-
-                            <View>
-                                <Chip titleStyle={styles.mychip} 
-                                    buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
-                                    
-                                    title={"" + this.state.queue.people}
-                                        icon={{
-                                        name: "people",
-                                        type: "ionicon",
-                                        size: 20,
-                                        color: mychipcolor,
-                                    }}
-                                    />
-                            </View> 
+                           
                                 {/*<Text h3 style={{flex:1,marginLeft:5,textAlign:'left'}}>{this.state.queue.people}</Text>*/}
                             </View>
                             
@@ -212,7 +227,7 @@ export default class QueueDetailsPage extends Component{
                     
                     <Divider orientation="vertical"></Divider>
                     
-                    <TouchableOpacity onPress={()=> {alert('Run function here')}} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
+                    <TouchableOpacity onPress={()=> this.pushQueue()} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
                         <Icon name='push-outline' type="ionicon" color='#333234' />
                         <Text style={{textAlign:'center',fontSize:12}}>Push me{"\n"}back 5 places</Text>
                     </TouchableOpacity>

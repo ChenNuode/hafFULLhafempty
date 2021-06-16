@@ -236,6 +236,20 @@ var api = {
 			body: fs
 		}).then((res) => res.json());
 	},
+	pushbackQueue(username, queue_id){
+		var furl = beurl.concat('/queues/user/pushback_queue/')
+		var fs = new FormData();
+		fs.append('username', username);
+		fs.append('queue_id', queue_id);
+		return fetch(furl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: fs
+		}).then((res) => res.json());
+	},
 	searchQueue(searchterm){
 		var furl = beurl.concat('/queues/user/search_queue/')
 		var fs = new FormData();
