@@ -47,8 +47,7 @@ class QueueMade(APIView):
         queues = Queue.objects.filter(creator=user)
         data = [{
             'queue_id': queue.id,
-            'lati': queue.lati,
-            'longi': queue.longi,
+            'queue_length': queue.users.count(),
             'name': queue.name
             } for queue in queues]
         return JsonResponse(data, status=201, safe=False)
@@ -61,6 +60,10 @@ class QueueCreator(APIView):
         queue_id = data.get('queue_id')
         queue = Queue.objects.get(id=queue_id)
         data = QueueInfo(queue).data
+        queue_length = queue.users.count()
+        next_user = queue.users.all()[0]
+        data['queue_length'] = queue_length
+        data['next_user'] = {'username': next_user.username, 'id': next_user.id}
         return JsonResponse(data, status=201)
 
 @method_decorator(csrf_exempt, name='dispatch')
