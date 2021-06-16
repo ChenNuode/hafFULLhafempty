@@ -3,3 +3,5 @@ Back End/ZapQ/queues/__pycache__
 Back End/ZapQ/queues/migrations/__pycache__
 *.sqlite3
 *.pyc
+.DS_Store
+
