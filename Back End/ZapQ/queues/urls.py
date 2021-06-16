@@ -15,5 +15,5 @@ urlpatterns = [
     path('user/get_queue/', UserInQueue.as_view()),
     path('user/get_queue_info/', UserQueueInfo.as_view()),
     path('user/get_all_queue_ids/', UserAllQueues.as_view()),
-
+    path('user/search_queue/', QueueSearch.as_view()),
 ]
