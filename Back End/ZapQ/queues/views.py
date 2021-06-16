@@ -304,3 +304,28 @@ class QueueSearch(APIView):
                     }
             data.append(tempdict)
         return JsonResponse(data, status=201, safe=False)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PushBackQueue(APIView):
+    def post(self, request):
+        data = self.request.data
+        queue_id = data.get('queue_id')
+        username = data.get('username')
+        theuser = User.objects.get(username=username)
+        queue = Queue.objects.get(id=queue_id)
+        userids = [user.id for user in queue.users.all()]
+        length = len(userids)
+        if length > 1:
+            position = userids.index(theuser.id)
+            if ((length-1) - position) < 5:
+                newuserids = userids[:position] + \
+                    userids[position+1:] + [theuser.id]
+            else:
+                newposition = position + 5
+                newusersids = userids[:position] + userids[position+1:newposition] + [theuser.id] + userids[newposition:]
+            queue.users.clear()
+            for userid in newuserids:
+                queue.users.add(User.objects.get(id=userid))
+            queue.save()
+        data = {"message": "User has been pushed back queue"}
+        return JsonResponse(data, status=201)
