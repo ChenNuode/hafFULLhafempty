@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     newbutton: {
-        width:120,
+        width:40,
+        height:40,
         borderRadius:10,
        backgroundColor:'#2CB76B',
         //borderColor: '#2CB76B',
@@ -229,22 +230,23 @@ export default class CreatedQueuesPage extends Component{
             <ScrollView containerStyle={{alignItems: 'flex-start'}} refreshControl={this._refreshControl()} >
             
             <View style={{flex:1,width:'100%',marginTop:20,marginBottom:0}}>
-                
-                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:15}}>Active Created Queues</Text>
-                    
-                    <Button containerStyle={styles.newbutton} onPress={() => this.props.navigation.navigate('Make Queue', {})}
-                    icon={
-                        <Icon
-                        name="add"
-                        type="ionicon"
-                        size={15}
-                        color="white"
+                    <View style={{flex:1,width:'100%',flexDirection:'row', justifyContent:'space-between', alignItems: 'center'}}>
+                        <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:15}}>Active Created Queues</Text>
+                        
+                        <Button containerStyle={styles.newbutton} onPress={() => this.props.navigation.navigate('Make Queue', {})}
+                        icon={
+                            <Icon
+                            name="add"
+                            type="ionicon"
+                            size={25}
+                            color="white"
+                            />
+                        }
+                        title=""
+                        buttonStyle={{backgroundColor:'transparent'}}
+                        
                         />
-                    }
-                    title="New Queue"
-                    buttonStyle={{backgroundColor:'transparent'}}
-                    
-                    />
+                    </View>
                     
                     <View style={{flex:1,width:'100%',marginTop:10,marginBottom:10}}>
                         {this.displayQueues()}
