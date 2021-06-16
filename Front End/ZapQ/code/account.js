@@ -60,13 +60,13 @@ export default class AccountPage extends Component{
     return(
       <SafeAreaView style={{width:"100%",height:"100%"}}>
       <View style={{paddingVertical:20,paddingHorizontal:15,backgroundColor:'snow',flex:1,justifyContent:'flex-start','color':'#333234'}}>
-        <Text h2>Account Settings</Text>
+        <Text h2 style={{marginBottom:10}}>Account Settings</Text>
         
         <ScrollView style={{height:'100%'}}>
           <Image
             source={require('./images/QueueArtSetting.png')}
             style={{ width:'100%',height:105}}
-            resizeMode="cover" 
+            resizeMode="cover"
           />
           <Text h4 style={{marginTop:20}}>Account</Text>
           <ListItem containerStyle={styles.settingitemstyle} bottomDivider>
