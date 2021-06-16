@@ -207,7 +207,7 @@ var api = {
 	userQueueInfo(queue_id){
 		var furl = beurl.concat('/queues/user/get_queue_info/')
 		var fs = new FormData();
-		fs.append('username', username);
+		fs.append('queue_id', queue_id);
 		return fetch(furl, {
 			method: 'POST',
 			headers: {
