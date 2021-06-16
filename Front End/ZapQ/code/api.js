@@ -1,5 +1,5 @@
 //var beurl = 'http://10.0.2.2:8000'
-var beurl = 'http://projectunplug.co'
+var beurl = 'http://projectunplug.co:8000'
 
 var api = {
 	beurl(){
