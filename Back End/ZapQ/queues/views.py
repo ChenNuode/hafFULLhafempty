@@ -19,6 +19,10 @@ User = get_user_model()
 class QueueMake(APIView):
     def post(self, request):
         data = self.request.data
+        if "file" in data:
+            file = data.get('file')
+        else:
+            file = None
         product_data = {
             'name': data.get('name'),
             'desc': data.get('desc'),
@@ -26,6 +30,7 @@ class QueueMake(APIView):
             'lati': data.get('lati'),
             'longi': data.get('longi'),
             'creator': User.objects.get(username=data.get('username')).id,
+            'image': file
         }
         queue = createQueueSerializer(data=product_data)
         if queue.is_valid():
@@ -45,11 +50,24 @@ class QueueMade(APIView):
         data = self.request.data
         user = User.objects.get(username=data.get('username'))
         queues = Queue.objects.filter(creator=user, ended=False)
-        data = [{
-            'queue_id': queue.id,
-            'queue_length': queue.users.count(),
-            'name': queue.name
-            } for queue in queues]
+        data = []
+        for queue in queues:
+            if queue.image:
+                tempdict = {
+                'queue_id': queue.id,
+                'queue_length': queue.users.count(),
+                'name': queue.name,
+                'image': QueueImage(queue).data['image']
+                }
+                data.append(tempdict)
+            else:
+                tempdict = {
+                    'queue_id': queue.id,
+                    'queue_length': queue.users.count(),
+                    'name': queue.name,
+                    'image': None
+                    }
+                data.append(tempdict)
         return JsonResponse(data, status=201, safe=False)
 
 
@@ -169,16 +187,30 @@ class UserInQueue(APIView):
         data = []
         for queue in queues:
             userids = [user.id for user in queue.users.all()]
-            tempdata = {
-                'queue_id': queue.id,
-                'position': userids.index(theuser.id),
-                'name': queue.name,
-                'desc': queue.desc,
-                'eta': queue.eta,
-                'lati': queue.lati,
-                'longi': queue.longi,
-                'creator': queue.creator.username,
-            }
+            if queue.image:
+                tempdata = {
+                    'queue_id': queue.id,
+                    'position': userids.index(theuser.id),
+                    'name': queue.name,
+                    'desc': queue.desc,
+                    'eta': queue.eta,
+                    'lati': queue.lati,
+                    'longi': queue.longi,
+                    'creator': queue.creator.username,
+                    'image': QueueImage(queue).data['image']
+                }
+            else:
+                tempdata = {
+                    'queue_id': queue.id,
+                    'position': userids.index(theuser.id),
+                    'name': queue.name,
+                    'desc': queue.desc,
+                    'eta': queue.eta,
+                    'lati': queue.lati,
+                    'longi': queue.longi,
+                    'creator': queue.creator.username,
+                    'image': None
+                }
             data.append(tempdata)
         return JsonResponse(data, status=201, safe=False)
 
@@ -200,6 +232,10 @@ class UserQueueInfo(APIView):
                 'queue_length': queue.users.count(),
                 'in_queue': user in queue.users.all()
             }
+        if queue.image:
+            data['image'] = QueueImage(queue).data['image']
+        else:
+            data['image'] = None
         return JsonResponse(data, status=201, safe=False)
 
 
@@ -221,13 +257,25 @@ class UserNearQueues(APIView):
         data = self.request.data
         lati = float(data.get('lati'))
         longi = float(data.get('longi'))
-        data = [{
-            'queue_id': queue.id,
-            'lati': queue.lati,
-            'longi': queue.longi,
-            'name': queue.name
-            } for queue in Queue.objects.filter(
-            lati__range=[lati-0.1, lati+0.1], longi__range=[longi-0.1, longi+0.1], ended=False, paused=False)]
+        data = []
+        for queue in Queue.objects.filter(lati__range=[lati-0.1, lati+0.1], longi__range=[longi-0.1, longi+0.1], ended=False, paused=False):
+            if queue.image:
+                tempdict = {
+                    'queue_id': queue.id,
+                    'lati': queue.lati,
+                    'longi': queue.longi,
+                    'name': queue.name,
+                    'image': QueueImage(queue).data['image']
+                    }
+            else:
+                tempdict = {
+                    'queue_id': queue.id,
+                    'lati': queue.lati,
+                    'longi': queue.longi,
+                    'name': queue.name,
+                    'image': None
+                    }
+            data.append(tempdict)
         return JsonResponse(data, status=201, safe=False)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -236,10 +284,23 @@ class QueueSearch(APIView):
         data = self.request.data
         search_terms = data.get('search_terms')
         queues = Queue.objects.filter(name__contains=search_terms, ended=False)
-        data = [{
-            'queue_id': queue.id,
-            'lati': queue.lati,
-            'longi': queue.longi,
-            'name': queue.name
-        } for queue in queues[0:3]]
+        data = []
+        for queue in queues[0:3]:
+            if queue.image:
+                tempdict = {
+                    'queue_id': queue.id,
+                    'lati': queue.lati,
+                    'longi': queue.longi,
+                    'name': queue.name,
+                    'image': QueueImage(queue).data['image']
+                    }
+            else:
+                tempdict = {
+                    'queue_id': queue.id,
+                    'lati': queue.lati,
+                    'longi': queue.longi,
+                    'name': queue.name,
+                    'image': None
+                    }
+            data.append(tempdict)
         return JsonResponse(data, status=201, safe=False)

@@ -24,3 +24,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('queues/', include('queues.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
