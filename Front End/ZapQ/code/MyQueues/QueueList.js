@@ -135,11 +135,11 @@ export default class MyQueuesPage extends Component{
     lastPerson(number){
       if (number === 0){
         return(
-          <Text style={{alignSelf:'flex-end',fontSize:14}}>Status: <Text style={{color:'red'}}>Your Turn</Text></Text>
+          <Text style={{alignSelf:'flex-end',fontSize:14}}><Text style={{color:'red'}}>Your Turn</Text></Text>
         )
       } else {
         return(
-          <Text style={{alignSelf:'flex-end',fontSize:14}}>Status: <Text style={{color:'green'}}>Waiting</Text></Text>
+          <Text style={{alignSelf:'flex-end',fontSize:14}}><Text style={{color:'green'}}>Waiting</Text></Text>
         )
       }
     }

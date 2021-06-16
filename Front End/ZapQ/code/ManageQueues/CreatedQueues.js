@@ -141,7 +141,7 @@ export default class CreatedQueuesPage extends Component{
     }
 
     renderBadge(ppl){
-        if(ppl <= 5){
+        if(ppl > 0){
             return (
                 <Badge
                     status="error"
@@ -181,7 +181,7 @@ export default class CreatedQueuesPage extends Component{
                                         <Chip titleStyle={styles.mychip} 
                                         buttonStyle={[styles.chipbutton,{marginVertical:5}]}
                                         
-                                        title={item.queue_length + ' pax'}
+                                        title={item.queue_length + ' in queue'}
                                             icon={{
                                             name: "people",
                                             type: "ionicon",
