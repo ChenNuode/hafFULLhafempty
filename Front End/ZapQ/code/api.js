@@ -88,11 +88,36 @@ var api = {
 			body: formsubmit
 		}).then((res) => res.json());
 	},
+	//makeQueue will be used to create a queue with data, responds with queue ID(not needed)
 	listMadeQueues(username){
 		var listMadeQ = beurl.concat('/queues/business/list_queue/')
 		var fs = new FormData();
 		fs.append('username', username);
+		return fetch(listMadeQ, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: formsubmit
+		}).then((res) => res.json());
 	},
+	//listMadeQueues will require you to submit a username, responds with a list of dictionaries with info about all queues you created
+	getQueueInfo(queue_id){
+		var furl = beurl.concat('/queues/business/my_queue/')
+		var fs = new FormData();
+		fs.append({'queue_id': queue_id});
+		return fetch(furl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: formsubmit
+		}).then((res) => res.json());
+	},
+	//getQueueInfo will require you to submit a queue id, responds with the queue info in a dictionary
+
 };
 
 module.exports = api;
