@@ -181,7 +181,7 @@ export default class CreatedQueuesPage extends Component{
                                         <Chip titleStyle={styles.mychip} 
                                         buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
                                         
-                                        title={item.queue_length + ' pax in queue'}
+                                        title={item.queue_length + ' pax'}
                                             icon={{
                                             name: "people",
                                             type: "ionicon",
