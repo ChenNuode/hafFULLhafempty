@@ -311,7 +311,7 @@ export default class FindQueuesPage extends Component{
                     </View>
 
                     <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
-                        <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} round title="Join Queue"
+                        <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} raised round title="Join Queue"
                                 onPress={() => this.queueUp()} buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
                      </View>
 
