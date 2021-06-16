@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     tinyLogo: {
       width: 40,
       height: 40, //aspect ratio of w-h is 317:456
-      //borderRadius:50/2,
+      borderRadius:40/2,
 
     },
     tinyuserlogo: {
@@ -241,14 +241,13 @@ export default class FindQueuesPage extends Component{
                     pinColor = {"red"}
                     key={item.queue_id} //threw an warning just now, about unpromised
                     onPress={() => this.markerPress(item.queue_id)}
-
                 >
                 <View>
                     <Image
                         style={styles.tinyLogo}
                         //source={{uri: item.picurl }}
-                        source={require('./images/queue317_456.png')}
-                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/queue317_456.png')}></Image>}
+                        source={require('./images/defaultQimage2.png')}
+                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/defaultQimage2.png')}></Image>}
                     />
                 </View>
                 </Marker>
