@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 
 import {
@@ -26,6 +27,8 @@ import {
 
 import MapView, {Marker} from "react-native-maps";
 import GetLocation from 'react-native-get-location'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from './api';
 
 const searchList1 = [
     {title: "NEX", id: 0, latitude: 1.35097, longitude: 103.87227,},
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
     tinyLogo: {
       width: 40,
       height: 40, //aspect ratio of w-h is 317:456
-      borderRadius:50/2,
+      //borderRadius:50/2,
 
     },
     tinyuserlogo: {
@@ -97,8 +100,8 @@ export default class FindQueuesPage extends Component{
         if(search == "") this.setState({searchResults: []});
     };
 
-    getUserCenter(){
-        GetLocation.getCurrentPosition({
+    getUserCenter = async() => {
+        await GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
         })
@@ -160,15 +163,24 @@ export default class FindQueuesPage extends Component{
             'keyboardDidHide',
             this._keyboardDidHide,
         );
-        //API Logic
-        var markers = [
-            {latitude: 1.35097, longitude: 103.87227, id: 1, title: "NEX", picurl:"https://upload.wikimedia.org/wikipedia/commons/7/73/Nex_4.jpg", description: "Serangoon", peopleinQ:5, ETA:25},
-            {latitude: 1.35111, longitude: 103.84868, id: 2, title: "Junction 8", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "This is the Queue to Junction 8 shopping centre at Bishan. Built in 1993. This school is popularly visited by the Bgay", peopleinQ:5, ETA:25},
-        ]
-        this.setState({markerdata: markers});
 
-        this.getUserCenter();
+        this.focusListener = this.props.navigation.addListener('focus', this.findQueues)
+        
+        this.getUserCenter().then(() => {this.findQueues()});
     };
+
+    findQueues = async () => {
+        //API Logic
+        console.log(this.state.userLocation.latitude, this.state.userLocation.longitude);
+        await api.nearbyQueues(this.state.userLocation.latitude, this.state.userLocation.longitude).then((res) => {
+            /*this.setState({
+                error: res.error,
+                resstate: res.state,
+            });*/
+            console.log(res);
+            this.setState({markerdata: res});
+        }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
+    }
 
     componentWillUnmount() {
         this.keyboardDidShowListener.remove();
@@ -183,37 +195,61 @@ export default class FindQueuesPage extends Component{
         this.setState({keyboardstate: false});
     };
 
-    markerPress(item){
+    markerPress(id){
         //API LOGIC
-        this.setState({
-            overlayon: true,
-            overlaydata: item
-        });
+        api.getQueueInfo(id).then((res) => {
+            /*this.setState({
+                error: res.error,
+                resstate: res.state,
+            });*/
+            console.log(res);
+            var temp = res;
+            temp.id = id;
+            this.setState({
+                overlayon: true,
+                overlaydata: temp,
+            });
+        }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
     };
 
-    queueUp(){
+    queueUp = async(id)=>{
         console.log("queueing for ");
         console.log(id);
-        //redirect to the my queues page
+        await AsyncStorage.getItem('@userinfo').then((res) => {
+
+            res = JSON.parse(res);
+            //Tested
+            api.userJoinQueue(res.username, id).then((res) => {
+                /*this.setState({
+                    error: res.error,
+                    resstate: res.state,
+                });*/
+                this.setState({overlayon: false});
+                this.props.navigation.navigate('My Queues', {});
+                
+                //redirect to the my queues page
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to queue up!')});
+        });
     }
 
     makeMarkers(){
         return this.state.markerdata.map((item) => {
+            console.log(parseFloat(item.lati));
             return (
                 <Marker
-                    coordinate = {{latitude: item.latitude, longitude: item.longitude}}
+                    coordinate = {{latitude: parseFloat(item.lati), longitude: parseFloat(item.longi)}}
                     pinColor = {"red"}
-                    key={item.id} //threw an warning just now, about unpromised
-                    onPress={() => this.markerPress(item)}
+                    key={item.queue_id} //threw an warning just now, about unpromised
+                    onPress={() => this.markerPress(item.queue_id)}
 
                 >
                 <View>
                     <Image
                         style={styles.tinyLogo}
-                        source={{uri: item.picurl }}
+                        //source={{uri: item.picurl }}
+                        source={require('./images/queue317_456.png')}
                         PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/queue317_456.png')}></Image>}
                     />
-                    {/*source={require('./images/queue317_456.png')} old standardised marker  */}
                 </View>
                 </Marker>
             );
@@ -284,27 +320,27 @@ export default class FindQueuesPage extends Component{
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
 
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>
-                        <Avatar rounded size="medium" source={{
+                        {/*<Avatar rounded size="medium" source={{
                                 uri: this.state.overlaydata.picurl,
                             }}
-                        />
-                        <Text h3 style={{marginLeft:5}}>{this.state.overlaydata.title}</Text>
+                        />*/}
+                        <Text h3 style={{marginLeft:5}}>{this.state.overlaydata.name}</Text>
                     </View>
-
+                    
                     <View style={{flex:3,}}>
                         <Text style={{marginTop:10,color:'gray',fontSize:14,marginBottom:5}}>Queue Description</Text>
-                        <Text style={{fontSize:16}}>{this.state.overlaydata.description}</Text>
+                        <Text style={{fontSize:16}}>{this.state.overlaydata.desc}</Text>
                     </View>
 
                     <View style={{flex:2,justifyContent:'center',}}>
 
                         <View style={{flexDirection:'row'}}>
                             <View style={{flex:1,alignItems:'center'}}>
-                                <Text style={{fontWeight:'bold',fontSize:30}}>{this.state.overlaydata.peopleinQ}</Text>
+                                <Text style={{fontWeight:'bold',fontSize:30}}>{this.state.overlaydata.queue_length}</Text>
                                 <Text style={{fontSize:16}}>No. In Queue</Text>
                             </View>
                             <View style={{flex:1,alignItems:'center'}}>
-                                <Text style={{fontWeight:'bold',fontSize:30}}>{this.state.overlaydata.ETA}</Text>
+                                <Text style={{fontWeight:'bold',fontSize:30}}>{this.state.overlaydata.eta}</Text>
                                 <Text style={{fontSize:16}}>ETA</Text>
                             </View>
                         </View>
@@ -312,9 +348,8 @@ export default class FindQueuesPage extends Component{
 
                     <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
                         <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} raised round title="Join Queue"
-                                onPress={() => this.queueUp()} buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
-                     </View>
-
+                                onPress={() => this.queueUp(this.state.overlaydata.id)} buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>
+                    </View>
                 </Overlay>
             </View>
             </TouchableWithoutFeedback>
