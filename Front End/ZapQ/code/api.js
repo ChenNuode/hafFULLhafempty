@@ -99,7 +99,7 @@ var api = {
 				Accept: 'application/json',
 				'Content-Type': 'multipart/form-data',
 			},
-			body: formsubmit
+			body: fs
 		}).then((res) => res.json());
 	},
 	//listMadeQueues will require you to submit a username, responds with a list of dictionaries with info about all queues you created
@@ -113,7 +113,7 @@ var api = {
 				Accept: 'application/json',
 				'Content-Type': 'multipart/form-data',
 			},
-			body: formsubmit
+			body: fs
 		}).then((res) => res.json());
 	},
 	//getQueueInfo will require you to submit a queue id, responds with the queue info in a dictionary

@@ -18,6 +18,8 @@ import {
     Avatar,
     Badge,
 } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../api';
 
 //imports end
 
@@ -58,18 +60,37 @@ export default class CreatedQueuesPage extends Component{
         super(props);
         this.state = {
             queues: [],
+            userdata: {username: ""},
         }
+    };
+    usercall = async () => {
+      await AsyncStorage.getItem('@userinfo').then((res) => {this.setState({userdata: JSON.parse(res)})});
     };
 
     componentDidMount(){
-        //API Logic
+        //API Logic untested
         var queues = [
             {id:1, title: "NEX", people: 200},
             {id:2, title: "Junction 8", people: 150},
             {id:3, title: "Junction 9", people: 50},
             {id:4, title: "Junction 10", people: 100},
         ]
+        
         this.setState({queues: queues});
+
+        this.usercall().then(()=>{console.log(this.state.userdata.username)});
+        api.listMadeQueues(this.state.userdata.username).then((res) => {
+            /*this.setState({
+                error: res.error,
+                resstate: res.state,
+            });*/
+            /*
+            'queue_id': queue.id,
+            'lati': queue.lati,
+            'longi': queue.longi,
+            'name': queue.name*/
+            this.setState({queues: queues});
+        }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
     };
 
     displayQueues(){
