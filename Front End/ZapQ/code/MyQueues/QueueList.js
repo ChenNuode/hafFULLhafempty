@@ -97,8 +97,29 @@ export default class MyQueuesPage extends Component{
             {id:3, title: "Junction 9",picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", people: 50,ETA:25},
             {id:4, title: "Junction 10",picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", people: 100,ETA:25},
         ]
-        this.setState({queues: queues});
+        this.pullList();
     };
+
+
+    pullList = async () => {
+        console.log("pull");
+
+        await AsyncStorage.getItem('@userinfo').then((res) => {
+
+            res = JSON.parse(res);
+            console.log(res);
+            api.userQueuedInfo(res.username).then((res) => {
+
+                /*this.setState({
+                    error: res.error,
+                    resstate: res.state,
+                });*/
+                console.log(res);
+                this.setState({queues: res});
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
+        });
+    }
+
 
     _refreshControl() {
         return (
@@ -114,6 +135,19 @@ export default class MyQueuesPage extends Component{
         //do REFRESH WORK
         this.setState({refreshing:false}) //Stop Rendering Spinner
       }
+
+
+    lastPerson(number){
+      if (number === 0){
+        return(
+          <Text style={{alignSelf:'flex-end',fontSize:14}}>Status: <Text style={{color:'red'}}>Your Turn</Text></Text>
+        )
+      } else {
+        return(
+          <Text style={{alignSelf:'flex-end',fontSize:14}}>Status: <Text style={{color:'green'}}>Waiting</Text></Text>
+        )
+      }
+    }
 
     displayQueues(){
         return this.state.queues.map((item, i) => {
@@ -133,7 +167,7 @@ export default class MyQueuesPage extends Component{
                                     />
                                 </View>
                                 <View style={{flex:1}} >
-                                    <ListItem.Title style={{flex:1,fontWeight: "bold",color:"black",fontSize:25}}>{item.title}</ListItem.Title>
+                                    <ListItem.Title style={{flex:1,fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
                                     {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
 
                                     <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
@@ -150,7 +184,7 @@ export default class MyQueuesPage extends Component{
                                         <Chip titleStyle={styles.mychip}
                                         buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
 
-                                        title={item.people + ' left'}
+                                        title={item.position + ' left'}
                                             icon={{
                                             name: "people",
                                             type: "ionicon",
@@ -165,7 +199,7 @@ export default class MyQueuesPage extends Component{
                                 </View>
                                 <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center',marginTop:14}}></Icon>
                             </ListItem.Content>
-                            <Text style={{alignSelf:'flex-end',fontSize:14}}>Status: <Text style={{color:'green'}}>Waiting</Text></Text>
+                            {this.lastPerson(item.position)}
                     </ListItem>
             );
         });
