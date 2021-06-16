@@ -127,7 +127,7 @@ export default class MyQueuesPage extends Component{
     _refreshListView() {
         //Start Rendering Spinner
         this.setState({refreshing:true})
-        //do REFRESH WORK
+        this.pullList();
         this.setState({refreshing:false}) //Stop Rendering Spinner
       }
 
