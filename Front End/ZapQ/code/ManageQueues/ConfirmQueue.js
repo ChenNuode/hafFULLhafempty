@@ -47,15 +47,10 @@ export default class ConfirmQueuePage extends Component{
         this.state = {
             name: "",
             description: "",
-            userdata: {username: ""},
         }
     };
 
-    usercall = async () => {
-      await AsyncStorage.getItem('@userinfo').then((res) => {this.setState({userdata: JSON.parse(res)})});
-    };
-
-    createQueue(){
+    createQueue = async () => {
         if(this.state.name == ""){
             Alert.alert(
                 "Error",
@@ -66,17 +61,19 @@ export default class ConfirmQueuePage extends Component{
             );
             return;
         };
-        this.usercall().then(()=>{console.log(this.state.userdata.username)})
-        console.log(this.state.name, this.state.description);
-        console.log(this.props.route.params.lat, this.props.route.params.long);
-        //Tested
-        api.makeQueue(this.state.userdata.username, this.state.name, this.state.description, this.props.route.params.lat, this.props.route.params.long).then((res) => {
-            /*this.setState({
-                error: res.error,
-                resstate: res.state,
-            });*/
-            this.props.navigation.navigate('Created Queues', {});
-        }).catch(() => {Alert.alert('Network error!', 'We are unable to create a queue!')});
+
+        await AsyncStorage.getItem('@userinfo').then((res) => {
+
+            res = JSON.parse(res);
+            //Tested
+            api.makeQueue(res.username, this.state.name, this.state.description, this.props.route.params.lat, this.props.route.params.long).then((res) => {
+                /*this.setState({
+                    error: res.error,
+                    resstate: res.state,
+                });*/
+                this.props.navigation.navigate('Created Queues', {});
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to create a queue!')});
+        });
     }
 
     render(){
