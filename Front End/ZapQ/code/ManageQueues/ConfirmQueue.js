@@ -23,6 +23,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
 
+import * as ImagePicker from 'react-native-image-picker';
 //imports end
 
 // in main js
@@ -45,8 +46,7 @@ export default class ConfirmQueuePage extends Component{
     constructor(props){
         super(props);
         this.state = {
-            name: "",
-            description: "",
+            image: {},
         }
     };
 
@@ -66,7 +66,7 @@ export default class ConfirmQueuePage extends Component{
 
             res = JSON.parse(res);
             //Tested
-            api.makeQueue(res.username, this.state.name, this.state.description, this.props.route.params.lat, this.props.route.params.long).then((res) => {
+            api.makeQueue(res.username, this.state.name, this.state.description, this.props.route.params.lat, this.props.route.params.long, this.state.image).then((res) => {
                 /*this.setState({
                     error: res.error,
                     resstate: res.state,
@@ -76,6 +76,67 @@ export default class ConfirmQueuePage extends Component{
         });
     }
 
+    launchCamera = () => {
+        let options = {
+          storageOptions: {
+            skipBackup: true,
+            path: 'images',
+          },
+        };
+        ImagePicker.launchCamera(options, (response) => {
+          console.log('Response = ', response);
+    
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          } else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+            alert(response.customButton);
+          } else {
+            var imageState = {
+                name: response.assets[0].fileName,
+                type: response.assets[0].type,
+                uri: response.assets[0].uri,
+            }
+            this.setState({
+                image: imageState,
+            });
+          }
+        });
+    }
+
+    launchImageLibrary = () => {
+        let options = {
+          storageOptions: {
+            skipBackup: true,
+            path: 'images',
+          },
+        };
+        ImagePicker.launchImageLibrary(options, (response) => {
+          console.log('Response = ', response);
+    
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          } else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+            alert(response.customButton);
+          } else {
+            var imageState = {
+                name: response.assets[0].fileName,
+                type: response.assets[0].type,
+                uri: response.assets[0].uri,
+            }
+            console.log(imageState);
+            this.setState({
+                image: imageState,
+            });
+          }
+        });
+    }    
+
     render(){
         return(
             <View style={{flex:1}}>
@@ -83,6 +144,8 @@ export default class ConfirmQueuePage extends Component{
                 <TextInput style={styles.input} onChangeText={(text)=>this.setState({name: text})}/>
                 <Text>Queue Description</Text>
                 <TextInput style={styles.input} onChangeText={(text)=>this.setState({description: text})}/>
+               <Button title="Camera" onPress={this.launchCamera}/>
+               <Button title="Gallery" onPress={this.launchImageLibrary}/>
                <Button title="Create Queue" onPress={() => this.createQueue()}/>
            </View>
         )

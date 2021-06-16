@@ -9,6 +9,7 @@ import {
   View,
   ViewBase,
   RefreshControl,
+  Alert,
 } from 'react-native';
 
 import {
@@ -90,13 +91,8 @@ export default class MyQueuesPage extends Component{
     };
 
     componentDidMount(){
-        //API Logic
-        var queues = [
-            {id:1, title: "NEX", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg",people: 200,ETA:25},
-            {id:2, title: "Junction 8", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", people: 150,ETA:25},
-            {id:3, title: "Junction 9",picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", people: 50,ETA:25},
-            {id:4, title: "Junction 10",picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", people: 100,ETA:25},
-        ]
+        this.focusListener = this.props.navigation.addListener('focus', this.pullList)
+
         this.pullList();
     };
 
@@ -152,7 +148,7 @@ export default class MyQueuesPage extends Component{
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
-                    <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.id})}>
+                    <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.queue_id})}>
 
                             <ListItem.Content style={{flexDirection:'row'}}>
                                 <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
@@ -168,12 +164,10 @@ export default class MyQueuesPage extends Component{
                                 </View>
                                 <View style={{flex:1}} >
                                     <ListItem.Title style={{flex:1,fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
-                                    {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
-
                                     <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
                                         <Chip titleStyle={styles.mychip}
                                         buttonStyle={styles.chipbutton}
-                                        title={item.ETA + ' min'}
+                                        title={item.eta + ' min'}
                                             icon={{
                                             name: "timer-sharp",
                                             type: "ionicon",

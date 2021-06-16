@@ -126,9 +126,9 @@ export default class QueueDetailsPage extends Component{
             console.log(res);
 
             Alert.alert('Success', 'Successfullly deleted queue');
+            
+            this.props.navigation.navigate('Created Queues', {});
         }).catch(() => {Alert.alert('Network error!', 'We are unable to end the queue!')});
-
-        this.props.navigation.navigate('Created Queues', {});
     }
 
     checkNextQueuer(){

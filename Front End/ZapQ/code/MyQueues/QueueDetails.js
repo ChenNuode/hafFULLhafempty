@@ -10,6 +10,7 @@ import {
   ViewBase,
   Linking,
   Image,
+  Alert,
 } from 'react-native';
 
 import {
@@ -22,7 +23,10 @@ import {
     Card,
     Icon,
 } from 'react-native-elements';
-
+import api from '../api'
+import GetLocation from 'react-native-get-location'
+import { Directions } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //imports end
 
 // in main js
@@ -45,19 +49,43 @@ export default class QueueDetailsPage extends Component{
         super(props);
         this.state = {
             queue: {},
+            userLocation: {latitude:0,longitude:0},
+            locationReady: false,
         }
     };
 
     componentDidMount(){
         //API Logic
-        var queue = {id:1, title: "NEX", people: 200, latitude: 1.35097, longitude: 103.87227, }
-        this.setState({queue: queue});
+        this.getDetails();
     };
+    
+    getUserCenter = async() => {
+        await GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+        .then(location => {
+            this.setState({userLocation: location, locationReady: true});
+        })
+    }
+
+    getDetails = async () => {
+        api.getQueueInfo(this.props.route.params.id).then((res) => {
+            /*this.setState({
+                error: res.error,
+                resstate: res.state,
+            });*/
+            console.log(res);
+            this.setState({queue: res});
+        }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
+    }
 
     getDirections(){
-        var url = "https://www.google.com/maps/dir/?api=1&origin="+"1.35111"+","+"103.84868"+"&destination="+this.state.queue.latitude+","+this.state.queue.longitude;
-        console.log(url);
-        Linking.openURL(url).catch((err) => console.error('An error occurred', err));
+        this.getUserCenter().then((res) => {
+            var url = "https://www.google.com/maps/dir/?api=1&origin="+this.state.userLocation.latitude+","+this.state.userLocation.longitude+"&destination="+this.state.queue.lati+","+this.state.queue.longi;
+            console.log(url);
+            Linking.openURL(url).catch((err) => console.error('An error occurred', err));
+        })   
     }
 
     //https://www.google.com/maps/dir/?api=1&origin=34.1030032,-118.41046840000001&destination=34.059808,-118.368152
@@ -66,8 +94,24 @@ export default class QueueDetailsPage extends Component{
         //API Call to admit
     }
 
-    leaveQueue(){
+    leaveQueue = async () => {
         //Api call to delete queue
+        await AsyncStorage.getItem('@userinfo').then((res) => {
+            res = JSON.parse(res);
+            console.log(res);
+
+            api.userLeaveQueue(res.username, this.props.route.params.id).then((res) => {
+                /*this.setState({
+                    error: res.error,
+                    resstate: res.state,
+                });*/
+                console.log(res);
+    
+                Alert.alert('Success', 'Successfullly left queue');
+                
+                this.props.navigation.navigate('Queue List', {});
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to leave the queue!')});
+        });
     }
 
     render(){
@@ -110,7 +154,6 @@ export default class QueueDetailsPage extends Component{
                         <Button round raised
                             containerStyle={styles.mycardbutton}
                             icon={<Icon name='code' color='#333234' />}
-                            onPress={() => this.props.navigation.navigate('Queue List', {})}
                             buttonStyle={{backgroundColor:'transparent'}}
                         />
                         <Text>Push me back 5 places</Text>
@@ -120,7 +163,7 @@ export default class QueueDetailsPage extends Component{
                         <Button round raised
                             containerStyle={styles.mycardbutton}
                             icon={<Icon name='code' color='#333234' />}
-                            onPress={() => this.props.navigation.navigate('Queue List', {})}
+                            onPress={() => this.leaveQueue()}
                             buttonStyle={{backgroundColor:'tranparent'}}
                         />
                         <Text>Leave Queue</Text>

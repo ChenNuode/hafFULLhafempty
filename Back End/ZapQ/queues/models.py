@@ -15,3 +15,4 @@ class Queue(models.Model):
     ended = models.BooleanField(default=False)
     users = SortedManyToManyField(User, related_name='queues', null=True, blank=True)
     allusers = SortedManyToManyField(User, related_name='allqueues', null=True, blank=True)
+    image = models.ImageField(upload_to="images/", blank=True, null=True)
