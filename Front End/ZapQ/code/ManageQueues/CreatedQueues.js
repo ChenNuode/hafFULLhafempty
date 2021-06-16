@@ -79,21 +79,8 @@ export default class CreatedQueuesPage extends Component{
                     resstate: res.state,
                 });*/
                 console.log(res);
-                //this.setState({queues: res});
-                this.setState({queues: [
-                    {
-                        queue_id:1,
-                        name:"Nex Dummy Data",
-                        queue_length: 25,
-                    },
-                    {
-                        queue_id:2,
-                        name:"Junction 8 Dummy data",
-                        queue_length: 30,
-                    },
-                ]
-            });
-            }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve request!')});
+                this.setState({queues: res});
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
         });
     }
 
@@ -102,7 +89,7 @@ export default class CreatedQueuesPage extends Component{
     }
 
     componentWillUnmount(){
-        this.focusListener.remove();
+        //this.focusListener.remove();
     }
 
     //useFocusEffect(
