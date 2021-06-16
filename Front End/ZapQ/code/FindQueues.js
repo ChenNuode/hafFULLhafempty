@@ -336,6 +336,7 @@ export default class FindQueuesPage extends Component{
                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                     <ActivityIndicator color="#EE214E" size="large" />
                     <Text h4 style={{marginTop:10}}>Getting your location :)</Text>
+                    <Text h4 style={{marginTop:10}}>(Turn Location Permissions on!)</Text>
                 </View>
             )
         }
