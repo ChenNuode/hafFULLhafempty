@@ -7,17 +7,19 @@ import {
   StyleSheet,
   useColorScheme,
   View,
-  ViewBase,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 
 import {
     Button,
     Text,
     Divider,
-    ListItem,
+    Card,
+    Image,
+    Chip,
+    Icon,
     Avatar,
-    Badge,
 } from 'react-native-elements';
 
 import api from '../api';
@@ -28,32 +30,24 @@ import api from '../api';
 // createBottomTabNavigator{
 //    screen: MyQueuesPage};
 
+var mychipcolor = 'black'
 const styles = StyleSheet.create({
     bigtext: {
         fontSize: 20,
     },
-
+    mychip: {
+        fontSize: 14,
+        fontWeight:'bold',
+        color:mychipcolor,
+    },
+    chipbutton: {
+        //backgroundColor:'#7B68EE','salmon' #6CB4EE 
+        backgroundColor:'#F0F8FF',
+        marginHorizontal:5,
+        padding:5,
+        paddingRight:7
+    },
 });
-
-/*
-const list = [
-    {
-      Q_name: 'Qname 1',
-      Q_initial: 'Q1',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-      Q_description: 'Queue to fk your mom',
-      Q_ppl_left: '7',
-      Q_ETA: '25',
-    },
-    {
-      Q_name: 'Qname 2',
-      Q_initial: 'Q2',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      Q_description: 'Queue to fk your mom again',
-      Q_ppl_left: '3',
-      Q_ETA: '10',
-    },
-]*/
   
 export default class QueueDetailsPage extends Component{
     constructor(props){
@@ -81,22 +75,6 @@ export default class QueueDetailsPage extends Component{
             console.log(res);
             this.setState({queue: res});
         }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
-
-        /*
-        {
-            "name": "yourmom",
-            "desc": "your mom's house",
-            "longi": "0.000000",
-            "lati": "0.000000",
-            "creator": "nude",
-            "eta": 2,
-            "queue_length": 1,
-            "next_user": {
-                "username": "test",
-                "id": 1
-            }
-        }
-        */
     }
 
     admitQueuer(){
@@ -134,25 +112,93 @@ export default class QueueDetailsPage extends Component{
     checkNextQueuer(){
         if(this.state.queue.next_user != null){
             return this.state.queue.next_user.username;
-        } else return "nobody";
+        } else return "Nobody";
+    }
+
+    renderAvatar(uri){
+        if(uri == null){
+            return (
+                <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                    <Avatar rounded size="medium" source={require('../images/defaultQimage2.png')}/>
+                    <Text h3 style={{flex:1,marginLeft:10}}>{this.state.queue.name}</Text>
+                </View>
+            )
+        } else {
+            return (
+                <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                    <Avatar rounded size="medium" source={{uri: api.beurl()+uri}}/>
+                    <Text h3 style={{flexGrow:1,marginLeft:10}}>{this.state.queue.name}</Text>
+                </View>
+            )
+        }
     }
 
     render(){
         return(
-            <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,'color':'#333234'}}>
-                <Text style={{fontSize: 64}}>
-                    Details for {this.state.queue.name} (ID {this.props.route.params.id})
-                </Text>
-                <Text style={{fontSize: 64}}>{this.state.queue.desc}</Text>    
-                <Text style={{fontSize: 32}}>{this.state.queue.queue_length} people in queue</Text>
-                <Text style={{fontSize: 32}}>Next Person is {this.checkNextQueuer()}</Text>
-                <Button title="Admit Queuer" 
-                        onPress={() => this.admitQueuer()}
-                />
-                <Button title="Close Queue" 
-                        onPress={() => this.closeQueue()}
-                />
+ 
+           <View style={{width:'100%',height:'100%','color':'#333234',backgroundColor:'snow',alignItems:'center', justifyContent:'center'}}> 
+                
+                <Card containerStyle={{alignItems:'center',justifyContent:'center',width:'85%',
+                marginBottom:30,paddingVertical:20,paddingHorizontal:10}}>
+                    
+                    <Card.Title style={{width:'100%'}}>
+                        {this.renderAvatar(this.state.queue.image)}
+                    </Card.Title>
+                    <Card.Divider/>
+                                          
+                        <Text style={{marginTop:10,color:'gray',fontSize:14,marginBottom:5}}>Queue Description</Text>
+                        <Text style={{fontSize:18}}>{this.state.queue.desc}</Text>
+
+                        <View style={{marginTop:40,marginBottom:10,width:250}}>
+                            
+                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',padding:5}}>
+                                
+                                {/*<Text style={{fontSize:16,padding:2}}>No of people in Queue: </Text>*/}
+                                <View>
+                                    <Chip titleStyle={styles.mychip}
+                                        buttonStyle={styles.chipbutton}
+                                        title={this.state.queue.queue_length+" in queue"}
+                                            icon={{
+                                            name: "md-people-sharp",
+                                            type: "ionicon",
+                                            size: 32,
+                                            color: mychipcolor,
+                                        }}
+                                    />
+                                </View>
+
+                                {/*<Text h3 style={{flex:1,marginLeft:5,textAlign:'left'}}>{this.state.queue.title}</Text>*/}
+                            </View>
+                            
+                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',padding:5}}>
+                                
+                            <Text style={{fontSize:20,padding:2}}>Next Person is: </Text>
+                            <Text style={{fontSize:22,fontWeight:'bold'}}>{this.checkNextQueuer()}</Text>
+                            </View>
+                            
+                            
+                        </View>
+                </Card>
+                
+                <View style={{flexDirection:'row',justifyContent:'space-around',width:'85%'}}>
+                    
+                    <TouchableOpacity onPress={() => this.admitQueuer()} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
+                        <Icon name='navigate-next' type="material" color='#333234' />
+                        <Text style={{fontSize:14,marginTop:10}}>Admit Next Person</Text>
+                    </TouchableOpacity>
+                    
+                    <Divider orientation="vertical"></Divider>
+            
+                    <TouchableOpacity onPress={() => this.closeQueue()} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
+                        <Icon name='closecircleo' type="antdesign" color='#EE214E' />
+                        <Text style={{fontSize:14,marginTop:10,color:'#EE214E'}}>Close Queue</Text>
+                    </TouchableOpacity>
+
+                </View> 
+                
+                
            </View>
+           
         )
     }
 }

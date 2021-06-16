@@ -141,7 +141,7 @@ export default class CreatedQueuesPage extends Component{
     }
 
     renderBadge(ppl){
-        if(ppl <= 5){
+        if(ppl > 0){
             return (
                 <Badge
                     status="error"
@@ -179,9 +179,9 @@ export default class CreatedQueuesPage extends Component{
                                     <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
                                         
                                         <Chip titleStyle={styles.mychip} 
-                                        buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
+                                        buttonStyle={[styles.chipbutton,{marginVertical:5}]}
                                         
-                                        title={item.queue_length + ' pax'}
+                                        title={item.queue_length + ' in queue'}
                                             icon={{
                                             name: "people",
                                             type: "ionicon",
@@ -254,7 +254,7 @@ export default class CreatedQueuesPage extends Component{
             
             </View>
             <Divider orientation="horizontal" />
-            <View style={{flex:1,width:'100%',marginVertical:10,marginTop:30}}>
+            {/*<View style={{flex:1,width:'100%',marginVertical:10,marginTop:30}}>
                 <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:20}}>Past Created Queues</Text>
                     
                 <View style={{marginBottom:50+10}}>
@@ -270,7 +270,7 @@ export default class CreatedQueuesPage extends Component{
                 }
                 </View>
 
-                </View>
+            </View>*/}
             </ScrollView>
         </View>
         </SafeAreaView>

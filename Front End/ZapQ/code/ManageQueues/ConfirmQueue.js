@@ -3,23 +3,22 @@ import React,{Component} from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
-  useColorScheme,
   View,
-  ViewBase,
-  TextInput,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 
 import {
     Button,
     Text,
     Divider,
-    ListItem,
-    Avatar,
-    Badge,
+    Icon,
+    Input,
+    Image,
+
 } from 'react-native-elements';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
 
@@ -33,13 +32,18 @@ import * as ImagePicker from 'react-native-image-picker';
 
 const styles = StyleSheet.create({
     bigtext: {
-        fontSize: 20,
+      fontSize: 20,
     },
     input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
     },
+    buttone: {
+      alignSelf:'center',
+      width:200,
+      marginBottom:10,
+    }
 });
 
 export default class ConfirmQueuePage extends Component{
@@ -138,14 +142,42 @@ export default class ConfirmQueuePage extends Component{
 
     render(){
         return(
-            <View style={{flex:1}}>
-                <Text>Queue Name</Text>
-                <TextInput style={styles.input} onChangeText={(text)=>this.setState({name: text})}/>
-                <Text>Queue Description</Text>
-                <TextInput style={styles.input} onChangeText={(text)=>this.setState({description: text})}/>
-               <Button title="Camera" onPress={this.launchCamera}/>
-               <Button title="Gallery" onPress={this.launchImageLibrary}/>
-               <Button title="Create Queue" onPress={() => this.createQueue()}/>
+            <View style={{flex:1,paddingVertical:20,paddingHorizontal:15}}>
+                
+                <Text style={{fontSize:24,fontWeight:'bold'}}>Queue Name</Text>
+                <Input
+                  placeholder="E.g. Queue to get TraceTogether Token..."
+                  leftIcon={{ type: 'material-community', name: 'rename-box' }}
+                  onChangeText={(text)=>this.setState({name: text})}
+                  style={{fontSize:16}}
+                />
+              
+                <Text style={{fontSize:24,fontWeight:'bold'}}>Queue Description</Text>
+                <Input
+                  placeholder="Queue Description Here!"
+                  leftIcon={{ type: 'entypo', name: 'text' }}
+                  onChangeText={(text)=>this.setState({description: text})}
+                  style={{fontSize:16}}
+                />
+                <Text style={{fontSize:24,fontWeight:'bold'}}>Upload a Queue Icon</Text>
+                <Text style={{fontSize:14,color:'#333234'}}>If empty, a default picture will be given</Text>
+
+               <View style={{flexDirection:'row',justifyContent:'space-around',width:'85%',marginVertical:30,alignSelf:'center'}}>
+                    <TouchableOpacity onPress={this.launchCamera}>
+                        <Icon name='camera' type="entypo" color='#333234' />
+                        <Text style={{fontSize:14}}>Camera</Text>
+                    </TouchableOpacity>
+                    
+                    <Divider orientation="vertical"></Divider>
+                    
+                    <TouchableOpacity onPress={this.launchImageLibrary}>
+                        <Icon name='photograph' type="fontisto" color='#333234' />
+                        <Text style={{textAlign:'center',fontSize:14}}>Gallery</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <Button round buttonStyle={styles.buttone} title="Create Queue" onPress={() => this.createQueue()}/>
+
            </View>
         )
     }

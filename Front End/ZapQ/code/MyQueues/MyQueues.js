@@ -34,7 +34,7 @@ const Stack = createStackNavigator();
 export default class MyQueuesPage extends Component{
     render(){
         return(
-            <Stack.Navigator>
+            <Stack.Navigator screenOptions={{headerStyle: { backgroundColor: 'snow', }}}>
                 <Stack.Screen name="Queue List" component={QueueListPage} options={{headerShown:false}}/>
                 <Stack.Screen name="Queue Details" component={QueueDetailsPage} />
             </Stack.Navigator>

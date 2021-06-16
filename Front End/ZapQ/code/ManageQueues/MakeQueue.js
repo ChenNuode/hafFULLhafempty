@@ -82,10 +82,14 @@ export default class MakeQueuePage extends Component{
                         longitude: this.state.location.longitude,
                     }}
                     onLocationSelect={({latitude, longitude})=>this.chooseLocation(latitude,longitude)}
+                    buttonStyle={{backgroundColor:'tomato',width:200}}
+                    textStyle={{fontSize:18,fontWeight:'bold',padding:8}}
                 />
+                
             )
         } else {
             return(
+
                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                     <ActivityIndicator color="#EE214E" size="large" />
                     <Text h4 style={{marginTop:10}}>Getting your location :)</Text>

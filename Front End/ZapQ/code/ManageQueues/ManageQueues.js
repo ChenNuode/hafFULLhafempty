@@ -37,8 +37,8 @@ const Stack = createStackNavigator();
 export default class ManageQueuesPage extends Component{
     render(){
         return(
-            <Stack.Navigator>
-                <Stack.Screen name="Created Queues" component={CreatedQueuesPage} options={{headerShown:false}}/>
+            <Stack.Navigator screenOptions={{headerStyle: { backgroundColor: 'snow', }}}>
+                <Stack.Screen name="Created Queues" component={CreatedQueuesPage} options={{headerShown:false,}}/>
                 <Stack.Screen name="Queue Details" component={QueueDetailsPage} />
                 <Stack.Screen name="Make Queue" component={MakeQueuePage} />
                 <Stack.Screen name="Confirm Queue" component={ConfirmQueuePage} />
