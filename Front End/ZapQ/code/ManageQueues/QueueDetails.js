@@ -184,7 +184,7 @@ export default class QueueDetailsPage extends Component{
                     
                     <TouchableOpacity onPress={() => this.admitQueuer()} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
                         <Icon name='navigate-next' type="material" color='#333234' />
-                        <Text style={{fontSize:14,marginTop:10}}>Admit Next Pax</Text>
+                        <Text style={{fontSize:14,marginTop:10}}>Admit Next Person</Text>
                     </TouchableOpacity>
                     
                     <Divider orientation="vertical"></Divider>

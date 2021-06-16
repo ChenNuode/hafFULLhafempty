@@ -239,14 +239,14 @@ export default class QueueDetailsPage extends Component{
                     
                     <TouchableOpacity onPress={() => this.getDirections()} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
                         <Icon name='map' type="entypo" color='#333234' />
-                        <Text style={{fontSize:14,marginTop:10}}>Get directions</Text>
+                        <Text style={{fontSize:14,marginTop:10}}>Get Directions</Text>
                     </TouchableOpacity>
                     
                     <Divider orientation="vertical"></Divider>
                     
                     <TouchableOpacity onPress={()=> this.pushQueue()} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
                         <Icon name='push-outline' type="ionicon" color='#333234' />
-                        <Text style={{textAlign:'center',fontSize:12}}>Push me{"\n"}back 5 places</Text>
+                        <Text style={{textAlign:'center',fontSize:12}}>Push Me{"\n"}Back 5 Places</Text>
                     </TouchableOpacity>
                     
                     <Divider orientation="vertical"></Divider>
