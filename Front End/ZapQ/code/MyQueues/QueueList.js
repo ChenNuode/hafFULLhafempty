@@ -94,23 +94,22 @@ export default class MyQueuesPage extends Component{
         this.focusListener = this.props.navigation.addListener('focus', this.pullList)
 
         this.pullList();
+
+        this.updateTimer = setInterval(() => this.pullList(), 7000);
+
+        this.focusListener = this.props.navigation.addListener('blur', ()=>{clearInterval(this.updateTimer)})
     };
 
-
     pullList = async () => {
-        console.log("pull");
-
         await AsyncStorage.getItem('@userinfo').then((res) => {
 
             res = JSON.parse(res);
-            console.log(res);
             api.userQueuedInfo(res.username).then((res) => {
 
                 /*this.setState({
                     error: res.error,
                     resstate: res.state,
                 });*/
-                console.log(res);
                 this.setState({queues: res});
             }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
         });

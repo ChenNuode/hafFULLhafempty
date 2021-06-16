@@ -30,16 +30,6 @@ import GetLocation from 'react-native-get-location'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api, {beurl} from './api';
 
-const searchList1 = [
-    {title: "NEX", id: 0, latitude: 1.35097, longitude: 103.87227,},
-    {title: "Junction 8", id: 1, latitude: 1.35111, longitude: 103.84868, },
-]
-
-const searchList2 = [
-    {title: "Junction 9", id: 2, latitude: 1.35097, longitude: 103.87227,},
-    {title: "Junction 10", id: 3, latitude: 1.35111, longitude: 103.84868, },
-]
-
 const styles = StyleSheet.create({
     tinyLogo: {
       width: 40,
@@ -167,11 +157,14 @@ export default class FindQueuesPage extends Component{
         this.focusListener = this.props.navigation.addListener('focus', this.userCenterMap)
         
         this.getUserCenter().then(() => {this.findQueues()});
+
+        this.updateTimer = setInterval(() => this.findQueues(), 7000);
+        
+        this.focusListener = this.props.navigation.addListener('blur', ()=>{clearInterval(this.updateTimer)})
     };
 
     findQueues = async () => {
         //API Logic]
-        console.log("FIND");
         await api.nearbyQueues(this.state.location.latitude, this.state.location.longitude).then((res) => {
             /*this.setState({
                 error: res.error,

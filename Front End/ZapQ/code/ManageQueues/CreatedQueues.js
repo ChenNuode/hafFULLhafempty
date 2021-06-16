@@ -101,19 +101,15 @@ export default class CreatedQueuesPage extends Component{
     };
 
     pullList = async () => {
-        console.log("pull");
-
         await AsyncStorage.getItem('@userinfo').then((res) => {
 
             res = JSON.parse(res);
-            console.log(res);
             api.listMadeQueues(res.username).then((res) => {
                 
                 /*this.setState({
                     error: res.error,
                     resstate: res.state,
                 });*/
-                console.log(res);
                 this.setState({queues: res});
             }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
         });
@@ -121,10 +117,10 @@ export default class CreatedQueuesPage extends Component{
 
     componentDidMount(){
         this.focusListener = this.props.navigation.addListener('focus', this.pullList)
-    }
+        
+        this.updateTimer = setInterval(() => this.pullList(), 7000);
 
-    componentWillUnmount(){
-        //this.focusListener.remove();
+        this.focusListener = this.props.navigation.addListener('blur', ()=>{clearInterval(this.updateTimer)})
     }
 
     //useFocusEffect(
