@@ -158,6 +158,26 @@ export default class QueueDetailsPage extends Component{
         this.setState({refreshing:false}) //Stop Rendering Spinner
       }
 
+    renderImage(uri){
+        if(uri == null){
+            return (
+                    <Image
+                        style={{width:100,height:100,alignSelf:'center',borderRadius:50}}
+                        source={require('../images/defaultQimage2.png')}
+                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('../images/defaultQimage2.png')}></Image>}
+                    />
+            )
+        } else {
+            return (
+                    <Image
+                        style={{width:100,height:100,alignSelf:'center',borderRadius:50}}
+                        source={{uri: api.beurl()+uri}}
+                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('../images/defaultQimage2.png')}></Image>}
+                    />
+            )
+        }
+    }
+
     render(){
         return(  
             <View style={{width:'100%',height:'100%','color':'#333234',backgroundColor:'snow'}}> 
@@ -167,10 +187,7 @@ export default class QueueDetailsPage extends Component{
                 marginBottom:30,paddingVertical:20,paddingHorizontal:10}}>
                     <Card.Title h3>{this.state.queue.name}</Card.Title>
                     <Card.Divider/>
-                        
-                        <Image source={require('../images/defaultQimage2.png')} 
-                        style={{width:100,height:100,alignSelf:'center'}} />
-                        
+                        {this.renderImage(this.state.queue.image)}
                         
                         <View style={{marginTop:10,marginBottom:10,width:250}}>
                             
@@ -184,7 +201,7 @@ export default class QueueDetailsPage extends Component{
                                             icon={{
                                             name: "timer-sharp",
                                             type: "ionicon",
-                                            size: 20,
+                                            size: 32,
                                             color: mychipcolor,
                                         }}
                                     />
@@ -200,7 +217,7 @@ export default class QueueDetailsPage extends Component{
                                             icon={{
                                             name: "people",
                                             type: "ionicon",
-                                            size: 20,
+                                            size: 32,
                                             color: mychipcolor,
                                         }}
                                         />
