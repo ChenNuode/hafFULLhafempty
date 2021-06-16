@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     tinyuserlogo: {
         width: 35,
         height: 35,
-        //aspect ratio of w-h 
+        //aspect ratio of w-h
       },
     Ocontainer : {
         width:"80%",
@@ -96,7 +96,7 @@ export default class FindQueuesPage extends Component{
 
         if(search == "") this.setState({searchResults: []});
     };
-    
+
     getUserCenter(){
         GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
@@ -147,7 +147,7 @@ export default class FindQueuesPage extends Component{
                         <Text style={styles.bigtext}>"l.Q_ETAmin"</Text>*/}
                     </ListItem>
                 );
-            });   
+            });
         };
     }
 
@@ -178,7 +178,7 @@ export default class FindQueuesPage extends Component{
     _keyboardDidShow(){
         this.setState({keyboardstate: true});
     };
-    
+
     _keyboardDidHide(){
         this.setState({keyboardstate: false});
     };
@@ -200,12 +200,12 @@ export default class FindQueuesPage extends Component{
     makeMarkers(){
         return this.state.markerdata.map((item) => {
             return (
-                <Marker 
+                <Marker
                     coordinate = {{latitude: item.latitude, longitude: item.longitude}}
                     pinColor = {"red"}
                     key={item.id} //threw an warning just now, about unpromised
                     onPress={() => this.markerPress(item)}
-                    
+
                 >
                 <View>
                     <Image
@@ -218,7 +218,7 @@ export default class FindQueuesPage extends Component{
                 </Marker>
             );
         }).concat((
-            <Marker 
+            <Marker
                 coordinate = {this.state.userLocation}
                 pinColor = {"blue"}
                 key={0}
@@ -264,8 +264,8 @@ export default class FindQueuesPage extends Component{
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={{ height: '100%', width: '100%'}}>
                 <View style={{width: "100%", zIndex:2, elevation:2, position: "absolute", backgroundColor:"snow",paddingTop:20,paddingHorizontal:14,'color':'#333234'}}>
-                    <Text h2>Explore Queues</Text>    
-                    <SearchBar  
+                    <Text h2>Explore Queues</Text>
+                    <SearchBar
                         placeholder="What would you like to join?"
                         onChangeText={(res) => this.updateSearch(res)}
                         value={this.state.search}
@@ -282,7 +282,7 @@ export default class FindQueuesPage extends Component{
                 {this.mapRender()}            
                 <FAB title={<Icon type='material-community' name='crosshairs-gps' size={30} />} color="tomato" style={{zIndex:2, elevation:2, position: "absolute", bottom: "5%", right: "10%"}} onPress={() => this.userCenterMap()} buttonStyle={styles.myFAB} containerStyle={{justifyContent:'center',alignItems:'center'}}/>
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
-                    
+
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>
                         <Avatar rounded size="medium" source={{
                                 uri: this.state.overlaydata.picurl,
@@ -290,26 +290,26 @@ export default class FindQueuesPage extends Component{
                         />
                         <Text h3 style={{marginLeft:5}}>{this.state.overlaydata.title}</Text>
                     </View>
-                    
+
                     <View style={{flex:3,}}>
                         <Text style={{marginTop:10,color:'gray',fontSize:14,marginBottom:5}}>Queue Description</Text>
                         <Text style={{fontSize:16}}>{this.state.overlaydata.description}</Text>
                     </View>
-                    
+
                     <View style={{flex:2,justifyContent:'center',}}>
-                        
+
                         <View style={{flexDirection:'row'}}>
                             <View style={{flex:1,alignItems:'center'}}>
                                 <Text style={{fontWeight:'bold',fontSize:30}}>{this.state.overlaydata.peopleinQ}</Text>
                                 <Text style={{fontSize:16}}>No. In Queue</Text>
-                            </View>     
+                            </View>
                             <View style={{flex:1,alignItems:'center'}}>
                                 <Text style={{fontWeight:'bold',fontSize:30}}>{this.state.overlaydata.ETA}</Text>
                                 <Text style={{fontSize:16}}>ETA</Text>
                             </View>
                         </View>
                     </View>
-                    
+
                     <View style={{height:60,justifyContent:'center',alignItems:'center',paddingTop:10}}>
                         <Button containerStyle={{borderRadius:5}} titleStyle={{color:'black',fontSize:20}} round title="Join Queue"
                                 onPress={() => this.queueUp()} buttonStyle={{ width:160,backgroundColor:"#2CB76B"}}/>

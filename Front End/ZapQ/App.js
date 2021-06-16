@@ -25,7 +25,6 @@ export default class App extends Component {
 
 
   componentDidMount(){
-    this.userdestroy();
     this.usercall();
   };
 
