@@ -1,3 +1,6 @@
+// This is the map picker
+
+
 import React,{Component} from 'react';
 
 import {
