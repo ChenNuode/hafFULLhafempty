@@ -28,7 +28,7 @@ import {
 import MapView, {Marker} from "react-native-maps";
 import GetLocation from 'react-native-get-location'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from './api';
+import api, {beurl} from './api';
 
 const searchList1 = [
     {title: "NEX", id: 0, latitude: 1.35097, longitude: 103.87227,},
@@ -232,6 +232,46 @@ export default class FindQueuesPage extends Component{
         });
     }
 
+    renderImage(uri){
+        if(uri == null){
+            return (
+                <View>
+                    <Image
+                        style={styles.tinyLogo}
+                        source={require('./images/defaultQimage2.png')}
+                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/defaultQimage2.png')}></Image>}
+                    />
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <Image
+                        style={styles.tinyLogo}
+                        source={{uri: api.beurl()+uri}}
+                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/defaultQimage2.png')}></Image>}
+                    />
+                </View>
+            )
+        }
+    }
+
+    renderAvatar(uri){
+        if(uri == null){
+            return (
+                <View>
+                    <Avatar rounded size="medium" source={require('./images/defaultQimage2.png')}/>
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <Avatar rounded size="medium" source={{uri: api.beurl()+uri}}/>
+                </View>
+            )
+        }
+    }
+
     makeMarkers(){
         return this.state.markerdata.map((item) => {
             return (
@@ -240,14 +280,7 @@ export default class FindQueuesPage extends Component{
                     key={item.queue_id} //threw an warning just now, about unpromised
                     onPress={() => this.markerPress(item.queue_id)}
                 >
-                <View>
-                    <Image
-                        style={styles.tinyLogo}
-                        //source={{uri: item.picurl }}
-                        source={require('./images/defaultQimage2.png')}
-                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/defaultQimage2.png')}></Image>}
-                    />
-                </View>
+                {this.renderImage(item.image)}
                 </Marker>
             );
         }).concat((
@@ -339,10 +372,7 @@ export default class FindQueuesPage extends Component{
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
 
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>
-                        {/*<Avatar rounded size="medium" source={{
-                                uri: this.state.overlaydata.picurl,
-                            }}
-                        />*/}
+                        {this.renderAvatar(this.state.overlaydata.image)}
                         <Text h3 style={{marginLeft:5}}>{this.state.overlaydata.name}</Text>
                     </View>
                     
