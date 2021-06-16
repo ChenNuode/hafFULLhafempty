@@ -146,7 +146,7 @@ export default class ConfirmQueuePage extends Component{
                 
                 <Text style={{fontSize:24,fontWeight:'bold'}}>Queue Name</Text>
                 <Input
-                  placeholder="E.g. Queue to get Trace Together Token..."
+                  placeholder="E.g. Queue to get TraceTogether Token..."
                   leftIcon={{ type: 'material-community', name: 'rename-box' }}
                   onChangeText={(text)=>this.setState({name: text})}
                   style={{fontSize:16}}
@@ -154,13 +154,13 @@ export default class ConfirmQueuePage extends Component{
               
                 <Text style={{fontSize:24,fontWeight:'bold'}}>Queue Description</Text>
                 <Input
-                  placeholder="Queue Description here!"
+                  placeholder="Queue Description Here!"
                   leftIcon={{ type: 'entypo', name: 'text' }}
                   onChangeText={(text)=>this.setState({description: text})}
                   style={{fontSize:16}}
                 />
-                <Text style={{fontSize:24,fontWeight:'bold'}}>Upload a Queue Avatar</Text>
-                <Text style={{fontSize:14,color:'#333234'}}>If not a default one will be given</Text>
+                <Text style={{fontSize:24,fontWeight:'bold'}}>Upload a Queue Icon</Text>
+                <Text style={{fontSize:14,color:'#333234'}}>If empty, a default picture will be given</Text>
 
                <View style={{flexDirection:'row',justifyContent:'space-around',width:'85%',marginVertical:30,alignSelf:'center'}}>
                     <TouchableOpacity onPress={this.launchCamera}>
