@@ -6,6 +6,7 @@ import {
     StyleSheet,
 } from 'react-native';
 import api from './api';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {
     Text,
@@ -13,6 +14,7 @@ import {
     ListItem,
     Image,
     Icon,
+    Divider,
 } from 'react-native-elements';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -58,10 +60,12 @@ export default class AccountPage extends Component{
   
   render() {
     return(
-      <SafeAreaView style={{width:"100%",height:"100%"}}>
-      <View style={{paddingVertical:20,paddingHorizontal:15,backgroundColor:'snow',flex:1,justifyContent:'flex-start','color':'#333234'}}>
-        <Text h2 style={{marginBottom:10}}>Account Settings</Text>
-        
+      <SafeAreaView style={{width:"100%",height:"100%"}}> 
+      
+      <View style={{paddingTop:20,paddingHorizontal:15,paddingBottom:10,justifyContent:'flex-end',height:100,backgroundColor:'snow'}}>
+          <Text h2 style={{color:"black"}}>Account Settings</Text>
+      </View>
+      <View style={{backgroundColor:'snow',flex:1,justifyContent:'flex-start','color':'#333234',paddingTop:10,paddingHorizontal:15}}>
         <ScrollView style={{height:'100%'}}>
           <Image
             source={require('./images/QueueArtSetting.png')}

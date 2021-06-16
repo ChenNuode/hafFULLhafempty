@@ -11,6 +11,7 @@ import {
   useColorScheme,
   View,
   ViewBase,
+  ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -38,26 +39,6 @@ const styles = StyleSheet.create({
     },
 
 });
-
-/*
-const list = [
-    {
-      Q_name: 'Qname 1',
-      Q_initial: 'Q1',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-      Q_description: 'Queue to fk your mom',
-      Q_ppl_left: '7',
-      Q_ETA: '25',
-    },
-    {
-      Q_name: 'Qname 2',
-      Q_initial: 'Q2',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      Q_description: 'Queue to fk your mom again',
-      Q_ppl_left: '3',
-      Q_ETA: '10',
-    },
-]*/
   
 export default class MakeQueuePage extends Component{
     constructor(props){
@@ -82,12 +63,6 @@ export default class MakeQueuePage extends Component{
 
     componentDidMount(){
         //API Logic
-        var queues = [
-            {id:1, title: "NEX", people: 200},
-            {id:2, title: "Junction 8", people: 150},
-            {id:3, title: "Junction 9", people: 50},
-            {id:4, title: "Junction 10", people: 100},
-        ]
 
         this.getMapCenter();
     };
@@ -111,7 +86,10 @@ export default class MakeQueuePage extends Component{
             )
         } else {
             return(
-                <Text>Loading Map</Text>
+                <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                    <ActivityIndicator color="#EE214E" size="large" />
+                    <Text h4 style={{marginTop:10}}>Getting your location :)</Text>
+                </View>
             )
         }
     }
