@@ -40,6 +40,19 @@ class QueueMake(APIView):
         }
         return JsonResponse(returndata, status=201)
 
+class QueueMade(APIView):
+    def post(self, request):
+        data = self.request.data
+        user = User.objects.get(username=data.get('username'))
+        queues = Queue.objects.filter(creator=user)
+        data = [{
+            'queue_id': queue.id,
+            'lati': queue.lati,
+            'longi': queue.longi,
+            'name': queue.name
+            } for queue in queues]
+        return JsonResponse(data, status=201, safe=False)
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class QueueCreator(APIView):
