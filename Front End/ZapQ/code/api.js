@@ -190,10 +190,24 @@ var api = {
 		}).then((res) => res.json());
 	},
 	//submit coords of where u are and receive list of queue info(name, lati, longi, queue_id)
-	userQueueInfo(username){
+	userQueuedInfo(username){
 		var furl = beurl.concat('/queues/user/get_queue/')
 		var fs = new FormData();
 		fs.append('username', username);
+		return fetch(furl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: fs
+		}).then((res) => res.json());
+	},
+	//submit username, receive list of all queue info of the queues user is in
+	userQueueInfo(queue_id){
+		var furl = beurl.concat('/queues/user/get_queue_info/')
+		var fs = new FormData();
+		fs.append('queue_id', queue_id);
 		return fetch(furl, {
 			method: 'POST',
 			headers: {

@@ -11,6 +11,7 @@ import {
   ViewBase,
   Alert,
   RefreshControl,
+  Avatar,
 } from 'react-native';
 
 import {
@@ -26,6 +27,8 @@ import api from '../api';
 import { useFocusEffect } from '@react-navigation/native';
 //imports end
 
+var mychipcolor = "black";
+
 const styles = StyleSheet.create({
     bigtext: {
         fontSize: 20,
@@ -37,6 +40,34 @@ const styles = StyleSheet.create({
         //borderColor: '#2CB76B',
         alignItems:'center',
         justifyContent:'center',
+    },
+    mylabeltext: {
+        fontSize: 16,
+        color:'#333234',
+    },
+    listitemstyles: {
+        paddingVertical:5,
+        width:'99%',
+        alignSelf:'center',
+        borderRadius:10,
+        marginBottom:10,
+        shadowColor: '#470000',
+        shadowOffset: {width: 0, height: 3},
+        shadowOpacity: 0.7,
+        elevation: 3,
+        flexDirection:'column',
+    },
+    mychip: {
+        fontSize: 14,
+        fontWeight:'bold',
+        color:mychipcolor,
+    },
+    chipbutton: {
+        //backgroundColor:'#7B68EE','salmon' #6CB4EE 
+        backgroundColor:'#F0F8FF',
+        marginHorizontal:0,
+        padding:5,
+        paddingRight:7
     }
 
 });
@@ -99,22 +130,49 @@ export default class CreatedQueuesPage extends Component{
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
-                <ListItem key={i} onPress={() => this.props.navigation.navigate('Queue Details', {id: item.queue_id})} bottomDivider raised>
                     
-                    <ListItem.Content style={{flexDirection:'row'}}>
-                        <View style={{flex:1}} >
-                            <ListItem.Title style={{fontWeight: "bold"}}>{item.name}</ListItem.Title>
-                            <Text style={styles.bigtext}>{item.queue_length}</Text>
-                        </View>
-                        <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center'}}></Icon>
-                    </ListItem.Content>
+                   
                     
-                </ListItem>
-                
-                /*<Marker coordinate = {{latitude: item.latitude, longitude: item.longitude}}
-                        pinColor = {"red"}
-                        key={item.id}
-                        onPress={() => this.markerPress(item)}/>*/
+                <ListItem key={i} underlayColor="transparent" containerStyle={styles.listitemstyles} onPress={() => this.props.navigation.navigate('Queue Details', {id:item.queue_id})}>
+                        
+                            <ListItem.Content style={{flexDirection:'row'}}>
+                                <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
+                                    <Avatar rounded size="medium"
+                                    source={require("../images/defaultQimage2.png")}
+                                    />
+                                    
+                                    <Badge
+                                        status="error"
+                                        value=""
+                                        containerStyle={{ position: 'absolute', top: -2, left: -2 }}
+                                    />
+                                </View>
+                                <View style={{flex:1}} > 
+                                    <ListItem.Title style={{fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
+                                    {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
+                                    
+                                    <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
+                                        
+                                        <Chip titleStyle={styles.mychip} 
+                                        buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
+                                        
+                                        title={item.queue_length + 'people in queue'}
+                                            icon={{
+                                            name: "people",
+                                            type: "ionicon",
+                                            size: 20,
+                                            color: mychipcolor,
+                                        }}
+                                        />
+                                        
+                                    </View>
+                                    
+                                    
+                                </View>
+                                <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center',marginTop:14}}></Icon>
+                            </ListItem.Content>
+                            <Text style={{alignSelf:'flex-end',fontSize:14}}>Status: <Text style={{color:'green'}}>Waiting</Text></Text>
+                    </ListItem>
             );
         });    
     }
