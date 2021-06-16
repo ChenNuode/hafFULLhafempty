@@ -44,7 +44,7 @@ class QueueMade(APIView):
     def post(self, request):
         data = self.request.data
         user = User.objects.get(username=data.get('username'))
-        queues = Queue.objects.filter(creator=user)
+        queues = Queue.objects.filter(creator=user, ended=False)
         data = [{
             'queue_id': queue.id,
             'queue_length': queue.users.count(),
