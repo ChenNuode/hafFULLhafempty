@@ -17,6 +17,8 @@ import {
     ListItem,
     Avatar,
     Badge,
+    Chip,
+    Icon,
 } from 'react-native-elements';
 
 //imports end
@@ -26,17 +28,51 @@ import {
 // createBottomTabNavigator{
 //    screen: MyQueuesPage};
 
+var mychipcolor = "rgb(250,250,250)";
+
 const styles = StyleSheet.create({
-    bigtext: {
-        fontSize: 20,
+    mylabeltext: {
+        fontSize: 16,
+        color:'#333234',
     },
+    listitemstyles: {
+        paddingVertical:5,
+        width:'99%',
+        alignSelf:'center',
+        borderRadius:10,
+        marginBottom:10,
+        shadowColor: '#470000',
+        shadowOffset: {width: 0, height: 3},
+        shadowOpacity: 0.7,
+        elevation: 3,
+        flexDirection:'column',
+    },
+    mychip: {
+        fontSize: 14,
+        fontWeight:'bold',
+        color:mychipcolor,
+    },
+    chipbutton: {
+        //backgroundColor:'#7B68EE','salmon'
+        backgroundColor:'rgb(50,50,205)',
+        marginHorizontal:0,
+        padding:5,
+        paddingRight:7
+    }
 
 });
 
-
-var Qlist = [
-    {id: 1, title: "NEX", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "Serangoon", peopleinQ:5, ETA:25},
-    {id: 2, title: "Junction 8", picurl:"https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg", description: "This is the Queue to Junction 8 shopping centre at Bishan. Built in 1993. This school is popularly visited by the Bgay", peopleinQ:5, ETA:25},
+var Historylist = [
+    {
+      name: 'Nex',
+      avatar_url: '',
+      subtitle: 'Timestamp when user finished this queue'
+    },
+    {
+      name: 'Junction 9',
+      avatar_url: '',
+      subtitle: '20/12/20 9:00:00pm'
+    },
 ]
 
 export default class MyQueuesPage extends Component{
@@ -61,35 +97,97 @@ export default class MyQueuesPage extends Component{
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
-                <ListItem key={i} style={{marginBottom:10,borderWidth:0.5,borderRadius:5}}>
-                    <ListItem.Content>
-                        <ListItem.Title style={{fontWeight: "bold",color:"#EE214E",fontSize:25}}>{item.title}</ListItem.Title>
-                        {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
-                    </ListItem.Content>
-                    
-                    <Text style={styles.bigtext}>{item.people}</Text>
-                    <Text style={styles.bigtext}>"l.Q_ETAmin"</Text>
-                </ListItem>
-                
+                    <ListItem key={i} containerStyle={styles.listitemstyles}>
+                        
+                            <ListItem.Content style={{flexDirection:'row'}}>
+                                <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
+                                    <Avatar rounded size="medium"
+                                    source={require("./images/defaultQimage.png")}
+                                    />
+                                    
+                                    <Badge
+                                        status="error"
+                                        value=" "
+                                        containerStyle={{ position: 'absolute', top: -4, left: -4 }}
+                                    />
+                                </View>
+                                <View style={{flex:1}} > 
+                                    <ListItem.Title style={{flex:1,fontWeight: "bold",color:"black",fontSize:25}}>{item.title}</ListItem.Title>
+                                    {/*<ListItem.Subtitle>{item.people}</ListItem.Subtitle>*/}
+                                    
+                                    <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
+                                        <Chip titleStyle={styles.mychip}
+                                        buttonStyle={styles.chipbutton}
+                                        title={item.ETA + ' min'}
+                                            icon={{
+                                            name: "timer-sharp",
+                                            type: "ionicon",
+                                            size: 20,
+                                            color: mychipcolor,
+                                        }}
+                                        />
+                                        <Chip titleStyle={styles.mychip} 
+                                        buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
+                                        
+                                        title={item.people + ' left'}
+                                            icon={{
+                                            name: "people",
+                                            type: "ionicon",
+                                            size: 20,
+                                            color: mychipcolor,
+                                        }}
+                                        />
+                                        
+                                    </View>
+                                    
+                                    
+                                </View>
+                                <Icon type="antdesign" name="right" containerStyle={{alignSelf:'center',marginTop:14}}></Icon>
+                            </ListItem.Content>
+                            <Text style={{alignSelf:'flex-end',fontSize:14}}>Status: <Text style={{color:'green'}}>Waiting</Text></Text>
+                    </ListItem>
             );
         });    
     }
-
+    
     render(){
         return(
-            <View style={{flex:1,alignItems: 'flex-start',paddingVertical:20,paddingHorizontal:10,backgroundColor:'white'}}>
+            <SafeAreaView style={{width:"100%",height:"100%"}}>
+            
+            <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:'snow'}}>
+               
                <Text h2>
                    My Queues
                </Text>
-               <View style={{flex:1,width:'100%',marginTop:20}}>
-                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Current Queues</Text>
-                    {this.displayQueues()}
+               <ScrollView containerStyle={{alignItems: 'flex-start'}}>
+               <View style={{flex:1,width:'100%',marginVertical:20,marginBottom:10}}>
+                
+                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:15}}>Current Queues</Text>
+                   
+                        {this.displayQueues()}
                 </View>
-                {/*<View style={{flex:2,width:'100%',marginTop:50}}>
-                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Past Queues</Text>
-                    {this.displayQueues()}
-                </View>*/}
+                <Divider orientation="horizontal" />
+                <View style={{flex:1,width:'100%',marginVertical:20}}>
+                <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10}}>Queue History</Text>
+                    
+                <View style={{marginBottom:50+10}}>
+                {
+                    Historylist.map((l, i) => (
+                    <ListItem key={i} bottomDivider>
+                        <Avatar source={{uri: "https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg"}} size='small' />
+                        <ListItem.Content>
+                        <ListItem.Title style={{fontSize:20}}>{l.name}</ListItem.Title>
+                        <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
+                        </ListItem.Content>
+                    </ListItem>
+                    ))
+                }
+                </View>
+
+                </View>
+                </ScrollView>
            </View>
+           </SafeAreaView>
         )
     }
 }
