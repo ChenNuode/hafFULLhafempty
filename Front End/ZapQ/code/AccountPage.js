@@ -19,13 +19,6 @@ import {
     Badge,
 } from 'react-native-elements';
 
-//imports end
-
-// in main js
-// import MyQueuesPage from 'MyQueues.js';
-// createBottomTabNavigator{
-//    screen: MyQueuesPage};
-
 const styles = StyleSheet.create({
     bigtext: {
         fontSize: 20,
@@ -33,24 +26,6 @@ const styles = StyleSheet.create({
 
 });
 
-/*
-const list = [
-    {
-      Q_name: 'Qname 1',
-      Q_initial: 'Q1',
-      Q_description: 'Queue to fk your mom',
-      Q_ppl_left: '7',
-      Q_ETA: '25',
-    },
-    {
-      Q_name: 'Qname 2',
-      Q_initial: 'Q2',
-      Q_description: 'Queue to fk your mom again',
-      Q_ppl_left: '3',
-      Q_ETA: '10',
-    },
-]*/
-  
 export default class AccountPage extends Component{
         
     render(){
