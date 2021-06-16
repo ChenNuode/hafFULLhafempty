@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     path('business/create_queue/', QueueMake.as_view()),
     path('business/my_queue/', QueueCreator.as_view()),
+    path('business/list_queue/', QueueMade.as_view()),
     path('business/advance_queue/', QueueNext.as_view()),
     path('business/end_queue/', QueueEnd.as_view()),
     path('business/pause_queue/', QueuePause.as_view()),

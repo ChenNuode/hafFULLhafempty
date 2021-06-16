@@ -5,7 +5,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { enableScreens } from 'react-native-screens';
 import MyQueuesPage from './MyQueues/MyQueues';
+<<<<<<< HEAD
 //import MyQueuesPage from './MyQueues/MyQueues';
+=======
+>>>>>>> 7c984431c5a1f390fea9133179351caf3414defd
 import FindQueuesPage from './FindQueues';
 import ManageQueuesPage from './ManageQueues/ManageQueues';
 import AccountPage from './account';
