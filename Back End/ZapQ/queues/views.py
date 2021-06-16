@@ -47,8 +47,7 @@ class QueueMade(APIView):
         queues = Queue.objects.filter(creator=user)
         data = [{
             'queue_id': queue.id,
-            'lati': queue.lati,
-            'longi': queue.longi,
+            'queue_length': queue.users.count(),
             'name': queue.name
             } for queue in queues]
         return JsonResponse(data, status=201, safe=False)
@@ -61,6 +60,16 @@ class QueueCreator(APIView):
         queue_id = data.get('queue_id')
         queue = Queue.objects.get(id=queue_id)
         data = QueueInfo(queue).data
+        queue_length = queue.users.count()
+        try:
+            next_user = queue.users.all()[0]
+        except:
+            next_user = None
+        data['queue_length'] = queue_length
+        if next_user:
+            data['next_user'] = {'username': next_user.username, 'id': next_user.id}
+        else:
+            data['next_user'] = None
         return JsonResponse(data, status=201)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -69,9 +78,31 @@ class QueueNext(APIView):
         data = self.request.data
         queue_id = data.get('queue_id')
         queue = Queue.objects.get(id=queue_id)
-        user_to_remove = queue.users.all()[0]
-        queue.users.remove(user_to_remove)
-        data = {"message": "Queue has proceeded"}
+        a = True
+        b = True
+        try:
+            user_to_remove = queue.users.all()[0]
+        except:
+            user_to_remove = None
+            a = False
+        try:
+            next_user = queue.users.all()[1]
+        except:
+            next_user = None
+            b = False
+        if a:
+            queue.users.remove(user_to_remove)
+        if b:
+            next_user_data = {
+                "username": next_user.username,
+                "id": next_user.id
+                }
+        else:
+            next_user_data = None
+        data = {
+            "message": "Queue has proceeded",
+            "next_user": next_user_data
+            }
         return JsonResponse(data, status=201)
 
 
