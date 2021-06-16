@@ -11,7 +11,8 @@ import {
   Linking,
   Image,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 
 import {
@@ -23,6 +24,7 @@ import {
     Badge,
     Card,
     Icon,
+    Chip,
 } from 'react-native-elements';
 import api from '../api'
 import GetLocation from 'react-native-get-location'
@@ -34,10 +36,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // import MyQueuesPage from 'MyQueues.js';
 // createBottomTabNavigator{
 //    screen: MyQueuesPage};
-
+var mychipcolor = 'black'
 const styles = StyleSheet.create({
     bigtext: {
         fontSize: 20,
+    },
+    mychip: {
+        fontSize: 14,
+        fontWeight:'bold',
+        color:mychipcolor,
+    },
+    chipbutton: {
+        //backgroundColor:'#7B68EE','salmon' #6CB4EE 
+        backgroundColor:'#F0F8FF',
+        marginHorizontal:5,
+        padding:5,
+        paddingRight:7
     },
 });
   
@@ -111,28 +125,77 @@ export default class QueueDetailsPage extends Component{
         });
     }
 
+    _refreshControl() {
+        return (
+            <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={()=>this._refreshListView()} />
+        )
+    };
+
+    _refreshListView() {
+        //Start Rendering Spinner
+        this.setState({refreshing:true})
+        //do REFRESH WORK
+        this.setState({refreshing:false}) //Stop Rendering Spinner
+      }
+
     render(){
-        return(
-            <View style={{flex:1,'color':'#333234',backgroundColor:'snow',justifyContent:'center',alignItems:'center',height:'100%',width:'100%'}}>
+        return(  
+            <View style={{width:'100%',height:'100%','color':'#333234',backgroundColor:'snow'}}> 
+                <ScrollView style={{width:'100%'}} contentContainerStyle={{flexGrow:1,alignItems:'center', justifyContent:'center'}} refreshControl={this._refreshControl()} > 
                 
                 <Card containerStyle={{alignItems:'center',justifyContent:'center',width:'85%',
                 marginBottom:30,paddingVertical:20,paddingHorizontal:10}}>
-                    <Card.Title h3>My Queue Ticket</Card.Title>
+                    <Card.Title h3>{this.state.queue.title}</Card.Title>
                     <Card.Divider/>
-                    
+                        
                         <Image source={require('../images/defaultQimage2.png')} 
                         style={{width:100,height:100,alignSelf:'center'}} />
                         
-                        <View style={{marginTop:10}}>
-                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{flex:1,fontSize:16}}>Queue name: </Text>
-                                <Text h3 style={{flex:1,marginLeft:5,textAlign:'left'}}>{this.state.queue.title}{/*(ID {this.props.route.params.id})*/}</Text>
+                        
+                        <View style={{marginTop:10,marginBottom:10,width:250}}>
+                            
+                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',padding:5}}>
+                                
+                                <Text style={{fontSize:16,padding:2}}>Wating time: </Text>
+                                <View>
+                                    <Chip titleStyle={styles.mychip}
+                                        buttonStyle={styles.chipbutton}
+                                        title={'ETA min'}
+                                            icon={{
+                                            name: "timer-sharp",
+                                            type: "ionicon",
+                                            size: 20,
+                                            color: mychipcolor,
+                                        }}
+                                    />
+                                </View>
+
+                                {/*<Text h3 style={{flex:1,marginLeft:5,textAlign:'left'}}>{this.state.queue.title}</Text>*/}
                             </View>
                             
-                            <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                                <Text style={{flex:1,fontSize:12,padding:2}}>People before me: </Text>
-                                <Text h3 style={{flex:1,marginLeft:5,textAlign:'left'}}>{this.state.queue.people}</Text>
+                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',padding:5}}>
+                                
+                            <Text style={{fontSize:16,padding:2}}>People before me: </Text>
+
+                            <View>
+                                <Chip titleStyle={styles.mychip} 
+                                    buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
+                                    
+                                    title={"" + this.state.queue.people}
+                                        icon={{
+                                        name: "people",
+                                        type: "ionicon",
+                                        size: 20,
+                                        color: mychipcolor,
+                                    }}
+                                    />
+                            </View> 
+                                {/*<Text h3 style={{flex:1,marginLeft:5,textAlign:'left'}}>{this.state.queue.people}</Text>*/}
                             </View>
+                            
+                            
                         </View>
                 </Card>
                 
@@ -156,8 +219,12 @@ export default class QueueDetailsPage extends Component{
                         <Icon name='cancel' type="material-community" color='#333234' />
                         <Text style={{fontSize:14,marginTop:10}}>Leave Queue</Text>
                     </TouchableOpacity>
-                </View>
+                </View> 
+                
+                </ScrollView>
            </View>
+           
+           
         )
     }
 }
