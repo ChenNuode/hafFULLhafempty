@@ -179,7 +179,7 @@ export default class CreatedQueuesPage extends Component{
                                     <View style={[styles.mylabeltext,{flex:1,flexDirection:'row'}]}>
                                         
                                         <Chip titleStyle={styles.mychip} 
-                                        buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
+                                        buttonStyle={[styles.chipbutton,{marginVertical:5}]}
                                         
                                         title={item.queue_length + ' pax'}
                                             icon={{

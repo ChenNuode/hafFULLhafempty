@@ -372,7 +372,7 @@ export default class FindQueuesPage extends Component{
                     <Divider></Divider>
                     <View style={{flex:3,}}>
                         <Text style={{marginTop:10,color:'gray',fontSize:14,marginBottom:5}}>Queue Description</Text>
-                        <Text style={{fontSize:16}}>{this.state.overlaydata.desc}</Text>
+                        <Text style={{fontSize:18}}>{this.state.overlaydata.desc}</Text>
                     </View>
 
                     <View style={{flex:2,justifyContent:'center',}}>
