@@ -241,22 +241,22 @@ export default class MyQueuesPage extends Component{
                         {this.displayQueues()}
                 </View>
                 <Divider orientation="horizontal" />
-                <View style={{flex:1,width:'100%',marginVertical:20,marginBottom:30,paddingBottom:20}}>
-                <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10,}}>Queue History</Text>
+                {/*<View style={{flex:1,width:'100%',marginVertical:20,marginBottom:30,paddingBottom:20}}>
+                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:10,}}>Queue History</Text>
 
-                {
-                    Historylist.map((l, i) => (
-                    <ListItem key={i} bottomDivider>
-                        <Avatar source={{uri: "https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg"}} size='small' />
-                        <ListItem.Content>
-                        <ListItem.Title style={{fontSize:20}}>{l.name}</ListItem.Title>
-                        <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
-                        </ListItem.Content>
-                    </ListItem>
-                    ))
-                }
-                
-                </View>
+                    {
+                        Historylist.map((l, i) => (
+                        <ListItem key={i} bottomDivider>
+                            <Avatar source={{uri: "https://fastly.4sqi.net/img/general/600x600/29096708_-9AYbBBeHPmaVESz1RFLxJ8hgm2U5NPNcPtGxpIchBs.jpg"}} size='small' />
+                            <ListItem.Content>
+                            <ListItem.Title style={{fontSize:20}}>{l.name}</ListItem.Title>
+                            <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
+                            </ListItem.Content>
+                        </ListItem>
+                        ))
+                    }
+                    
+                </View>*/}
                 </ScrollView>
            </View>
            </SafeAreaView>

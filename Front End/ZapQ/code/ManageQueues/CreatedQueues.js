@@ -254,7 +254,7 @@ export default class CreatedQueuesPage extends Component{
             
             </View>
             <Divider orientation="horizontal" />
-            <View style={{flex:1,width:'100%',marginVertical:10,marginTop:30}}>
+            {/*<View style={{flex:1,width:'100%',marginVertical:10,marginTop:30}}>
                 <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:20}}>Past Created Queues</Text>
                     
                 <View style={{marginBottom:50+10}}>
@@ -270,7 +270,7 @@ export default class CreatedQueuesPage extends Component{
                 }
                 </View>
 
-                </View>
+            </View>*/}
             </ScrollView>
         </View>
         </SafeAreaView>
