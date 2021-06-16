@@ -8,6 +8,9 @@
     <!-- Define ACCESS_COARSE_LOCATION if you will use enableHighAccuracy=false  -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
