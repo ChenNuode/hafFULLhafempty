@@ -20,6 +20,8 @@ import {
     Avatar,
     Badge,
 } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../api';
 
 //imports end
 
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
 });
-  
+
 export default class ConfirmQueuePage extends Component{
     constructor(props){
         super(props);
@@ -47,7 +49,13 @@ export default class ConfirmQueuePage extends Component{
             description: "",
         }
     };
- 
+
+    usercall = async () => {
+      await AsyncStorage.getItem('@userinfo').then((res) => {this.setState({userdata: JSON.parse(res)})});
+    };
+
+
+
     createQueue(){
         if(this.state.name == ""){
             Alert.alert(
@@ -58,7 +66,8 @@ export default class ConfirmQueuePage extends Component{
                 ]
             );
             return;
-        }
+        };
+        this.usercall().then(()=>{console.log(this.state.userdata.username)})
         console.log(this.state.name, this.state.description);
         console.log(this.props.route.params.lat, this.props.route.params.long);
         //api call to create the queue
