@@ -204,7 +204,7 @@ var api = {
 		}).then((res) => res.json());
 	},
 	//submit username, receive list of all queue info of the queues user is in
-	userQueueInfo(username, 1queue_id){
+	userQueueInfo(username, queue_id){
 		var furl = beurl.concat('/queues/user/get_queue_info/')
 		var fs = new FormData();
 		fs.append('username', username);
@@ -221,7 +221,7 @@ var api = {
 	searchQueue(searchterm){
 		var furl = beurl.concat('/queues/user/search_queue/')
 		var fs = new FormData();
-		fs.append('searchterm', searchterm);
+		fs.append('search_terms', searchterm);
 		return fetch(furl, {
 			method: 'POST',
 			headers: {
