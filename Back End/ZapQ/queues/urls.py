@@ -14,6 +14,7 @@ urlpatterns = [
     path('user/get_nearby_queues/', UserNearQueues.as_view()),
     path('user/get_queue/', UserInQueue.as_view()),
     path('user/get_queue_info/', UserQueueInfo.as_view()),
+    path('user/get_queue_details/', UserQueueDetails.as_view()),
     path('user/get_all_queue_ids/', UserAllQueues.as_view()),
     path('user/search_queue/', QueueSearch.as_view()),
     path('user/pushback_queue/', PushBackQueue.as_view()),
