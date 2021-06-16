@@ -8,8 +8,8 @@ class Queue(models.Model):
     name = models.CharField(max_length=200)
     desc = models.CharField(max_length=200)
     eta = models.PositiveIntegerField()  # in minutes
-    lati = models.DecimalField(max_digits=9, decimal_places=6)
-    longi = models.DecimalField(max_digits=9, decimal_places=6)
+    lati = models.DecimalField(max_digits=25, decimal_places=20)
+    longi = models.DecimalField(max_digits=25, decimal_places=20)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
     paused = models.BooleanField(default=False)
     ended = models.BooleanField(default=False)

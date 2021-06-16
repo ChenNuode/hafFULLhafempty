@@ -182,6 +182,23 @@ class UserInQueue(APIView):
             data.append(tempdata)
         return JsonResponse(data, status=201, safe=False)
 
+class UserQueueInfo(APIView):
+    def post(self, request):
+        data = self.request.data
+        queue_id = data.get('queue_id')
+        queue = Queue.objects.get(id=queue_id)
+        data = {
+                'queue_id': queue.id,
+                'name': queue.name,
+                'desc': queue.desc,
+                'eta': queue.eta,
+                'lati': queue.lati,
+                'longi': queue.longi,
+                'creator': queue.creator.username,
+            }
+        return JsonResponse(data, status=201, safe=False)
+
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserAllQueues(APIView):
