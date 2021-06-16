@@ -11,6 +11,7 @@ import {
   Linking,
   Image,
   Alert,
+  TouchableOpacity
 } from 'react-native';
 
 import {
@@ -38,10 +39,6 @@ const styles = StyleSheet.create({
     bigtext: {
         fontSize: 20,
     },
-    mycardbutton : {
-        width:60,
-    }
-
 });
   
 export default class QueueDetailsPage extends Component{
@@ -118,56 +115,47 @@ export default class QueueDetailsPage extends Component{
         return(
             <View style={{flex:1,'color':'#333234',backgroundColor:'snow',justifyContent:'center',alignItems:'center',height:'100%',width:'100%'}}>
                 
-                <Card containerStyle={{alignItems:'center',backgroundColor:'yellow',justifyContent:'center',width:'85%',
-                marginBottom:30,padding:20}}>
+                <Card containerStyle={{alignItems:'center',justifyContent:'center',width:'85%',
+                marginBottom:30,paddingVertical:20,paddingHorizontal:10}}>
                     <Card.Title h3>My Queue Ticket</Card.Title>
                     <Card.Divider/>
                     
                         <Image source={require('../images/defaultQimage2.png')} 
-                        style={{width:100,height:100,backgroundColor:'black',alignSelf:'center'}} />
+                        style={{width:100,height:100,alignSelf:'center'}} />
                         
-                        <View style={{backgroundColor:'purple',marginVertical:10}}>
-                            <View style={{flexDirection:'row'}}>
+                        <View style={{marginTop:10}}>
+                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
                                 <Text style={{flex:1,fontSize:16}}>Queue name: </Text>
-                                <Text h4 style={{flex:1}}>{this.state.queue.title}{/*(ID {this.props.route.params.id})*/}</Text>
+                                <Text h3 style={{flex:1,marginLeft:5,textAlign:'left'}}>{this.state.queue.title}{/*(ID {this.props.route.params.id})*/}</Text>
                             </View>
                             
-                            <View style={{flexDirection:'row'}}>
-                                <Text style={{flex:1,fontSize:16}}>People in Queue: </Text>
-                                <Text h4 style={{flex:1}}>{this.state.queue.people}</Text>
+                            <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                                <Text style={{flex:1,fontSize:12,padding:2}}>People before me: </Text>
+                                <Text h3 style={{flex:1,marginLeft:5,textAlign:'left'}}>{this.state.queue.people}</Text>
                             </View>
                         </View>
                 </Card>
                 
-                <View style={{flexDirection:'row',justifyContent:'space-around',backgroundColor:'green',width:'85%'}}>
-                    <View style={{flexDirection:'column',alignItems:'center',padding:10}}>
-                        <Button round raised
-                            containerStyle={styles.mycardbutton}
-                            icon={<Icon name='code' color='#333234' />}
-                            onPress={() => this.getDirections()}
-                            buttonStyle={{backgroundColor:'transparent'}}
-                        />
-                        <Text>Get directions</Text>
-                    </View>
+                <View style={{flexDirection:'row',justifyContent:'space-around',width:'85%'}}>
+                    
+                    <TouchableOpacity onPress={() => this.getDirections()} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
+                        <Icon name='map' type="entypo" color='#333234' />
+                        <Text style={{fontSize:14,marginTop:10}}>Get directions</Text>
+                    </TouchableOpacity>
+                    
                     <Divider orientation="vertical"></Divider>
-                    <View style={{flexDirection:'column',alignItems:'center',padding:10}}>
-                        <Button round raised
-                            containerStyle={styles.mycardbutton}
-                            icon={<Icon name='code' color='#333234' />}
-                            buttonStyle={{backgroundColor:'transparent'}}
-                        />
-                        <Text>Push me back 5 places</Text>
-                    </View>
+                    
+                    <TouchableOpacity onPress={()=> {alert('Run function here')}} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
+                        <Icon name='push-outline' type="ionicon" color='#333234' />
+                        <Text style={{textAlign:'center',fontSize:12}}>Push me{"\n"}back 5 places</Text>
+                    </TouchableOpacity>
+                    
                     <Divider orientation="vertical"></Divider>
-                    <View style={{flexDirection:'column',alignItems:'center',padding:10}}>
-                        <Button round raised
-                            containerStyle={styles.mycardbutton}
-                            icon={<Icon name='code' color='#333234' />}
-                            onPress={() => this.leaveQueue()}
-                            buttonStyle={{backgroundColor:'tranparent'}}
-                        />
-                        <Text>Leave Queue</Text>
-                    </View>
+                        
+                    <TouchableOpacity onPress={() => this.leaveQueue()} style={{flexDirection:'column',alignItems:'center',padding:5,justifyContent:'center'}}>
+                        <Icon name='cancel' type="material-community" color='#333234' />
+                        <Text style={{fontSize:14,marginTop:10}}>Leave Queue</Text>
+                    </TouchableOpacity>
                 </View>
            </View>
         )

@@ -94,23 +94,22 @@ export default class MyQueuesPage extends Component{
         this.focusListener = this.props.navigation.addListener('focus', this.pullList)
 
         this.pullList();
+
+        this.updateTimer = setInterval(() => this.pullList(), 7000);
+
+        this.focusListener = this.props.navigation.addListener('blur', ()=>{clearInterval(this.updateTimer)})
     };
 
-
     pullList = async () => {
-        console.log("pull");
-
         await AsyncStorage.getItem('@userinfo').then((res) => {
 
             res = JSON.parse(res);
-            console.log(res);
             api.userQueuedInfo(res.username).then((res) => {
 
                 /*this.setState({
                     error: res.error,
                     resstate: res.state,
                 });*/
-                console.log(res);
                 this.setState({queues: res});
             }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
         });
@@ -128,7 +127,7 @@ export default class MyQueuesPage extends Component{
     _refreshListView() {
         //Start Rendering Spinner
         this.setState({refreshing:true})
-        //do REFRESH WORK
+        this.pullList();
         this.setState({refreshing:false}) //Stop Rendering Spinner
       }
 
@@ -145,6 +144,38 @@ export default class MyQueuesPage extends Component{
       }
     }
 
+    renderAvatar(uri){
+        if(uri == null){
+            return (
+                <Avatar rounded size="medium" source={require('../images/defaultQimage2.png')}/>
+            )
+        } else {
+            return (
+                <Avatar rounded size="medium" source={{uri: api.beurl()+uri}}/>
+            )
+        }
+    }
+
+    renderBadge(ppl){
+        if(ppl <= 5){
+            return (
+                <Badge
+                    status="error"
+                    value=""
+                    containerStyle={{ position: 'absolute', top: -2, left: -2 }}
+                />
+            )
+        } else {
+            return (
+                <Badge
+                    status="success"
+                    value=""
+                    containerStyle={{ position: 'absolute', top: -2, left: -2 }}
+                />
+            )
+        }
+    }
+
     displayQueues(){
         return this.state.queues.map((item, i) => {
             return (
@@ -152,15 +183,8 @@ export default class MyQueuesPage extends Component{
 
                             <ListItem.Content style={{flexDirection:'row'}}>
                                 <View style={{alignSelf:'center',marginRight:10,marginTop:14}}>
-                                    <Avatar rounded size="medium"
-                                    source={require("../images/defaultQimage2.png")}
-                                    />
-
-                                    <Badge
-                                        status="error"
-                                        value=""
-                                        containerStyle={{ position: 'absolute', top: -2, left: -2 }}
-                                    />
+                                    {this.renderAvatar(item.image)}
+                                    {this.renderBadge(item.position)}
                                 </View>
                                 <View style={{flex:1}} >
                                     <ListItem.Title style={{flex:1,fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
@@ -178,7 +202,7 @@ export default class MyQueuesPage extends Component{
                                         <Chip titleStyle={styles.mychip}
                                         buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
 
-                                        title={item.position + ' left'}
+                                        title={item.position + ' in front'}
                                             icon={{
                                             name: "people",
                                             type: "ionicon",

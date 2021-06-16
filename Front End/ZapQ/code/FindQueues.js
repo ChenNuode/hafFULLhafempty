@@ -23,22 +23,13 @@ import {
     ListItem,
     FAB,
     Icon,
+    Divider,
 } from 'react-native-elements';
 
 import MapView, {Marker} from "react-native-maps";
 import GetLocation from 'react-native-get-location'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from './api';
-
-const searchList1 = [
-    {title: "NEX", id: 0, latitude: 1.35097, longitude: 103.87227,},
-    {title: "Junction 8", id: 1, latitude: 1.35111, longitude: 103.84868, },
-]
-
-const searchList2 = [
-    {title: "Junction 9", id: 2, latitude: 1.35097, longitude: 103.87227,},
-    {title: "Junction 10", id: 3, latitude: 1.35111, longitude: 103.84868, },
-]
+import api, {beurl} from './api';
 
 const styles = StyleSheet.create({
     tinyLogo: {
@@ -167,11 +158,14 @@ export default class FindQueuesPage extends Component{
         this.focusListener = this.props.navigation.addListener('focus', this.userCenterMap)
         
         this.getUserCenter().then(() => {this.findQueues()});
+
+        this.updateTimer = setInterval(() => this.findQueues(), 7000);
+        
+        this.focusListener = this.props.navigation.addListener('blur', ()=>{clearInterval(this.updateTimer)})
     };
 
     findQueues = async () => {
         //API Logic]
-        console.log("FIND");
         await api.nearbyQueues(this.state.location.latitude, this.state.location.longitude).then((res) => {
             /*this.setState({
                 error: res.error,
@@ -232,6 +226,46 @@ export default class FindQueuesPage extends Component{
         });
     }
 
+    renderImage(uri){
+        if(uri == null){
+            return (
+                <View>
+                    <Image
+                        style={styles.tinyLogo}
+                        source={require('./images/defaultQimage2.png')}
+                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/defaultQimage2.png')}></Image>}
+                    />
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <Image
+                        style={styles.tinyLogo}
+                        source={{uri: api.beurl()+uri}}
+                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/defaultQimage2.png')}></Image>}
+                    />
+                </View>
+            )
+        }
+    }
+
+    renderAvatar(uri){
+        if(uri == null){
+            return (
+                <View>
+                    <Avatar rounded size="medium" source={require('./images/defaultQimage2.png')}/>
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <Avatar rounded size="medium" source={{uri: api.beurl()+uri}}/>
+                </View>
+            )
+        }
+    }
+
     makeMarkers(){
         return this.state.markerdata.map((item) => {
             return (
@@ -240,14 +274,7 @@ export default class FindQueuesPage extends Component{
                     key={item.queue_id} //threw an warning just now, about unpromised
                     onPress={() => this.markerPress(item.queue_id)}
                 >
-                <View>
-                    <Image
-                        style={styles.tinyLogo}
-                        //source={{uri: item.picurl }}
-                        source={require('./images/defaultQimage2.png')}
-                        PlaceholderContent={<Image style={styles.tinyLogo} source={require('./images/defaultQimage2.png')}></Image>}
-                    />
-                </View>
+                {this.renderImage(item.image)}
                 </Marker>
             );
         }).concat((
@@ -339,13 +366,10 @@ export default class FindQueuesPage extends Component{
                 <Overlay isVisible={this.state.overlayon} onBackdropPress={() => this.setState({overlayon: false})} overlayStyle={styles.Ocontainer} round>
 
                     <View style={{flexDirection:'row',flex:1,alignItems:'center',marginVertical:10}}>
-                        {/*<Avatar rounded size="medium" source={{
-                                uri: this.state.overlaydata.picurl,
-                            }}
-                        />*/}
+                        {this.renderAvatar(this.state.overlaydata.image)}
                         <Text h3 style={{marginLeft:5}}>{this.state.overlaydata.name}</Text>
                     </View>
-                    
+                    <Divider></Divider>
                     <View style={{flex:3,}}>
                         <Text style={{marginTop:10,color:'gray',fontSize:14,marginBottom:5}}>Queue Description</Text>
                         <Text style={{fontSize:16}}>{this.state.overlaydata.desc}</Text>
