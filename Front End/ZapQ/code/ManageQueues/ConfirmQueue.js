@@ -97,14 +97,18 @@ export default class ConfirmQueuePage extends Component{
             console.log('User tapped custom button: ', response.customButton);
             alert(response.customButton);
           } else {
-            var imageState = {
-                name: response.assets[0].fileName,
-                type: response.assets[0].type,
-                uri: response.assets[0].uri,
+            if(response.assets != null){
+              var imageState = {
+                  name: response.assets[0].fileName,
+                  type: response.assets[0].type,
+                  uri: response.assets[0].uri,
+              }
+              this.setState({
+                  image: imageState,
+              });
+            } else {
+              Alert.alert('Permissions error!', 'We are unable to open the camera!')
             }
-            this.setState({
-                image: imageState,
-            });
           }
         });
     }
@@ -127,15 +131,18 @@ export default class ConfirmQueuePage extends Component{
             console.log('User tapped custom button: ', response.customButton);
             alert(response.customButton);
           } else {
-            var imageState = {
-                name: response.assets[0].fileName,
-                type: response.assets[0].type,
-                uri: response.assets[0].uri,
+            if(response.assets != null){
+              var imageState = {
+                  name: response.assets[0].fileName,
+                  type: response.assets[0].type,
+                  uri: response.assets[0].uri,
+              }
+              this.setState({
+                  image: imageState,
+              });
+            } else {
+              Alert.alert('Permissions error!', 'We are unable to open your gallery!')
             }
-            console.log(imageState);
-            this.setState({
-                image: imageState,
-            });
           }
         });
     }    
