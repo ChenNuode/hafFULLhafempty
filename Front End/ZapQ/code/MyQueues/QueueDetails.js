@@ -81,14 +81,18 @@ export default class QueueDetailsPage extends Component{
     }
 
     getDetails = async () => {
-        api.getQueueInfo(this.props.route.params.id).then((res) => {
-            /*this.setState({
-                error: res.error,
-                resstate: res.state,
-            });*/
-            console.log(res);
-            this.setState({queue: res});
-        }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
+        await AsyncStorage.getItem('@userinfo').then((res) => {
+
+            res = JSON.parse(res);
+            api.userQueueInfo(res.username, this.props.route.params.id).then((res) => {
+                /*this.setState({
+                    error: res.error,
+                    resstate: res.state,
+                });*/
+                console.log(res);
+                this.setState({queue: res});
+            }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queue details!')});
+        });
     }
 
     getDirections(){
@@ -147,7 +151,7 @@ export default class QueueDetailsPage extends Component{
                 
                 <Card containerStyle={{alignItems:'center',justifyContent:'center',width:'85%',
                 marginBottom:30,paddingVertical:20,paddingHorizontal:10}}>
-                    <Card.Title h3>{this.state.queue.title}</Card.Title>
+                    <Card.Title h3>{this.state.queue.name}</Card.Title>
                     <Card.Divider/>
                         
                         <Image source={require('../images/defaultQimage2.png')} 
@@ -158,11 +162,11 @@ export default class QueueDetailsPage extends Component{
                             
                             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',padding:5}}>
                                 
-                                <Text style={{fontSize:16,padding:2}}>Wating time: </Text>
+                                <Text style={{fontSize:16,padding:2}}>Waiting Time: </Text>
                                 <View>
                                     <Chip titleStyle={styles.mychip}
                                         buttonStyle={styles.chipbutton}
-                                        title={'ETA min'}
+                                        title={this.state.queue.eta+' min'}
                                             icon={{
                                             name: "timer-sharp",
                                             type: "ionicon",
