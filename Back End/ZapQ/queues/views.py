@@ -214,6 +214,31 @@ class UserInQueue(APIView):
             data.append(tempdata)
         return JsonResponse(data, status=201, safe=False)
 
+class UserQueueDetails(APIView):
+    def post(self, request):
+        data = self.request.data
+        queue_id = data.get('queue_id')
+        username = data.get('username')
+        user = User.objects.get(username=username)
+        queue = Queue.objects.get(id=queue_id)
+        userids = [user.id for user in queue.users.all()]
+        data = {
+                'queue_id': queue.id,
+                'name': queue.name,
+                'desc': queue.desc,
+                'eta': queue.eta*userids.index(user.id),
+                'lati': queue.lati,
+                'longi': queue.longi,
+                'creator': queue.creator.username,
+                'queue_length': queue.users.count(),
+                'position': userids.index(user.id)
+            }
+        if queue.image:
+            data['image'] = QueueImage(queue).data['image']
+        else:
+            data['image'] = None
+        return JsonResponse(data, status=201, safe=False)
+
 class UserQueueInfo(APIView):
     def post(self, request):
         data = self.request.data
