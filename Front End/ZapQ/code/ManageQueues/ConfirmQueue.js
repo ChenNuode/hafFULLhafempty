@@ -46,14 +46,7 @@ export default class ConfirmQueuePage extends Component{
     constructor(props){
         super(props);
         this.state = {
-            name: "",
-            description: "",
-            filepath: {
-                data: '',
-                uri: ''
-            },
-            fileData: '',
-            fileUri: ''
+            image: {},
         }
     };
 
@@ -73,7 +66,7 @@ export default class ConfirmQueuePage extends Component{
 
             res = JSON.parse(res);
             //Tested
-            api.makeQueue(res.username, this.state.name, this.state.description, this.props.route.params.lat, this.props.route.params.long).then((res) => {
+            api.makeQueue(res.username, this.state.name, this.state.description, this.props.route.params.lat, this.props.route.params.long, this.state.image).then((res) => {
                 /*this.setState({
                     error: res.error,
                     resstate: res.state,
@@ -101,12 +94,13 @@ export default class ConfirmQueuePage extends Component{
             console.log('User tapped custom button: ', response.customButton);
             alert(response.customButton);
           } else {
-            const source = { uri: response.uri };
-            console.log('response', JSON.stringify(response));
+            var imageState = {
+                name: response.assets[0].fileName,
+                type: response.assets[0].type,
+                uri: response.assets[0].uri,
+            }
             this.setState({
-              filePath: response,
-              fileData: response.data,
-              fileUri: response.uri
+                image: imageState,
             });
           }
         });
@@ -130,12 +124,14 @@ export default class ConfirmQueuePage extends Component{
             console.log('User tapped custom button: ', response.customButton);
             alert(response.customButton);
           } else {
-            const source = { uri: response.uri };
-            console.log('response', JSON.stringify(response));
+            var imageState = {
+                name: response.assets[0].fileName,
+                type: response.assets[0].type,
+                uri: response.assets[0].uri,
+            }
+            console.log(imageState);
             this.setState({
-              filePath: response,
-              fileData: response.data,
-              fileUri: response.uri
+                image: imageState,
             });
           }
         });

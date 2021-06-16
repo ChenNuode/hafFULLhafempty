@@ -71,7 +71,7 @@ var api = {
 			body: formsubmit
 		}).then((res) => res.json());
 	},
-	makeQueue(username, name, desc, lati, longi){
+	makeQueue(username, name, desc, lati, longi, image){
 		var makeQ = beurl.concat('/queues/business/create_queue/')
 		var formsubmit = new FormData();
 		formsubmit.append('username', username);
@@ -79,6 +79,7 @@ var api = {
 		formsubmit.append('desc', desc);
 		formsubmit.append('lati', lati);
 		formsubmit.append('longi', longi);
+		formsubmit.append('image', image)
 		return fetch(makeQ,	{
 			method: 'POST',
 			headers: {
