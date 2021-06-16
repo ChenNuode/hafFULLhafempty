@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     newbutton: {
-        width:120,
+        width:40,
+        height:40,
         borderRadius:10,
        backgroundColor:'#2CB76B',
         //borderColor: '#2CB76B',
@@ -101,19 +102,15 @@ export default class CreatedQueuesPage extends Component{
     };
 
     pullList = async () => {
-        console.log("pull");
-
         await AsyncStorage.getItem('@userinfo').then((res) => {
 
             res = JSON.parse(res);
-            console.log(res);
             api.listMadeQueues(res.username).then((res) => {
                 
                 /*this.setState({
                     error: res.error,
                     resstate: res.state,
                 });*/
-                console.log(res);
                 this.setState({queues: res});
             }).catch(() => {Alert.alert('Network error!', 'We are unable to retrieve queues!')});
         });
@@ -121,15 +118,47 @@ export default class CreatedQueuesPage extends Component{
 
     componentDidMount(){
         this.focusListener = this.props.navigation.addListener('focus', this.pullList)
-    }
+        
+        this.updateTimer = setInterval(() => this.pullList(), 7000);
 
-    componentWillUnmount(){
-        //this.focusListener.remove();
+        this.focusListener = this.props.navigation.addListener('blur', ()=>{clearInterval(this.updateTimer)})
     }
 
     //useFocusEffect(
     //   useCallback(() => { this.pullList() }, []);
     //);
+
+    renderAvatar(uri){
+        if(uri == null){
+            return (
+                <Avatar rounded size="medium" source={require('../images/defaultQimage2.png')}/>
+            )
+        } else {
+            return (
+                <Avatar rounded size="medium" source={{uri: api.beurl()+uri}}/>
+            )
+        }
+    }
+
+    renderBadge(ppl){
+        if(ppl <= 5){
+            return (
+                <Badge
+                    status="error"
+                    value=""
+                    containerStyle={{ position: 'absolute', top: -2, left: -2 }}
+                />
+            )
+        } else {
+            return (
+                <Badge
+                    status="success"
+                    value=""
+                    containerStyle={{ position: 'absolute', top: -2, left: -2 }}
+                />
+            )
+        }
+    }
 
     displayQueues(){
         return this.state.queues.map((item, i) => {
@@ -140,15 +169,8 @@ export default class CreatedQueuesPage extends Component{
                         
                             <ListItem.Content style={{flexDirection:'row'}}>
                                 <View style={{alignSelf:'center',marginRight:10}}>
-                                    <Avatar rounded size="medium"
-                                    source={require("../images/defaultQimage2.png")}
-                                    />
-                                    
-                                    <Badge
-                                        status="error"
-                                        value=""
-                                        containerStyle={{ position: 'absolute', top: -2, left: -2 }}
-                                    />
+                                {this.renderAvatar(item.image)}
+                                {this.renderBadge(item.queue_length)}
                                 </View>
                                 <View style={{flex:1}} > 
                                     <ListItem.Title style={{fontWeight: "bold",color:"black",fontSize:25}}>{item.name}</ListItem.Title>
@@ -159,7 +181,7 @@ export default class CreatedQueuesPage extends Component{
                                         <Chip titleStyle={styles.mychip} 
                                         buttonStyle={[styles.chipbutton,{marginHorizontal:5}]}
                                         
-                                        title={item.queue_length + ' people in queue'}
+                                        title={item.queue_length + ' pax in queue'}
                                             icon={{
                                             name: "people",
                                             type: "ionicon",
@@ -208,22 +230,23 @@ export default class CreatedQueuesPage extends Component{
             <ScrollView containerStyle={{alignItems: 'flex-start'}} refreshControl={this._refreshControl()} >
             
             <View style={{flex:1,width:'100%',marginTop:20,marginBottom:0}}>
-                
-                    <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:15}}>Active Created Queues</Text>
-                    
-                    <Button containerStyle={styles.newbutton} onPress={() => this.props.navigation.navigate('Make Queue', {})}
-                    icon={
-                        <Icon
-                        name="add"
-                        type="ionicon"
-                        size={15}
-                        color="white"
+                    <View style={{flex:1,width:'100%',flexDirection:'row', justifyContent:'space-between', alignItems: 'center'}}>
+                        <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginBottom:15}}>Active Created Queues</Text>
+                        
+                        <Button containerStyle={styles.newbutton} onPress={() => this.props.navigation.navigate('Make Queue', {})}
+                        icon={
+                            <Icon
+                            name="add"
+                            type="ionicon"
+                            size={25}
+                            color="white"
+                            />
+                        }
+                        title=""
+                        buttonStyle={{backgroundColor:'transparent'}}
+                        
                         />
-                    }
-                    title="New Queue"
-                    buttonStyle={{backgroundColor:'transparent'}}
-                    
-                    />
+                    </View>
                     
                     <View style={{flex:1,width:'100%',marginTop:10,marginBottom:10}}>
                         {this.displayQueues()}

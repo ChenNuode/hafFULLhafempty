@@ -63,7 +63,6 @@ export default class ConfirmQueuePage extends Component{
         };
 
         await AsyncStorage.getItem('@userinfo').then((res) => {
-
             res = JSON.parse(res);
             //Tested
             api.makeQueue(res.username, this.state.name, this.state.description, this.props.route.params.lat, this.props.route.params.long, this.state.image).then((res) => {

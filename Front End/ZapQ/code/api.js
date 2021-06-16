@@ -1,6 +1,9 @@
 var beurl = 'http://10.0.2.2:8000'
 
 var api = {
+	beurl(){
+		return(beurl)
+	},
 	getLogin(username, password){
 		var loginpg = beurl.concat('/users/login/');
 		return fetch(loginpg, {
