@@ -315,14 +315,14 @@ class PushBackQueue(APIView):
         queue = Queue.objects.get(id=queue_id)
         userids = [user.id for user in queue.users.all()]
         length = len(userids)
-        if length > 1:
-            position = userids.index(theuser.id)
-            if ((length-1) - position) < 5:
+        position = userids.index(theuser.id)
+        if length > 1 and position != (length-1):
+            if ((length-1) - position) < 6:
                 newuserids = userids[:position] + \
                     userids[position+1:] + [theuser.id]
             else:
                 newposition = position + 5
-                newusersids = userids[:position] + userids[position+1:newposition] + [theuser.id] + userids[newposition:]
+                newuserids = userids[:position] + userids[position+1:newposition] + [theuser.id] + userids[newposition:]
             queue.users.clear()
             for userid in newuserids:
                 queue.users.add(User.objects.get(id=userid))
