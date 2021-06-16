@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {
+    View,
+    SafeAreaView,
+} from 'react-native';
 import api from './api';
 import {
+    Text,
     Button,
     Input,
     Badge,
@@ -34,7 +38,13 @@ export default class AccountPage extends Component{
 
   render() {
     return(
-      <View>
+      <SafeAreaView style={{width:"100%",height:"100%"}}>
+      <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:'snow',flex:1,justifyContent:'flex-start'}}>
+        
+        <Text h2>Account Settings</Text>
+
+        <Text style={{fontSize: 22,'color':'#333234',fontWeight: "bold",marginVertical:20}}>Account</Text>
+        
         <Text> {this.state.userdetails.username} </Text>
         <Text> {this.state.userdetails.email}</Text>
         <Button
@@ -43,7 +53,13 @@ export default class AccountPage extends Component{
             this.logout()
           }}
         />
+
+        
       </View>
+      </SafeAreaView>
+
+      
+
     )
   }
 }
