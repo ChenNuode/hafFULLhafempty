@@ -91,6 +91,8 @@ export default class QueueDetailsPage extends Component{
             var temp = this.state.queue
             temp.next_user = res.next_user;
             this.setState({queue: temp});
+
+            this.getDetails();
         }).catch(() => {Alert.alert('Network error!', 'We are unable to admit the next user!')});
     }
 
