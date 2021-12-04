@@ -1,5 +1,7 @@
-//var beurl = 'http://10.0.2.2:8000'
-var beurl = 'http://projectunplug.co:8000'
+//USE THIS for local dev
+var beurl = 'http://10.0.2.2:8000'
+
+//var beurl = 'http://projectunplug.co:8000'
 
 var api = {
 	beurl(){
@@ -59,6 +61,7 @@ var api = {
 			},
 			body: JSON.stringify(infolist)
 		}).then((res) => res.json());
+
 	},
 	deleteUser(username, token, password){
 		var deleteacc = beurl.concat('/users/delete_account/')
@@ -179,6 +182,7 @@ var api = {
 			body: fs
 		}).then((res) => res.json());
 	},
+	
 	//no critical response info
 	nearbyQueues(lati, longi){
 		var furl = beurl.concat('/queues/user/get_nearby_queues/')
@@ -194,6 +198,7 @@ var api = {
 			body: fs
 		}).then((res) => res.json());
 	},
+
 	//submit coords of where u are and receive list of queue info(name, lati, longi, queue_id)
 	userQueuedInfo(username){
 		var furl = beurl.concat('/queues/user/get_queue/')
@@ -265,5 +270,4 @@ var api = {
 		}).then((res) => res.json());
 	}
 };
-
 module.exports = api;
