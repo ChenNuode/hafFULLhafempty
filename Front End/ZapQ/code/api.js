@@ -1,7 +1,6 @@
 //USE THIS for local dev
-var beurl = 'http://10.0.2.2:8000'
-
-//var beurl = 'http://projectunplug.co:8000'
+//var beurl = 'http://10.0.2.2:8000'
+var beurl = 'http://zapq.pythonanywhere.com/'
 
 var api = {
 	beurl(){

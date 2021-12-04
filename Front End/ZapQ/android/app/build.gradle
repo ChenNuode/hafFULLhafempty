@@ -153,10 +153,10 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('zapq.keystore')
-            storePassword 'zapqzapq'
-            keyAlias 'zapq'
-            keyPassword 'zapqzapq'
+            storeFile file('ZapQ.keystore')
+            storePassword 'ChenNuode'
+            keyAlias 'ZapQkey'
+            keyPassword 'ChenNuode'
         }
     }
     buildTypes {
