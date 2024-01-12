@@ -7,3 +7,6 @@ and adopt one
 virtually.
 
 Pitch Deck: https://docs.google.com/presentation/d/1J751hTXZnNLzeqkYs0vCjSQe00pGXPtWWhYEf7y-Log/edit?usp=sharing
+
+Try our APK here:
+https://shorturl.at/auzSY
